@@ -3,7 +3,7 @@ let gridSize = 16;
 let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
 
 let player1 = {
-    symbol: "P1",
+    symbol: "redagent",
     position: { x: 0, y: 0 },
     keys: {
         ArrowUp: { x: 0, y: -1 },
@@ -14,7 +14,7 @@ let player1 = {
 };
 
 let player2 = {
-    symbol: "P2",
+    symbol: "bluerobot",
     position: { x: gridSize - 1, y: gridSize - 1 },
     keys: {
         w: { x: 0, y: -1 },
@@ -68,9 +68,9 @@ function renderGrid() {
             cell.fill = 'none'; // Transparent by default
 
             if (grid[y][x] === player1.symbol) {
-                cell.fill = new Two.Texture('p1.png');
+                cell.fill = new Two.Texture('redagent.png');
             } else if (grid[y][x] === player2.symbol) {
-                cell.fill = new Two.Texture('p2.png');
+                cell.fill = new Two.Texture('bluerobot.png');
             } else {
                 // Draw the cell with a background and white border
                 let background = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
