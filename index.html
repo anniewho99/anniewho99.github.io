@@ -1,1 +1,29 @@
-Hello World -
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Game</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(16, 30px);
+            gap: 2px;
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="grid"></div>
+    <script src="script.js"></script>
+</body>
+</html>
+
