@@ -1,89 +1,80 @@
-const gridSize = 16;
-const player1 = { 
-    x: 0, 
-    y: 0, 
-    symbol: "P1", 
-    keys: { up: "ArrowUp", down: "ArrowDown", left: "ArrowLeft", right: "ArrowRight" } 
-};
+let gridSize = 16;
+let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
 
-const player2 = { 
-    x: gridSize - 1, 
-    y: gridSize - 1, 
-    symbol: "P2", 
-    keys: { up: "W", down: "S", left: "A", right: "D" } 
-};
-
-let grid = [];
-
-function createGrid() {
-    for (let y = 0; y < gridSize; y++) {
-        let row = [];
-        for (let x = 0; x < gridSize; x++) {
-            row.push("");
-        }
-        grid.push(row);
+let player1 = {
+    symbol: "P1",
+    position: { x: 0, y: 0 },
+    keys: {
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 },
     }
+};
 
-    grid[player1.y][player1.x] = player1.symbol;
-    grid[player2.y][player2.x] = player2.symbol;
+let player2 = {
+    symbol: "P2",
+    position: { x: gridSize - 1, y: gridSize - 1 },
+    keys: {
+        w: { x: 0, y: -1 },
+        s: { x: 0, y: 1 },
+        a: { x: -1, y: 0 },
+        d: { x: 1, y: 0 },
+    }
+};
 
+grid[player1.position.y][player1.position.x] = player1.symbol;
+grid[player2.position.y][player2.position.x] = player2.symbol;
+
+let two = new Two({
+    fullscreen: true,
+    autostart: true
+}).appendTo(document.body);
+
+const cellSize = 30;
+const cellGap = 2;
+let gridGroup = two.makeGroup();
+
+two.bind('update', function(frameCount) {
     renderGrid();
-}
+});
 
-function renderGrid() {
-    const gridElement = document.getElementById("grid");
-    gridElement.innerHTML = '';
-
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            const cell = document.createElement("div");
-            cell.className = "cell";
-            cell.innerText = grid[y][x];
-            gridElement.appendChild(cell);
-        }
-    }
-}
-
-function movePlayer(player, dx, dy) {
-    const newX = player.x + dx;
-    const newY = player.y + dy;
-
-    if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-        grid[player.y][player.x] = "";
-        player.x = newX;
-        player.y = newY;
-        grid[newY][newX] = player.symbol;
-        renderGrid();
-    }
+function movePlayer(player, direction) {
+    grid[player.position.y][player.position.x] = null;
+    player.position.x = Math.min(gridSize - 1, Math.max(0, player.position.x + direction.x));
+    player.position.y = Math.min(gridSize - 1, Math.max(0, player.position.y + direction.y));
+    grid[player.position.y][player.position.x] = player.symbol;
 }
 
 document.addEventListener("keydown", (event) => {
-    switch (event.key) {
-        case player1.keys.up:
-            movePlayer(player1, 0, -1);
-            break;
-        case player1.keys.down:
-            movePlayer(player1, 0, 1);
-            break;
-        case player1.keys.left:
-            movePlayer(player1, -1, 0);
-            break;
-        case player1.keys.right:
-            movePlayer(player1, 1, 0);
-            break;
-        case player2.keys.up:
-            movePlayer(player2, 0, -1);
-            break;
-        case player2.keys.down:
-            movePlayer(player2, 0, 1);
-            break;
-        case player2.keys.left:
-            movePlayer(player2, -1, 0);
-            break;
-        case player2.keys.right:
-            movePlayer(player2, 1, 0);
-            break;
+    if (player1.keys[event.key]) {
+        movePlayer(player1, player1.keys[event.key]);
+    } else if (player2.keys[event.key]) {
+        movePlayer(player2, player2.keys[event.key]);
     }
 });
 
-createGrid();
+function renderGrid() {
+    gridGroup.remove(gridGroup.children);
+
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            const xPos = x * (cellSize + cellGap);
+            const yPos = y * (cellSize + cellGap);
+            let cell = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
+            cell.noStroke();
+
+            if (grid[y][x] === player1.symbol) {
+                cell.fill = new Two.Texture('redagent.png');
+            } else if (grid[y][x] === player2.symbol) {
+                cell.fill = new Two.Texture('bluerobot.png');
+            } else {
+                cell.fill = 'none';
+            }
+
+            gridGroup.add(cell);
+        }
+    }
+}
+
+two.play();
