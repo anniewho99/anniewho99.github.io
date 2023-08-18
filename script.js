@@ -3,27 +3,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const cellSize = 40;
     let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
 
-    let player1 = {
-        symbol: "P1",
-        position: { x: 0, y: 0 },
-        keys: {
-            ArrowUp: { x: 0, y: -1 },
-            ArrowRight: { x: 1, y: 0 },
-            ArrowDown: { x: 0, y: 1 },
-            ArrowLeft: { x: -1, y: 0 },
-        },
-    };
+    // Load the images
+    let player1Image = new Image();
+    player1Image.src = 'p1.png';  // Path to player 1's image
 
-    let player2 = {
-        symbol: "P2",
-        position: { x: gridSize - 1, y: gridSize - 1 },
-        keys: {
-            w: { x: 0, y: -1 },
-            d: { x: 1, y: 0 },
-            s: { x: 0, y: 1 },
-            a: { x: -1, y: 0 },
-        },
-    };
+    let player2Image = new Image();
+    player2Image.src = 'p2.png'; 
 
     grid[player1.position.y][player1.position.x] = player1.symbol;
     grid[player2.position.y][player2.position.x] = player2.symbol;
@@ -43,14 +28,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 let rectangle = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
                 rectangle.fill = '#D2B48C';
                 rectangle.stroke = 'white';
-                rectangle.linewidth = 1;
+                rectangle.linewidth = 2;
 
                 if (grid[y][x] === "P1") {
-                    let circle = two.makeCircle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize / 2);
-                    circle.fill = 'blue';
+                    two.makeSprite(player1Image.src, xPos, yPos, cellSize, cellSize);
                 } else if (grid[y][x] === "P2") {
-                    let circle = two.makeCircle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize / 2);
-                    circle.fill = 'red';
+                    two.makeSprite(player2Image.src, xPos, yPos, cellSize, cellSize);
                 }
             }
         }
