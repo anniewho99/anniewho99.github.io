@@ -27,7 +27,8 @@ grid[player1.position.y][player1.position.x] = player1.symbol;
 grid[player2.position.y][player2.position.x] = player2.symbol;
 
 let two = new Two({
-    fullscreen: true,
+    width: gridSize * (cellSize + cellGap) - cellGap,
+    height: gridSize * (cellSize + cellGap) - cellGap,
     autostart: true
 }).appendTo(document.body);
 
@@ -61,15 +62,22 @@ function renderGrid() {
         for (let x = 0; x < gridSize; x++) {
             const xPos = x * (cellSize + cellGap);
             const yPos = y * (cellSize + cellGap);
+            
+            // Create a cell
             let cell = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
             cell.noStroke();
+            cell.fill = 'none'; // Transparent by default
 
             if (grid[y][x] === player1.symbol) {
-                cell.fill = new Two.Texture('redagent.png');
+                cell.fill = new Two.Texture('p1.png');
             } else if (grid[y][x] === player2.symbol) {
-                cell.fill = new Two.Texture('bluerobot.png');
+                cell.fill = new Two.Texture('p2.png');
             } else {
-                cell.fill = 'none';
+                // Draw the cell with a background and white border
+                let background = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
+                background.noStroke();
+                background.fill = '#D2B48C';
+                gridGroup.add(background);
             }
 
             gridGroup.add(cell);
