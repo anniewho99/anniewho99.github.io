@@ -3,21 +3,51 @@ document.addEventListener("DOMContentLoaded", function() {
     const cellSize = 40;
     let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
 
-    // Load the images
-    let player1Image = new Image();
-    player1Image.src = 'p1.png';  // Path to player 1's image
+    // Player Definitions
+    let player1 = {
+        symbol: "P1",
+        position: { x: 0, y: 0 },
+        keys: {
+            ArrowUp: { x: 0, y: -1 },
+            ArrowRight: { x: 1, y: 0 },
+            ArrowDown: { x: 0, y: 1 },
+            ArrowLeft: { x: -1, y: 0 },
+        },
+    };
 
-    let player2Image = new Image();
-    player2Image.src = 'p2.png'; 
+    let player2 = {
+        symbol: "P2",
+        position: { x: gridSize - 1, y: gridSize - 1 },
+        keys: {
+            w: { x: 0, y: -1 },
+            d: { x: 1, y: 0 },
+            s: { x: 0, y: 1 },
+            a: { x: -1, y: 0 },
+        },
+    };
 
+    // Set initial positions for players
     grid[player1.position.y][player1.position.x] = player1.symbol;
     grid[player2.position.y][player2.position.x] = player2.symbol;
 
+    // Create Two.js instance
     let two = new Two({
         width: gridSize * cellSize,
         height: gridSize * cellSize,
         autostart: true
     }).appendTo(document.body);
+
+    // Load the images
+    let player1Image = new Image();
+    player1Image.onload = function() {
+        player2Image.onload = function() {
+            two.bind('update', function(frameCount) {
+                renderGrid();
+            }).play();
+        };
+        player2Image.src = 'p2.png'; 
+    };
+    player1Image.src = 'p1.png';
 
     function renderGrid() {
         for (let y = 0; y < gridSize; y++) {
@@ -39,14 +69,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
                     sprite.fill = texture;
                 }
-                
             }
         }
     }
-
-    two.bind('update', function(frameCount) {
-        renderGrid();
-    });
 
     document.addEventListener("keydown", function(event) {
         let move = null;
