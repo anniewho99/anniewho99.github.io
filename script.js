@@ -31,10 +31,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 rectangle.linewidth = 2;
 
                 if (grid[y][x] === "P1") {
-                    two.makeSprite(player1Image.src, xPos, yPos, cellSize, cellSize);
+                    let texture = new Two.Texture(player1Image);
+                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
+                    sprite.fill = texture;
                 } else if (grid[y][x] === "P2") {
-                    two.makeSprite(player2Image.src, xPos, yPos, cellSize, cellSize);
+                    let texture = new Two.Texture(player2Image);
+                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
+                    sprite.fill = texture;
                 }
+                
             }
         }
     }
