@@ -1,3 +1,4 @@
+const cellSize = 30;
 let gridSize = 16;
 let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
 
@@ -27,13 +28,11 @@ grid[player1.position.y][player1.position.x] = player1.symbol;
 grid[player2.position.y][player2.position.x] = player2.symbol;
 
 let two = new Two({
-    width: gridSize * (cellSize + cellGap) - cellGap,
-    height: gridSize * (cellSize + cellGap) - cellGap,
+    width: gridSize * cellSize,
+    height: gridSize * cellSize,
     autostart: true
 }).appendTo(document.body);
 
-const cellSize = 30;
-const cellGap = 2;
 let gridGroup = two.makeGroup();
 
 two.bind('update', function(frameCount) {
@@ -60,8 +59,8 @@ function renderGrid() {
 
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
-            const xPos = x * (cellSize + cellGap);
-            const yPos = y * (cellSize + cellGap);
+            const xPos = x * cellSize;
+            const yPos = y * cellSize;
             
             // Create a cell
             let cell = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
