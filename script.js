@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load the images
     let player1Image = new Image();
+    let player2Image = new Image();
     player1Image.onload = function() {
         player2Image.onload = function() {
             two.bind('update', function(frameCount) {
