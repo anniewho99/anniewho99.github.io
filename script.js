@@ -26,6 +26,13 @@ document.addEventListener("DOMContentLoaded", function() {
         },
     };
 
+    // Load the player images
+    let player1Image = new Image();
+    player1Image.src = 'p1.png';
+    
+    let player2Image = new Image();
+    player2Image.src = 'p2.png'; 
+
     // Set initial positions for players
     grid[player1.position.y][player1.position.x] = player1.symbol;
     grid[player2.position.y][player2.position.x] = player2.symbol;
@@ -36,19 +43,6 @@ document.addEventListener("DOMContentLoaded", function() {
         height: gridSize * cellSize,
         autostart: true
     }).appendTo(document.body);
-
-    // Load the images
-    let player1Image = new Image();
-    let player2Image = new Image();
-    player1Image.onload = function() {
-        player2Image.onload = function() {
-            two.bind('update', function(frameCount) {
-                renderGrid();
-            }).play();
-        };
-        player2Image.src = 'p2.png'; 
-    };
-    player1Image.src = 'p1.png';
 
     function renderGrid() {
         for (let y = 0; y < gridSize; y++) {
@@ -73,6 +67,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     }
+
+        // Update Two.js every frame
+    two.bind('update', function(frameCount) {
+            renderGrid();
+        });
 
     document.addEventListener("keydown", function(event) {
         let move = null;
