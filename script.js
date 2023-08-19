@@ -11,10 +11,10 @@ let config = {
 };
 
 const GRIDS = [
-    {start: [3, 3], end: [5, 5]},
-    {start: [3, 10], end: [5, 12]},
-    {start: [10, 3], end: [12, 5]},
-    {start: [10, 10], end: [12, 12]}
+    {start: [3, 3], end: [6, 6]},
+    {start: [3, 10], end: [6, 13]},
+    {start: [10, 3], end: [13, 6]},
+    {start: [10, 10], end: [13, 13]}
 ];  
 
 function createSubGrids() {
@@ -48,19 +48,25 @@ function createSubGrids() {
 
 function isWall(x, y) {
     for (let grid of GRIDS) {
-        // If it's on the perimeter
-        if ((x === grid.start[0] || x === grid.end[0] || y === grid.start[1] || y === grid.end[1]) &&
-            x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
+        // Check if the position is within the grid boundaries
+        if (x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
 
-            // Check if the position is a door. If so, it's not a wall.
-            if ((x === grid.start[0] + 1 && y === grid.start[1]) || 
-                (x === grid.start[0] + 1 && y === grid.end[1])) {
-                return false;
+            // If it's on the perimeter
+            if (x === grid.start[0] || x === grid.end[0] || y === grid.start[1] || y === grid.end[1]) {
+                
+                // Check if the position is a door. If so, it's not a wall.
+                if ((x === grid.start[0] + 1 && y === grid.start[1]) || 
+                    (x === grid.start[0] + 1 && y === grid.end[1])) {
+                    console.log("Door detected at: ", x, y); // Debug statement
+                    return false;
+                }
+
+                console.log("Wall detected at: ", x, y); // Debug statement
+                return true; // Otherwise, it's a wall.
             }
-
-            return true; // Otherwise, it's a wall.
         }
     }
+    console.log("No wall at: ", x, y); // Debug statement
     return false; // Default is not a wall.
 }
 
