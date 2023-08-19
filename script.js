@@ -22,17 +22,21 @@ function preload() {
 
 function create() {
     // Create grid graphics
-    let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
-    for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(i * cellSize, 0);
-        graphics.lineTo(i * cellSize, gridSize * cellSize);
-        graphics.moveTo(0, i * cellSize);
-        graphics.lineTo(gridSize * cellSize, i * cellSize);
-    }
-    graphics.strokePath();
+    this.graphics = this.add.graphics();
 
-    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.2); // Assuming your original image is twice the size of the cell.
-    player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.2);
+    // Draw the grid
+    for (let x = 0; x < GRID_SIZE; x++) {
+        for (let y = 0; y < GRID_SIZE; y++) {
+            this.graphics.fillStyle(0xD2B48C, 1); // light brown color
+            this.graphics.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            this.graphics.lineStyle(1, 0xFFFFFF, 1); // white border for grid cells
+            this.graphics.strokeRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+    }
+    //graphics.strokePath();
+
+    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
+    player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown, this);
