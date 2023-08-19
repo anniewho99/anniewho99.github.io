@@ -33,6 +33,21 @@ document.addEventListener("DOMContentLoaded", function() {
     let player2Image = new Image();
     player2Image.src = 'p2.png'; 
 
+    function getScaledDimensions(img, targetSize) {
+        const aspectRatio = img.width / img.height;
+        let width, height;
+        
+        if (img.width > img.height) {
+            width = targetSize;
+            height = targetSize / aspectRatio;
+        } else {
+            height = targetSize;
+            width = targetSize * aspectRatio;
+        }
+        
+        return { width, height };
+    }
+
     // Set initial positions for players
     grid[player1.position.y][player1.position.x] = player1.symbol;
     grid[player2.position.y][player2.position.x] = player2.symbol;
@@ -56,13 +71,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 rectangle.linewidth = 2;
 
                 if (grid[y][x] === "P1") {
-                    let texture = new Two.Texture(player1Image);
-                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
-                    sprite.fill = texture;
+                    let { width, height } = getScaledDimensions(player1Image, cellSize);
+                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, width, height);
+                    sprite.fill = new Two.Texture(player1Image);
                 } else if (grid[y][x] === "P2") {
-                    let texture = new Two.Texture(player2Image);
-                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
-                    sprite.fill = texture;
+                    let { width, height } = getScaledDimensions(player2Image, cellSize);
+                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, width, height);
+                    sprite.fill = new Two.Texture(player2Image);
                 }
             }
         }
