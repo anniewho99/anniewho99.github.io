@@ -1,3 +1,6 @@
+const cellSize = 40;
+const gridSize = 16;
+
 let config = {
     type: Phaser.AUTO,
     width: 640, // 16 cells * 40 pixels/cell
@@ -85,8 +88,6 @@ function createSubGrids() {
 let game = new Phaser.Game(config);
 
 let player1, player2;
-const cellSize = 40;
-const gridSize = 16;
 
 function preload() {
     this.load.image('player1', 'p1.png'); // Replace with the correct path
@@ -127,7 +128,7 @@ function handleMovement(player, dx, dy) {
     let nextGridX = Math.round(potentialX / cellSize);
     let nextGridY = Math.round(potentialY / cellSize);
 
-    if (!isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY) && !isWall(nextGridX, nextGridY)) {
+    if (!isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
