@@ -61,8 +61,8 @@ function createSubGrids() {
     const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x8B4513 } }); // Dark brown color
     
     for (let grid of GRIDS) {
-        const startX = grid.start[0] * cellSize;
-        const startY = grid.start[1] * cellSize;
+        const startX = (grid.start[0] - 1) * cellSize;
+        const startY = (grid.start[1] - 1) * cellSize;
         const endX = grid.end[0] * cellSize;
         const endY = grid.end[1] * cellSize;
 
