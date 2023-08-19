@@ -76,6 +76,27 @@ function preload() {
     this.load.image('player2', 'p2.png');
 }
 
+
+function create() {
+    // Create grid graphics
+    let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(i * cellSize, 0);
+        graphics.lineTo(i * cellSize, gridSize * cellSize);
+        graphics.moveTo(0, i * cellSize);
+        graphics.lineTo(gridSize * cellSize, i * cellSize);
+    }
+    graphics.strokePath();
+
+    createSubGrids.call(this);
+
+    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
+    player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
+
+    // Keyboard controls
+    this.input.keyboard.on('keydown', handleKeyDown, this);
+}
+
 function handleMovement(player, dx, dy) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
