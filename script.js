@@ -110,11 +110,15 @@ function handleMovement(player, dx, dy) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
-    if (!isWall(Math.round(potentialX / cellSize), Math.round(potentialY / cellSize))) {
+    let gridX = Math.round(potentialX / cellSize);
+    let gridY = Math.round(potentialY / cellSize);
+
+    if (!isWall(gridX, gridY)) {
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
 }
+
 
 function handleKeyDown(event) {
     switch (event.code) {
