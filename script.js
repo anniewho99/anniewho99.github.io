@@ -97,6 +97,10 @@ function create() {
     this.input.keyboard.on('keydown', handleKeyDown, this);
 }
 
+function update() {
+    // Any continual game logic goes here
+}
+
 function handleMovement(player, dx, dy) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
