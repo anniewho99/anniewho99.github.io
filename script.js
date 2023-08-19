@@ -1,113 +1,75 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const gridSize = 16;
-    const cellSize = 40;
-    let grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(null));
-
-    // Player Definitions
-    let player1 = {
-        symbol: "P1",
-        position: { x: 0, y: 0 },
-        keys: {
-            ArrowUp: { x: 0, y: -1 },
-            ArrowRight: { x: 1, y: 0 },
-            ArrowDown: { x: 0, y: 1 },
-            ArrowLeft: { x: -1, y: 0 },
-        },
-    };
-
-    let player2 = {
-        symbol: "P2",
-        position: { x: gridSize - 1, y: gridSize - 1 },
-        keys: {
-            w: { x: 0, y: -1 },
-            d: { x: 1, y: 0 },
-            s: { x: 0, y: 1 },
-            a: { x: -1, y: 0 },
-        },
-    };
-
-    // Load the player images
-    let player1Image = new Image();
-    player1Image.src = 'p1.png';
-    
-    let player2Image = new Image();
-    player2Image.src = 'p2.png'; 
-
-    function getScaledDimensions(img, targetSize) {
-        const aspectRatio = img.width / img.height;
-        let width, height;
-        
-        if (img.width > img.height) {
-            width = targetSize;
-            height = targetSize / aspectRatio;
-        } else {
-            height = targetSize;
-            width = targetSize * aspectRatio;
-        }
-        
-        return { width, height };
+let config = {
+    type: Phaser.AUTO,
+    width: 640, // 16 cells * 40 pixels/cell
+    height: 640,
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
     }
+};
 
-    // Set initial positions for players
-    grid[player1.position.y][player1.position.x] = player1.symbol;
-    grid[player2.position.y][player2.position.x] = player2.symbol;
+let game = new Phaser.Game(config);
 
-    // Create Two.js instance
-    let two = new Two({
-        width: gridSize * cellSize,
-        height: gridSize * cellSize,
-        autostart: true
-    }).appendTo(document.body);
+let player1, player2;
+const cellSize = 40;
+const gridSize = 16;
 
-    function renderGrid() {
-        for (let y = 0; y < gridSize; y++) {
-            for (let x = 0; x < gridSize; x++) {
-                const xPos = x * cellSize;
-                const yPos = y * cellSize;
+function preload() {
+    this.load.image('player1', 'p1.png'); // Replace with the correct path
+    this.load.image('player2', 'p2.png');
+}
 
-                let rectangle = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, cellSize, cellSize);
-                rectangle.fill = '#D2B48C';
-                rectangle.stroke = 'white';
-                rectangle.linewidth = 2;
-
-                if (grid[y][x] === "P1") {
-                    let { width, height } = getScaledDimensions(player1Image, cellSize);
-                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, width, height);
-                    sprite.fill = new Two.Texture(player1Image);
-                } else if (grid[y][x] === "P2") {
-                    let { width, height } = getScaledDimensions(player2Image, cellSize);
-                    let sprite = two.makeRectangle(xPos + cellSize / 2, yPos + cellSize / 2, width, height);
-                    sprite.fill = new Two.Texture(player2Image);
-                }
-            }
-        }
+function create() {
+    // Create grid graphics
+    let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(i * cellSize, 0);
+        graphics.lineTo(i * cellSize, gridSize * cellSize);
+        graphics.moveTo(0, i * cellSize);
+        graphics.lineTo(gridSize * cellSize, i * cellSize);
     }
+    graphics.strokePath();
 
-        // Update Two.js every frame
-    two.bind('update', function(frameCount) {
-            renderGrid();
-        });
+    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.2); // Assuming your original image is twice the size of the cell.
+    player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.2);
 
-    document.addEventListener("keydown", function(event) {
-        let move = null;
-        if (player1.keys[event.key]) {
-            move = player1.keys[event.key];
-            movePlayer(player1, move);
-        } else if (player2.keys[event.key]) {
-            move = player2.keys[event.key];
-            movePlayer(player2, move);
-        }
-    });
+    // Keyboard controls
+    this.input.keyboard.on('keydown', handleKeyDown, this);
+}
 
-    function movePlayer(player, { x, y }) {
-        let newX = player.position.x + x;
-        let newY = player.position.y + y;
+function update() {
+    // Any continual game logic goes here
+}
 
-        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-            grid[player.position.y][player.position.x] = null;
-            player.position.x = newX;
-            player.position.y = newY;
-            grid[newY][newX] = player.symbol;
-        }
+function handleKeyDown(event) {
+    switch (event.code) {
+        // Player 1
+        case 'ArrowUp':
+            player1.y = Phaser.Math.Clamp(player1.y - cellSize, cellSize / 2, game.config.height - cellSize / 2);
+            break;
+        case 'ArrowDown':
+            player1.y = Phaser.Math.Clamp(player1.y + cellSize, cellSize / 2, game.config.height - cellSize / 2);
+            break;
+        case 'ArrowLeft':
+            player1.x = Phaser.Math.Clamp(player1.x - cellSize, cellSize / 2, game.config.width - cellSize / 2);
+            break;
+        case 'ArrowRight':
+            player1.x = Phaser.Math.Clamp(player1.x + cellSize, cellSize / 2, game.config.width - cellSize / 2);
+            break;
+
+        // Player 2
+        case 'KeyW':
+            player2.y = Phaser.Math.Clamp(player2.y - cellSize, cellSize / 2, game.config.height - cellSize / 2);
+            break;
+        case 'KeyS':
+            player2.y = Phaser.Math.Clamp(player2.y + cellSize, cellSize / 2, game.config.height - cellSize / 2);
+            break;
+        case 'KeyA':
+            player2.x = Phaser.Math.Clamp(player2.x - cellSize, cellSize / 2, game.config.width - cellSize / 2);
+            break;
+        case 'KeyD':
+            player2.x = Phaser.Math.Clamp(player2.x + cellSize, cellSize / 2, game.config.width - cellSize / 2);
+            break;
     }
-});
+}
