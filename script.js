@@ -11,11 +11,48 @@ let config = {
 };
 
 const GRIDS = [
-    {start: [3, 3], end: [6, 6]},
-    {start: [3, 10], end: [6, 13]},
-    {start: [10, 3], end: [13, 6]},
-    {start: [10, 10], end: [13, 13]}
+    {start: [3, 3], end: [5, 5]},
+    {start: [3, 10], end: [5, 12]},
+    {start: [10, 3], end: [12, 5]},
+    {start: [10, 10], end: [12, 12]}
 ];  
+
+const DIRECTIONS = [
+    [0, 1],   // up
+    [0, -1],  // down
+    [-1, 0],  // left
+    [1, 0]    // right
+];
+
+let forbidden_moves = [];
+
+GRIDS.forEach(grid => {
+    let corners = [
+        grid.start,
+        [grid.start[0], grid.end[1]],
+        [grid.end[0], grid.start[1]],
+        grid.end
+    ];
+    corners.forEach(corner => {
+        DIRECTIONS.forEach(direction => {
+            let next_pos = [corner[0] + direction[0], corner[1] + direction[1]];
+            if (next_pos[0] < grid.start[0] || next_pos[0] > grid.end[0] || 
+                next_pos[1] < grid.start[1] || next_pos[1] > grid.end[1]) {
+                forbidden_moves.push([corner, next_pos].toString());
+                forbidden_moves.push([next_pos, corner].toString());
+            }
+        });
+    });
+});
+
+// Deduplicate forbidden moves
+forbidden_moves = Array.from(new Set(forbidden_moves));
+
+function isMoveForbidden(currX, currY, nextX, nextY) {
+    // Convert positions to strings for easier matching.
+    let moveString = [currX, currY, nextX, nextY].toString();
+    return forbidden_moves.includes(moveString);
+}
 
 function createSubGrids() {
     const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x8B4513 } }); // Dark brown color
@@ -44,31 +81,6 @@ function createSubGrids() {
     }
     graphics.strokePath();
 }
-
-
-function isWall(x, y) {
-    console.log(`Checking wall for coordinates: (${x}, ${y})`); // Debug statement
-
-    for (let grid of GRIDS) {
-        if (x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
-            // If it's on the perimeter
-            if (x === grid.start[0] || x === grid.end[0] || y === grid.start[1] || y === grid.end[1]) {
-                // Check if the position is a door. If so, it's not a wall.
-                if ((x === grid.start[0] + 1 && y === grid.start[1]) || 
-                    (x === grid.start[0] + 1 && y === grid.end[1])) {
-                    console.log(`Door detected at: (${x}, ${y})`); // Debug statement
-                    return false;
-                }
-                console.log(`Wall detected at: (${x}, ${y})`); // Debug statement
-                return true; // Otherwise, it's a wall.
-            }
-        }
-    }
-    console.log(`No wall detected at: (${x}, ${y})`); // Debug statement
-    return false; // Default is not a wall.
-}
-
-
 
 let game = new Phaser.Game(config);
 
@@ -110,10 +122,12 @@ function handleMovement(player, dx, dy) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
-    let gridX = Math.round(potentialX / cellSize);
-    let gridY = Math.round(potentialY / cellSize);
+    let currentGridX = Math.round(player.x / cellSize);
+    let currentGridY = Math.round(player.y / cellSize);
+    let nextGridX = Math.round(potentialX / cellSize);
+    let nextGridY = Math.round(potentialY / cellSize);
 
-    if (!isWall(gridX, gridY)) {
+    if (!isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY) && !isWall(nextGridX, nextGridY)) {
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
