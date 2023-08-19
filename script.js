@@ -2,6 +2,7 @@ let config = {
     type: Phaser.AUTO,
     width: 640, // 16 cells * 40 pixels/cell
     height: 640,
+    backgroundColor: '#D2B48C',
     scene: {
         preload: preload,
         create: create,
@@ -22,18 +23,14 @@ function preload() {
 
 function create() {
     // Create grid graphics
-    this.graphics = this.add.graphics();
-
-    // Draw the grid
-    for (let x = 0; x < GRID_SIZE; x++) {
-        for (let y = 0; y < GRID_SIZE; y++) {
-            this.graphics.fillStyle(0xD2B48C, 1); // light brown color
-            this.graphics.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            this.graphics.lineStyle(1, 0xFFFFFF, 1); // white border for grid cells
-            this.graphics.strokeRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        }
+    let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(i * cellSize, 0);
+        graphics.lineTo(i * cellSize, gridSize * cellSize);
+        graphics.moveTo(0, i * cellSize);
+        graphics.lineTo(gridSize * cellSize, i * cellSize);
     }
-    //graphics.strokePath();
+    graphics.strokePath();
 
     player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
