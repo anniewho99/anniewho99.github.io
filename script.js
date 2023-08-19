@@ -10,6 +10,43 @@ let config = {
     }
 };
 
+const GRIDS = [
+    {start: [3, 3], end: [5, 5]},
+    {start: [3, 10], end: [5, 12]},
+    {start: [10, 3], end: [12, 5]},
+    {start: [10, 10], end: [12, 12]}
+];  
+
+function createSubGrids() {
+    const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x8B4513} });
+    for (let grid of GRIDS) {
+        for (let y = grid.start[1]; y <= grid.end[1]; y++) {
+            for (let x = grid.start[0]; x <= grid.end[0]; x++) {
+                if (y === grid.start[1] || y === grid.end[1] || x === grid.start[0] || x === grid.end[0]) {
+                    graphics.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+    }
+    graphics.strokePath();
+}
+
+function isWall(x, y) {
+    for (let grid of GRIDS) {
+        if (x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
+            if ((x === grid.start[0] || x === grid.end[0] || y === grid.start[1] || y === grid.end[1])) {
+                // Check if the position is a door. If x, y is a door location, return false.
+                if ((x === grid.start[0] + 1 && y === grid.start[1]) || 
+                    (x === grid.start[0] + 1 && y === grid.end[1])) {
+                    return false; // This would make two doors on the top and bottom middle of the subgrid.
+                }
+                return true; // This position is a wall.
+            }
+        }
+    }
+    return false; // Default is not a wall.
+}
+
 let game = new Phaser.Game(config);
 
 let player1, player2;
@@ -31,6 +68,8 @@ function create() {
         graphics.lineTo(gridSize * cellSize, i * cellSize);
     }
     graphics.strokePath();
+
+    createSubGrids.call(this);
 
     player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
@@ -73,4 +112,10 @@ function handleKeyDown(event) {
             player2.x = Phaser.Math.Clamp(player2.x + cellSize, cellSize / 2, game.config.width - cellSize / 2);
             break;
     }
+
+    if (!isWall(potentialX / cellSize, potentialY / cellSize)) {
+        player1.x = potentialX;
+        player1.y = potentialY;
+    }
+
 }
