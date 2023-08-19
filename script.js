@@ -47,28 +47,27 @@ function createSubGrids() {
 
 
 function isWall(x, y) {
-    for (let grid of GRIDS) {
-        // Check if the position is within the grid boundaries
-        if (x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
+    console.log(`Checking wall for coordinates: (${x}, ${y})`); // Debug statement
 
+    for (let grid of GRIDS) {
+        if (x >= grid.start[0] && x <= grid.end[0] && y >= grid.start[1] && y <= grid.end[1]) {
             // If it's on the perimeter
             if (x === grid.start[0] || x === grid.end[0] || y === grid.start[1] || y === grid.end[1]) {
-                
                 // Check if the position is a door. If so, it's not a wall.
                 if ((x === grid.start[0] + 1 && y === grid.start[1]) || 
                     (x === grid.start[0] + 1 && y === grid.end[1])) {
-                    console.log("Door detected at: ", x, y); // Debug statement
+                    console.log(`Door detected at: (${x}, ${y})`); // Debug statement
                     return false;
                 }
-
-                console.log("Wall detected at: ", x, y); // Debug statement
+                console.log(`Wall detected at: (${x}, ${y})`); // Debug statement
                 return true; // Otherwise, it's a wall.
             }
         }
     }
-    console.log("No wall at: ", x, y); // Debug statement
+    console.log(`No wall detected at: (${x}, ${y})`); // Debug statement
     return false; // Default is not a wall.
 }
+
 
 
 let game = new Phaser.Game(config);
@@ -111,7 +110,7 @@ function handleMovement(player, dx, dy) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
-    if (!isWall(potentialX / cellSize, potentialY / cellSize)) {
+    if (!isWall(Math.round(potentialX / cellSize), Math.round(potentialY / cellSize))) {
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
