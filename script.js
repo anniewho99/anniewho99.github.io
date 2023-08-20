@@ -72,10 +72,10 @@ function createSubGrids() {
     // Iterate over each grid
     GRIDS.forEach(grid => {
         const { start, end } = grid;
-        const startX = start[0] * cellSize;
-        const startY = start[1] * cellSize;
-        const endX = (end[0] + 1) * cellSize;
-        const endY = (end[1] + 1) * cellSize;
+        const startX = (start[0] - 1) * cellSize;
+        const startY = (start[1] - 1) * cellSize;
+        const endX = end[0] * cellSize;
+        const endY = end[1] * cellSize;
 
         // Draw the outer grid wall
         graphics.strokeRect(startX, startY, endX - startX, endY - startY);
