@@ -154,14 +154,14 @@ function calculateDoors() {
 
         shuffle(doors);
 
-        this.doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
-        this.doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
-        this.allDoors.push(...doors);
+        doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
+        doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
+        allDoors.push(...doors);
     }
 
-    console.log("door for movement AI:", this.doorAICoords);
-    console.log("door for movement Human:", this.doorHumanCoords);
-    console.log("all_doors:", this.allDoors);
+    console.log("door for movement AI:", doorAICoords);
+    console.log("door for movement Human:", doorHumanCoords);
+    console.log("all_doors:", allDoors);
 }
 
 
