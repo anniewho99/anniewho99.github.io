@@ -206,9 +206,9 @@ function arraysEqual(arr1, arr2) {
 function crossesDoor(start, end, playerID) {
     let validAdjustedDoors;
     if (playerID === "Human") {
-        validAdjustedDoors = doorHumanAdjusted;
+        validAdjustedDoors = doorHumanadjusted;
     } else if (playerID === "AI") {
-        validAdjustedDoors = doorAIAdjusted;
+        validAdjustedDoors = doorAIadjusted;
     } else {
         return false; // Invalid player type
     }
