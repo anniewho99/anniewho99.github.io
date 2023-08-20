@@ -22,10 +22,10 @@ let config = {
 };
 
 const GRIDS = [
-    {start: [3, 3], end: [5, 5]},
-    {start: [3, 10], end: [5, 12]},
-    {start: [10, 3], end: [12, 5]},
-    {start: [10, 10], end: [12, 12]}
+    {start: [4, 4], end: [6, 6]},
+    {start: [4, 11], end: [6, 13]},
+    {start: [11, 4], end: [13, 6]},
+    {start: [11, 11], end: [13, 13]}
 ];  
 
 const DIRECTIONS = [
