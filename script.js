@@ -92,7 +92,7 @@ function drawDoor(door) {
 
     // Using a function to find if the door exists in AI or Human coords
     const isDoorInList = (door, list) => {
-        return list.some(d => d.adjusted[0] === door.adjusted[0] && d.adjusted[1] === door.adjusted[1]);
+        return list.some(d => d.coord[0] === door.coord[0] && d.coord[1] === door.coord[1]);
     };
 
     if (isDoorInList(door, doorAICoords)) {
