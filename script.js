@@ -109,11 +109,9 @@ function drawDoor(door) {
     const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
 
     if(door.orientation === "V") {
-        //doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
-        doorGraphics.fillRect(doorX - DOOR_WIDTH / 2, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
+        doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - 1, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
     } else {
         doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
-        //doorGraphics.fillRect(doorX - DOOR_WIDTH / 2, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
     }
     
     this.doorSprites.push(doorGraphics);
@@ -125,13 +123,6 @@ function update_doors(A, B) {
     let unique_in_B = B.filter(value => !common_elements.includes(value));
     return [...unique_in_A, ...unique_in_B];
 }
-
-// function adjustCoord(coord) {
-//     return [
-//         coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
-//         coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
-//     ];
-// }
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
