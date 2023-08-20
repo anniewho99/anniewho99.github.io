@@ -189,7 +189,7 @@ function calculateDoors() {
         doorHumanCoords.push({ ...doors[1]});
 
         doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
-        doorAIadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+        doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
         allDoors.push(...doors);
     }
 
