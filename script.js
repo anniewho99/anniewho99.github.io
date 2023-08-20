@@ -1,6 +1,14 @@
 const cellSize = 40;
 const gridSize = 16;
 
+const DOOR_WIDTH = 5;
+const door_AI_color = 0x0000FF; // Blue color in hex
+const door_human_color = 0xFF0000; // Red color in hex
+
+let doorAICoords = [];
+let doorHumanCoords = [];
+let allDoors = [];
+
 let config = {
     type: Phaser.AUTO,
     width: 640, // 16 cells * 40 pixels/cell
@@ -58,31 +66,93 @@ function isMoveForbidden(currX, currY, nextX, nextY) {
 }
 
 function createSubGrids() {
+    // Initialize graphics object for the walls
     const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x8B4513 } }); // Dark brown color
-    
-    for (let grid of GRIDS) {
-        const startX = (grid.start[0] - 1) * cellSize;
-        const startY = (grid.start[1] - 1) * cellSize;
-        const endX = grid.end[0] * cellSize;
-        const endY = grid.end[1] * cellSize;
 
-        // Draw top horizontal wall
-        graphics.moveTo(startX, startY);
-        graphics.lineTo(endX, startY);
+    // Iterate over each grid
+    GRIDS.forEach(grid => {
+        const { start, end } = grid;
+        const startX = start[0] * cellSize;
+        const startY = start[1] * cellSize;
+        const endX = (end[0] + 1) * cellSize;
+        const endY = (end[1] + 1) * cellSize;
 
-        // Draw bottom horizontal wall
-        graphics.moveTo(startX, endY);
-        graphics.lineTo(endX, endY);
+        // Draw the outer grid wall
+        graphics.strokeRect(startX, startY, endX - startX, endY - startY);
 
-        // Draw left vertical wall
-        graphics.moveTo(startX, startY);
-        graphics.lineTo(startX, endY);
+        // Drawing doors
+        allDoors.forEach(doorData => {
+            const [door, orientation] = doorData;
+            const doorX = door[0] * cellSize;
+            const doorY = door[1] * cellSize;
+            let doorColor = 0x654321;  // Default to wall color
 
-        // Draw right vertical wall
-        graphics.moveTo(endX, startY);
-        graphics.lineTo(endX, endY);
-    }
+            if (orientation === 'V' && (doorX === startX || doorX === endX)) { 
+                if (doorAICoords.includes(door)) {
+                    doorColor = door_AI_color;
+                } else if (doorHumanCoords.includes(door)) {
+                    doorColor = door_human_color;
+                }
+
+                const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
+                doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+                this.doorSprites.push(doorGraphics);
+            } 
+            // Handle 'H' orientation similarly
+        });
+    });
+
     graphics.strokePath();
+}
+
+
+function update_doors(A, B) {
+    let common_elements = A.filter(value => B.includes(value));
+    let unique_in_A = A.filter(value => !common_elements.includes(value));
+    let unique_in_B = B.filter(value => !common_elements.includes(value));
+    return [...unique_in_A, ...unique_in_B];
+}
+
+function adjust_coord(coord) {
+    return [
+        coord[0] === 6 ? 5 : (coord[0] === 13 ? 12 : coord[0]),
+        coord[1] === 6 ? 5 : (coord[1] === 13 ? 12 : coord[1])
+    ];
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function calculateDoors() {
+
+    for (let grid of GRIDS) {
+        let start = grid.start;
+        let end = grid.end;
+
+        let doors = [
+            [start[0], (end[1] + start[1]) / 2],
+            [end[0] + 1, (end[1] + start[1]) / 2]
+            // You can add horizontal doors here as well if needed
+        ];
+
+        shuffle(doors);
+        
+        doorAICoords.push(doors[0]);
+        doorHumanCoords.push(doors[1]);
+
+        allDoors.push(...doors);
+    }
+
+    let doorAICoordsAdj = doorAICoords.map(adjustCoord);
+    let doorHumanCoordsAdj = doorHumanCoords.map(adjustCoord);
+
+    console.log("door for movement AI:", doorAICoordsAdj);
+    console.log("door for movement Human:", doorHumanCoordsAdj);
+    console.log("all_doors:", allDoors);
 }
 
 let game = new Phaser.Game(config);
@@ -105,6 +175,10 @@ function create() {
         graphics.lineTo(gridSize * cellSize, i * cellSize);
     }
     graphics.strokePath();
+
+    this.doorSprites = [];
+
+    calculateDoors();
 
     createSubGrids.call(this);
 
