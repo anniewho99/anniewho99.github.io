@@ -134,6 +134,7 @@ function drawDoor(door) {
 
     if (isDoorInList(door, doorAICoords)) {
         doorColor = door_AI_color;
+
         console.log("AI door");
     } else if (isDoorInList(door, doorHumanCoords)) {
         doorColor = door_human_color;
@@ -197,6 +198,41 @@ function calculateDoors() {
     console.log("all_doors:", allDoors);
 }
 
+function arraysEqual(arr1, arr2) {
+    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+}
+
+
+function crossesDoor(start, end, playerID) {
+    let validAdjustedDoors;
+    if (playerID === "Human") {
+        validAdjustedDoors = doorHumanAdjusted;
+    } else if (playerID === "AI") {
+        validAdjustedDoors = doorAIAdjusted;
+    } else {
+        return false; // Invalid player type
+    }
+
+    console.log(playerID, validAdjustedDoors)
+    console.log(start, end)
+    // Check if either start or end are in the validAdjustedDoors
+    const isInAdjustedDoors = validAdjustedDoors.some(door => arraysEqual(start, door) || arraysEqual(end, door));
+    if (!isInAdjustedDoors) return false;
+
+    // Check if the movement tuple exists in the door_movements array
+    const movementExists = door_movements.some(movement => {
+        return arraysEqual(start, movement[0]) && arraysEqual(end, movement[1]);
+    });
+
+    if (!movementExists) return false;
+
+    // Check if neither start nor end positions are within the valid door coordinates
+    const isInvalidMovement = validAdjustedDoors.some(door => arraysEqual(start, door.coord) || arraysEqual(end, door.coord));
+
+    return !isInvalidMovement;
+}
+
+
 
 let game = new Phaser.Game(config);
 
@@ -237,7 +273,7 @@ function update() {
     // Any continual game logic goes here
 }
 
-function handleMovement(player, dx, dy) {
+function handleMovement(player, dx, dy, playerID) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
@@ -250,6 +286,12 @@ function handleMovement(player, dx, dy) {
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
+
+    if (!crossesDoor(currentGridX, currentGridY, nextGridX, nextGridY, playerID)) {
+        console.log("door not allowed to cross")
+        player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
+        player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    }
 }
 
 
@@ -257,30 +299,30 @@ function handleKeyDown(event) {
     switch (event.code) {
         // Player 1
         case 'ArrowUp':
-            handleMovement(player1, 0, -cellSize);
+            handleMovement(player1, 0, -cellSize, "Human");
             break;
         case 'ArrowDown':
-            handleMovement(player1, 0, cellSize);
+            handleMovement(player1, 0, cellSize, "Human");
             break;
         case 'ArrowLeft':
-            handleMovement(player1, -cellSize, 0);
+            handleMovement(player1, -cellSize, 0, "Human");
             break;
         case 'ArrowRight':
-            handleMovement(player1, cellSize, 0);
+            handleMovement(player1, cellSize, 0, "Human");
             break;
 
         // Player 2
         case 'KeyW':
-            handleMovement(player2, 0, -cellSize);
+            handleMovement(player2, 0, -cellSize, "AI");
             break;
         case 'KeyS':
-            handleMovement(player2, 0, cellSize);
+            handleMovement(player2, 0, cellSize, "AI");
             break;
         case 'KeyA':
-            handleMovement(player2, -cellSize, 0);
+            handleMovement(player2, -cellSize, 0, "AI");
             break;
         case 'KeyD':
-            handleMovement(player2, cellSize, 0);
+            handleMovement(player2, cellSize, 0, "AI");
             break;
     }
 }
