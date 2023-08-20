@@ -193,8 +193,8 @@ function calculateDoors() {
         allDoors.push(...doors);
     }
 
-    console.log("door for movement AI:", doorAIAdjusted);
-    console.log("door for movement Human:", doorHumanAdjusted);
+    console.log("door for movement AI:", doorAIadjusted);
+    console.log("door for movement Human:", doorHumanadjusted);
     console.log("all_doors:", allDoors);
 }
 
