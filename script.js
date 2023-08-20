@@ -6,7 +6,9 @@ const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
 let doorAICoords = [];
+let doorAIadjusted = [];
 let doorHumanCoords = [];
+let doorHumanadjusted = [];
 let allDoors = [];
 
 let config = {
@@ -59,10 +61,45 @@ GRIDS.forEach(grid => {
 // Deduplicate forbidden moves
 forbidden_moves = Array.from(new Set(forbidden_moves));
 
+let door_movements = [];
+
+for (let grid of GRIDS) {
+    let top_middle = [grid['start'][0], grid['start'][1] + 1];
+    let bottom_middle = [grid['end'][0], grid['end'][1] - 1];
+    let left_middle = [grid['start'][0] + 1, grid['start'][1]];
+    let right_middle = [grid['end'][0] - 1, grid['end'][1]];
+
+    // top middle entering and exiting
+    door_movements.push([[top_middle[0] - 1, top_middle[1]], top_middle]);
+    door_movements.push([top_middle, [top_middle[0] - 1, top_middle[1]]]);
+
+    // bottom middle entering and exiting
+    door_movements.push([[bottom_middle[0] + 1, bottom_middle[1]], bottom_middle]);
+    door_movements.push([bottom_middle, [bottom_middle[0] + 1, bottom_middle[1]]]);
+
+    // left middle entering and exiting
+    door_movements.push([[left_middle[0], left_middle[1] - 1], left_middle]);
+    door_movements.push([left_middle, [left_middle[0], left_middle[1] - 1]]);
+
+    // right middle entering and exiting
+    door_movements.push([[right_middle[0], right_middle[1] + 1], right_middle]);
+    door_movements.push([right_middle, [right_middle[0], right_middle[1] + 1]]);
+}
+
+console.log("door_movements:", door_movements);
+
+
 function isMoveForbidden(currX, currY, nextX, nextY) {
     // Convert positions to strings for easier matching.
     let moveString = [currX, currY, nextX, nextY].toString();
     return forbidden_moves.includes(moveString);
+}
+
+function adjustCoord(coord) {
+    return [
+        coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
+        coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
+    ];
 }
 
 function createSubGrids() {
@@ -150,8 +187,8 @@ function calculateDoors() {
         doorAICoords.push({ ...doors[0]});
         doorHumanCoords.push({ ...doors[1]});
 
-        // doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
-        // doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
+        doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+        doorAIadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
         allDoors.push(...doors);
     }
 
