@@ -80,30 +80,53 @@ function createSubGrids() {
         // Draw the outer grid wall
         graphics.strokeRect(startX, startY, endX - startX, endY - startY);
 
-        // Drawing doors
-        allDoors.forEach(doorData => {
-            const [door, orientation] = doorData;
-            const doorX = door[0] * cellSize;
-            const doorY = door[1] * cellSize;
-            let doorColor = 0xFF00FF;  // bright purple for debug
+        // // Drawing doors
+        // allDoors.forEach(doorData => {
+        //     const [door, orientation] = doorData;
+        //     const doorX = door[0] * cellSize;
+        //     const doorY = door[1] * cellSize;
+        //     let doorColor = 0xFF00FF;  // bright purple for debug
 
-            if (orientation === 'V' && (doorX === startX || doorX === endX)) { 
-                if (doorAICoords.includes(door)) {
-                    doorColor = door_AI_color;
-                } else if (doorHumanCoords.includes(door)) {
-                    doorColor = door_human_color;
-                }
+        //     if (orientation === 'V' && (doorX === startX || doorX === endX)) { 
+        //         if (doorAICoords.includes(door)) {
+        //             doorColor = door_AI_color;
+        //         } else if (doorHumanCoords.includes(door)) {
+        //             doorColor = door_human_color;
+        //         }
 
-                const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
-                doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
-                this.doorSprites.push(doorGraphics);
-            } 
-            // Handle 'H' orientation similarly
-        });
+        //         const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
+        //         doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+        //         this.doorSprites.push(doorGraphics);
+        //     } 
+        //     // Handle 'H' orientation similarly
+        // });
     });
 
     graphics.strokePath();
 }
+
+function drawDoor(door) {
+    const doorX = door[0] * cellSize;
+    const doorY = door[1] * cellSize;
+
+    let doorColor;
+    if (doorAICoords.includes(door)) {
+        doorColor = door_AI_color;
+        console.log("AI door")
+    } else if (doorHumanCoords.includes(door)) {
+        doorColor = door_human_color;
+        console.log("Human door")
+    } else {
+        doorColor = 0xFF00FF;
+        console.log("debug door")  // bright purple for debug // Default to the debug color if not AI or human
+    }
+
+    const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
+    doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+    this.doorSprites.push(doorGraphics);
+}
+
+
 
 
 function update_doors(A, B) {
@@ -181,6 +204,7 @@ function create() {
     calculateDoors();
 
     createSubGrids.call(this);
+    allDoors.forEach(drawDoor.bind(this));
 
     player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
