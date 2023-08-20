@@ -287,11 +287,11 @@ function handleMovement(player, dx, dy, playerID) {
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
 
-    // if (!crossesDoor(currentGridX, currentGridY, nextGridX, nextGridY, playerID)) {
-    //     console.log("door not allowed to cross")
-    //     player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
-    //     player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
-    // }
+    if (!crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
+        console.log("door not allowed to cross")
+        player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
+        player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    }
 }
 
 
