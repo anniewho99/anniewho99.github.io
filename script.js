@@ -79,55 +79,43 @@ function createSubGrids() {
 
         // Draw the outer grid wall
         graphics.strokeRect(startX, startY, endX - startX, endY - startY);
-
-        // // Drawing doors
-        // allDoors.forEach(doorData => {
-        //     const [door, orientation] = doorData;
-        //     const doorX = door[0] * cellSize;
-        //     const doorY = door[1] * cellSize;
-        //     let doorColor = 0xFF00FF;  // bright purple for debug
-
-        //     if (orientation === 'V' && (doorX === startX || doorX === endX)) { 
-        //         if (doorAICoords.includes(door)) {
-        //             doorColor = door_AI_color;
-        //         } else if (doorHumanCoords.includes(door)) {
-        //             doorColor = door_human_color;
-        //         }
-
-        //         const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
-        //         doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
-        //         this.doorSprites.push(doorGraphics);
-        //     } 
-        //     // Handle 'H' orientation similarly
-        // });
     });
 
     graphics.strokePath();
 }
 
 function drawDoor(door) {
-    const doorX = door[0] * cellSize;
-    const doorY = door[1] * cellSize;
+    const doorX = door.adjusted[0] * cellSize;
+    const doorY = door.adjusted[1] * cellSize;
 
     let doorColor;
-    if (doorAICoords.includes(door)) {
+
+    // Using a function to find if the door exists in AI or Human coords
+    const isDoorInList = (door, list) => {
+        return list.some(d => d.adjusted[0] === door.adjusted[0] && d.adjusted[1] === door.adjusted[1]);
+    };
+
+    if (isDoorInList(door, doorAICoords)) {
         doorColor = door_AI_color;
-        console.log("AI door")
-    } else if (doorHumanCoords.includes(door)) {
+        console.log("AI door");
+    } else if (isDoorInList(door, doorHumanCoords)) {
         doorColor = door_human_color;
-        console.log("Human door")
+        console.log("Human door");
     } else {
         doorColor = 0xFF00FF;
-        console.log("debug door")  // bright purple for debug // Default to the debug color if not AI or human
+        console.log("debug door");  // bright purple for debug
     }
 
     const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
-    doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+
+    if(door.orientation === "V") {
+        doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+    } else {
+        doorGraphics.fillRect(doorX - DOOR_WIDTH / 2, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
+    }
+    
     this.doorSprites.push(doorGraphics);
 }
-
-
-
 
 function update_doors(A, B) {
     let common_elements = A.filter(value => B.includes(value));
@@ -138,8 +126,8 @@ function update_doors(A, B) {
 
 function adjust_coord(coord) {
     return [
-        coord[0] === 6 ? 5 : (coord[0] === 13 ? 12 : coord[0]),
-        coord[1] === 6 ? 5 : (coord[1] === 13 ? 12 : coord[1])
+        coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
+        coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
     ];
 }
 
@@ -151,32 +139,31 @@ function shuffle(array) {
 }
 
 function calculateDoors() {
-
     for (let grid of GRIDS) {
-        let start = grid.start;
-        let end = grid.end;
+        const [startX, startY] = grid.start;
+        const [endX, endY] = grid.end;
 
-        let doors = [
-            [start[0], (end[1] + start[1]) / 2],
-            [end[0] + 1, (end[1] + start[1]) / 2]
-            // You can add horizontal doors here as well if needed
+        // Calculate door positions
+        const doors = [
+            { coord: [startX, Math.floor((endY + startY) / 2)], orientation: "V" },
+            { coord: [endX + 1, Math.floor((endY + startY) / 2)], orientation: "V" },
+            // Commented out horizontal doors for now
+            // { coord: [Math.floor((endX + startX) / 2), endY + 1], orientation: "H" },
+            // { coord: [Math.floor((endX + startX) / 2), startY], orientation: "H" }
         ];
 
         shuffle(doors);
-        
-        doorAICoords.push(doors[0]);
-        doorHumanCoords.push(doors[1]);
 
-        allDoors.push(...doors);
+        this.doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
+        this.doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
+        this.allDoors.push(...doors);
     }
 
-    let doorAICoordsAdj = doorAICoords.map(adjust_coord);
-    let doorHumanCoordsAdj = doorHumanCoords.map(adjust_coord);
-
-    console.log("door for movement AI:", doorAICoords);
-    console.log("door for movement Human:", doorHumanCoords);
-    console.log("all_doors:", allDoors);
+    console.log("door for movement AI:", this.doorAICoords);
+    console.log("door for movement Human:", this.doorHumanCoords);
+    console.log("all_doors:", this.allDoors);
 }
+
 
 let game = new Phaser.Game(config);
 
