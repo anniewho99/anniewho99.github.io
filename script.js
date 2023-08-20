@@ -85,7 +85,7 @@ function createSubGrids() {
             const [door, orientation] = doorData;
             const doorX = door[0] * cellSize;
             const doorY = door[1] * cellSize;
-            let doorColor = 0x654321;  // Default to wall color
+            let doorColor = 0xFF00FF;  // bright purple for debug
 
             if (orientation === 'V' && (doorX === startX || doorX === endX)) { 
                 if (doorAICoords.includes(door)) {
@@ -150,8 +150,8 @@ function calculateDoors() {
     let doorAICoordsAdj = doorAICoords.map(adjust_coord);
     let doorHumanCoordsAdj = doorHumanCoords.map(adjust_coord);
 
-    console.log("door for movement AI:", doorAICoordsAdj);
-    console.log("door for movement Human:", doorHumanCoordsAdj);
+    console.log("door for movement AI:", doorAICoords);
+    console.log("door for movement Human:", doorHumanCoords);
     console.log("all_doors:", allDoors);
 }
 
