@@ -109,7 +109,7 @@ function drawDoor(door) {
     const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
 
     if(door.orientation === "V") {
-        doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - 1, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
+        doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellSize, doorY, DOOR_WIDTH, cellSize);
     } else {
         doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
     }
