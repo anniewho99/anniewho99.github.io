@@ -109,9 +109,11 @@ function drawDoor(door) {
     const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
 
     if(door.orientation === "V") {
-        doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
-    } else {
+        //doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
         doorGraphics.fillRect(doorX - DOOR_WIDTH / 2, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
+    } else {
+        doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+        //doorGraphics.fillRect(doorX - DOOR_WIDTH / 2, doorY - cellSize / 2, DOOR_WIDTH, cellSize);
     }
     
     this.doorSprites.push(doorGraphics);
