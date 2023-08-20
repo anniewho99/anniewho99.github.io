@@ -220,17 +220,9 @@ function crossesDoor(start, end, playerID) {
 
     console.log(playerID, validAdjustedDoors)
     console.log(start, end)
-    movement = [start, end];
-    const cross_door = door_movements.some(door_movement => arraysEqual(door_movement[0], movement[0]) && arraysEqual(door_movement[1], movement[1]));
-
-    if (cross_door == false){
-        console.log("not door movement");
-        return false
-    }
 
     const startExists = validAdjustedDoors.some(door => arraysEqual(door, start));
     const endExists = validAdjustedDoors.some(door => arraysEqual(door, end));
-
 
     if (startExists || endExists){
         console.log("Entering the door they own")
@@ -298,14 +290,21 @@ function handleMovement(player, dx, dy, playerID) {
         return;
     }
 
-    // Next, check for door crossings
-    if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
-        // Movement across the door is allowed
-        console.log("door allowed to cross")
-    } else {
-        // If the player is trying to cross a door and it's not allowed, then return
-        console.log("door not allowed to cross");
-        return;
+    movement = [[currentGridX, currentGridY], [nextGridX, nextGridY]];
+    const cross_door = door_movements.some(door_movement => arraysEqual(door_movement[0], movement[0]) && arraysEqual(door_movement[1], movement[1]));
+
+    if (cross_door == true){
+            // Next, check for door crossings
+        if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
+            // Movement across the door is allowed
+            console.log("door allowed to cross")
+        } else {
+            // If the player is trying to cross a door and it's not allowed, then return
+            console.log("door not allowed to cross");
+            return;
+        }
+    }else{
+        console.log("not door movement");
     }
 
     // If we reach here, it means the movement is allowed.
