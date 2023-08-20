@@ -124,7 +124,7 @@ function update_doors(A, B) {
     return [...unique_in_A, ...unique_in_B];
 }
 
-function adjust_coord(coord) {
+function adjustCoord(coord) {
     return [
         coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
         coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
