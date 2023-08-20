@@ -85,8 +85,8 @@ function createSubGrids() {
 }
 
 function drawDoor(door) {
-    const doorX = door.adjusted[0] * cellSize;
-    const doorY = door.adjusted[1] * cellSize;
+    const doorX = door.coord[0] * cellSize;
+    const doorY = door.coord[1] * cellSize;
 
     let doorColor;
 
@@ -124,12 +124,12 @@ function update_doors(A, B) {
     return [...unique_in_A, ...unique_in_B];
 }
 
-function adjustCoord(coord) {
-    return [
-        coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
-        coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
-    ];
-}
+// function adjustCoord(coord) {
+//     return [
+//         coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
+//         coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
+//     ];
+// }
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -154,8 +154,11 @@ function calculateDoors() {
 
         shuffle(doors);
 
-        doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
-        doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
+        doorAICoords.push({ ...doors[0]});
+        doorHumanCoords.push({ ...doors[1]});
+
+        // doorAICoords.push({ ...doors[0], adjusted: adjustCoord(doors[0].coord) });
+        // doorHumanCoords.push({ ...doors[1], adjusted: adjustCoord(doors[1].coord) });
         allDoors.push(...doors);
     }
 
