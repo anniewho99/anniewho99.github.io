@@ -147,8 +147,8 @@ function calculateDoors() {
         allDoors.push(...doors);
     }
 
-    let doorAICoordsAdj = doorAICoords.map(adjustCoord);
-    let doorHumanCoordsAdj = doorHumanCoords.map(adjustCoord);
+    let doorAICoordsAdj = doorAICoords.map(adjust_coord);
+    let doorHumanCoordsAdj = doorHumanCoords.map(adjust_coord);
 
     console.log("door for movement AI:", doorAICoordsAdj);
     console.log("door for movement Human:", doorHumanCoordsAdj);
