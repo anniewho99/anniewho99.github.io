@@ -236,7 +236,7 @@ function crossesDoor(start, end, playerID) {
         console.log("Entering the door they own")
         return true
     }else{
-        console.log('Entering the other player door')
+        console.log('Entering a door they dont own')
         return false
     }
 
@@ -292,22 +292,26 @@ function handleMovement(player, dx, dy, playerID) {
     let nextGridX = Math.round(potentialX / cellSize);
     let nextGridY = Math.round(potentialY / cellSize);
 
-    if (!isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
-        player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
-        player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    // First, check for forbidden moves. If forbidden, we immediately return.
+    if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
+        console.log("Move is forbidden.");
+        return;
     }
 
+    // Next, check for door crossings
     if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
-        // Movement is allowed.
+        // Movement across the door is allowed
         console.log("door allowed to cross")
-        player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
-        player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     } else {
+        // If the player is trying to cross a door and it's not allowed, then return
         console.log("door not allowed to cross");
-        // Here you don't update the player's position, so the movement doesn't occur.
+        return;
     }
-}
 
+    // If we reach here, it means the movement is allowed.
+    player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
+    player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+}
 
 function handleKeyDown(event) {
     switch (event.code) {
