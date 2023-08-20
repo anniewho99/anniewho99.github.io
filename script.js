@@ -193,8 +193,8 @@ function calculateDoors() {
         allDoors.push(...doors);
     }
 
-    console.log("door for movement AI:", doorAICoords);
-    console.log("door for movement Human:", doorHumanCoords);
+    console.log("door for movement AI:", doorAIAdjusted);
+    console.log("door for movement Human:", doorHumanAdjusted);
     console.log("all_doors:", allDoors);
 }
 
@@ -287,11 +287,11 @@ function handleMovement(player, dx, dy, playerID) {
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
     }
 
-    if (!crossesDoor(currentGridX, currentGridY, nextGridX, nextGridY, playerID)) {
-        console.log("door not allowed to cross")
-        player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
-        player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
-    }
+    // if (!crossesDoor(currentGridX, currentGridY, nextGridX, nextGridY, playerID)) {
+    //     console.log("door not allowed to cross")
+    //     player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
+    //     player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    // }
 }
 
 
