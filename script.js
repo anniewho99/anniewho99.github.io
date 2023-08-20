@@ -198,15 +198,15 @@ function calculateDoors() {
     console.log("all_doors:", allDoors);
 }
 
-// function arraysEqual(arr1, arr2) {
-//     if (!arr1 || !arr2 || arr1.length !== arr2.length) return false;
+function arraysEqual(arr1, arr2) {
+    if (!arr1 || !arr2 || arr1.length !== arr2.length) return false;
 
-//     for (let i = 0; i < arr1.length; i++) {
-//         if (arr1[i] !== arr2[i]) return false;
-//     }
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) return false;
+    }
 
-//     return true;
-// }
+    return true;
+}
 
 function crossesDoor(start, end, playerID) {
     let validAdjustedDoors;
@@ -218,33 +218,21 @@ function crossesDoor(start, end, playerID) {
         return false; // Invalid player type
     }
 
-    // console.log(playerID, validAdjustedDoors)
-    // console.log(start, end)
-    // // Check if either start or end are in the validAdjustedDoors
-    // const isInAdjustedDoors = validAdjustedDoors.some(door => arraysEqual(start, door) || arraysEqual(end, door));
-    // if (!isInAdjustedDoors) return false;
-
-    // // Check if the movement tuple exists in the door_movements array
-    // const movementExists = door_movements.some(movement => {
-    //     return validAdjustedDoors.includes(start)|| validAdjustedDoors.includes(end);
-    // });
-
-    // if (!movementExists) return false;
-
-    // // Check if neither start nor end positions are within the valid door coordinates
-    // const isInvalidMovement = validAdjustedDoors.some(door => arraysEqual(start, door.coord) || arraysEqual(end, door.coord));
-
-    // return !isInvalidMovement;
-
+    console.log(playerID, validAdjustedDoors)
+    console.log(start, end)
     movement = [start, end];
-    cross_door = door_movements.includes(movement);
+    const cross_door = door_movements.some(door_movement => arraysEqual(door_movement[0], movement[0]) && arraysEqual(door_movement[1], movement[1]));
 
     if (cross_door == false){
         console.log("not door movement");
         return false
     }
 
-    if (validAdjustedDoors.includes(start) || validAdjustedDoors.includes(start)){
+    const startExists = validAdjustedDoors.some(door => arraysEqual(door, start));
+    const endExists = validAdjustedDoors.some(door => arraysEqual(door, end));
+
+
+    if (startExists || endExists){
         console.log("Entering the door they own")
         return true
     }else{
@@ -310,9 +298,13 @@ function handleMovement(player, dx, dy, playerID) {
     }
 
     if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
+        // Movement is allowed.
         console.log("door allowed to cross")
         player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
         player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    } else {
+        console.log("door not allowed to cross");
+        // Here you don't update the player's position, so the movement doesn't occur.
     }
 }
 
