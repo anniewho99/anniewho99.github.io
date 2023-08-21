@@ -186,6 +186,11 @@ function drawDoor(door, scene) {
 // }
 
 function areArraysEquivalent(a, b) {
+    console.log('A:', a, 'B:', b); // This will help you see what's being passed to the function
+
+    if (!Array.isArray(a) || !Array.isArray(b)) {
+        return false;
+    }
     return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
@@ -196,6 +201,7 @@ function containsArray(arr, val) {
 function update_doors(A, B) {
     for (const elem of A) {
         if (containsArray(B, elem)) {
+            console.log('elem', elem);
             B = B.filter(bElem => !areArraysEquivalent(bElem, elem)); // remove from B
         } else {
             B.push(elem); // add to B
