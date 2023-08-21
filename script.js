@@ -370,8 +370,8 @@ function handleMovement(player, dx, dy, playerID) {
                 doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
                 console.log(doors);
 
-                doorAIcoords = update_doors(doors, doorAIcoords)
-                doorhumancoords = update_doors(doors, doorhumancoords)
+                doorAICoords = update_doors(doors, doorAICoords)
+                doorhumanCoords = update_doors(doors, doorhumanCoords)
 
                 console.log("new AI door", doorAIcoords);
 
