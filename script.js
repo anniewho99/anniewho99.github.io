@@ -174,7 +174,8 @@ function drawDoor(door, scene) {
         doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
     }
     
-    this.doorSprites.push(doorGraphics);
+    //this.doorSprites.push(doorGraphics);
+    scene.doorSprites.push(doorGraphics);
 }
 
 function update_doors(A, B) {
