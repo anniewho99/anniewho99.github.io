@@ -365,12 +365,15 @@ function handleMovement(player, dx, dy, playerID, scene) {
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
                 console.log('entering a subgrid. shuffle door');
-                whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
+                let whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
                 console.log("which grid", whichGrid);
-                startGrid = whichGrid[0];
-                endGrid = whichGrid[1];
+                let startGrid = whichGrid[0];
+                let endGrid = whichGrid[1];
+                console.log('startGrid', startGrid);
+                console.log('endGrid', endGrid );
                 
-                doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
+                console.log('startGrid first element', startGrid[0]);
+                let doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
                 console.log(doors);
 
                 doorAICoords = update_doors(doors, doorAICoords)
