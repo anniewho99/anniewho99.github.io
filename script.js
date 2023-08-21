@@ -178,11 +178,31 @@ function drawDoor(door, scene) {
     scene.doorSprites.push(doorGraphics);
 }
 
+// function update_doors(A, B) {
+//     let common_elements = A.filter(value => B.includes(value));
+//     let unique_in_A = A.filter(value => !common_elements.includes(value));
+//     let unique_in_B = B.filter(value => !common_elements.includes(value));
+//     return [...unique_in_A, ...unique_in_B];
+// }
+
+function areArraysEquivalent(a, b) {
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+}
+
+function containsArray(arr, val) {
+    return arr.some(item => areArraysEquivalent(item, val));
+}
+
 function update_doors(A, B) {
-    let common_elements = A.filter(value => B.includes(value));
-    let unique_in_A = A.filter(value => !common_elements.includes(value));
-    let unique_in_B = B.filter(value => !common_elements.includes(value));
-    return [...unique_in_A, ...unique_in_B];
+    for (const elem of A) {
+        if (containsArray(B, elem)) {
+            B = B.filter(bElem => !areArraysEquivalent(bElem, elem)); // remove from B
+        } else {
+            B.push(elem); // add to B
+        }
+    }
+
+    return B;
 }
 
 function findGridForPoint(point, pointsDict) {
@@ -242,6 +262,8 @@ function arraysEqual(arr1, arr2) {
 
     return true;
 }
+
+
 
 function crossesDoor(start, end, playerID) {
     let validAdjustedDoors;
@@ -372,7 +394,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     startGrid = grids[0];
                     endGrid = grids[1];
                 }
-                
+
                 console.log('startGrid', startGrid);
                 console.log('endGrid', endGrid );
                 
