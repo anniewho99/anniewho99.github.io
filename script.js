@@ -178,15 +178,8 @@ function drawDoor(door, scene) {
     scene.doorSprites.push(doorGraphics);
 }
 
-// function update_doors(A, B) {
-//     let common_elements = A.filter(value => B.includes(value));
-//     let unique_in_A = A.filter(value => !common_elements.includes(value));
-//     let unique_in_B = B.filter(value => !common_elements.includes(value));
-//     return [...unique_in_A, ...unique_in_B];
-// }
-
 function areArraysEquivalent(a, b) {
-    console.log('A:', a, 'B:', b); // This will help you see what's being passed to the function
+    //console.log('A:', a, 'B:', b); // This will help you see what's being passed to the function
 
     if (!Array.isArray(a) || !Array.isArray(b)) {
         return false;
@@ -202,21 +195,19 @@ function update_doors(A, B) {
     console.log('Initial A:', JSON.stringify(A));
     console.log('Initial B:', JSON.stringify(B));
     
-    const toAdd = [];
-
     for (const elem of A) {
         if (containsArray(B, elem)) {
             console.log('Removing from B:', JSON.stringify(elem));
-            B = B.filter(bElem => !areArraysEquivalent(bElem, elem));
-        } else if (!containsArray(toAdd, elem) && !containsArray(B, elem)) {
+            B = B.filter(bElem => !areArraysEquivalent(bElem.coord, elem.coord));  // Filtering by 'coord' property
+        } else if (!containsArray(B, elem)) {
             console.log('Adding to B:', JSON.stringify(elem));
-            toAdd.push(elem);
+            B.push(elem);
         }
     }
 
-    console.log('Final B:', JSON.stringify([...B, ...toAdd]));
+    console.log('Final B:', JSON.stringify(B));
 
-    return [...B, ...toAdd];
+    return B;
 }
 
 
