@@ -367,8 +367,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 console.log('entering a subgrid. shuffle door');
                 let whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
                 console.log("which grid", whichGrid);
-                let startGrid = whichGrid[0];
-                let endGrid = whichGrid[1];
+                if (whichGrid) {
+                    let grids = JSON.parse(whichGrid);
+                    startGrid = grids[0];
+                    endGrid = grids[1];
+                }
+                
                 console.log('startGrid', startGrid);
                 console.log('endGrid', endGrid );
                 
