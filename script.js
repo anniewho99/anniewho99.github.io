@@ -199,16 +199,18 @@ function containsArray(arr, val) {
 }
 
 function update_doors(A, B) {
+    const toAdd = [];
+
     for (const elem of A) {
         if (containsArray(B, elem)) {
-            console.log('elem', elem);
             B = B.filter(bElem => !areArraysEquivalent(bElem, elem)); // remove from B
-        } else {
-            B.push(elem); // add to B
+        } else if (!containsArray(toAdd, elem)) { 
+            // Check if elem is not already marked to be added
+            toAdd.push(elem); 
         }
     }
 
-    return B;
+    return B.concat(toAdd);
 }
 
 function findGridForPoint(point, pointsDict) {
@@ -412,6 +414,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 doorHumanCoords = update_doors(doors, doorHumanCoords)
 
                 console.log("new AI door", doorAICoords);
+                console.log("new Human door", ddoorHumanCoords);
 
                 doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
