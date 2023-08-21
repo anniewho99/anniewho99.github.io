@@ -332,7 +332,7 @@ function create() {
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
     // Keyboard controls
-    this.input.keyboard.on('keydown', handleKeyDown, this.bind(this));
+    this.input.keyboard.on('keydown', handleKeyDown.bind(this));
 }
 
 function update() {
