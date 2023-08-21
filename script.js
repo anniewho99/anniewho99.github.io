@@ -37,6 +37,27 @@ const DIRECTIONS = [
     [1, 0]    // right
 ];
 
+let pointsDict = {};
+
+for (let grid of GRIDS) {
+    let startX = grid.start[0];
+    let startY = grid.start[1];
+    let endX = grid.end[0];
+    let endY = grid.end[1];
+
+    let points = [];
+    for (let x = startX; x <= endX; x++) {
+        for (let y = startY; y <= endY; y++) {
+            points.push([x, y]);
+        }
+    }
+
+    let key = [grid.start, grid.end];
+    pointsDict[JSON.stringify(key)] = points;
+}
+
+console.log(pointsDict);
+
 let forbidden_moves = [];
 
 GRIDS.forEach(grid => {
@@ -162,6 +183,18 @@ function update_doors(A, B) {
     return [...unique_in_A, ...unique_in_B];
 }
 
+function findGridForPoint(point, pointsDict) {
+    for (let key in pointsDict) {
+        let points = pointsDict[key];
+        for (let i = 0; i < points.length; i++) {
+            if (point[0] === points[i][0] && point[1] === points[i][1]) {
+                return key;
+            }
+        }
+    }
+    return null;
+}
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -234,6 +267,34 @@ function crossesDoor(start, end, playerID) {
 
 }
 
+function playerEntersSubgrid(currentX, currentY, newX, newY) {
+    let currentPositionInSubgrid = playerInSubgrid(currentX, currentY);
+    console.log("current positioin in subgrid", currentPositionInSubgrid)
+    let newPositionInSubgrid = playerInSubgrid(newX, newY);
+    console.log("new positioin in subgrid", newPositionInSubgrid)
+
+    return (!currentPositionInSubgrid && newPositionInSubgrid);
+}
+
+function playerInSubgrid(playerX, playerY) {
+    for (let key in pointsDict) {
+        let points = pointsDict[key];
+        for (let point of points) {
+            if (playerX === point[0] && playerY === point[1]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function calculateDoorsForSubgrid(startX, startY, endX, endY) {
+    const middleY = Math.floor((endY + startY) / 2);
+    return [
+        { coord: [startX, middleY], orientation: "V" },
+        { coord: [endX + 1, middleY], orientation: "V" }
+    ];
+}
 
 
 let game = new Phaser.Game(config);
@@ -298,6 +359,30 @@ function handleMovement(player, dx, dy, playerID) {
         if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
             // Movement across the door is allowed
             console.log("door allowed to cross")
+            if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
+                // Player has entered a sub-grid, so shuffle doors or perform other required actions.
+                console.log('entering a subgrid. shuffle door');
+                whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
+                console.log("which grid", whichGrid);
+                startGrid = whichGrid[0];
+                endGrid = whichGrid[1];
+                
+                doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
+                console.log(doors);
+
+                doorAIcoords = update_doors(doors, doorAIcoords)
+                doorhumancoords = update_doors(doors, doorhumancoords)
+
+                console.log("new AI door", doorAIcoords);
+
+                doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                //redraw door
+                allDoors.forEach(drawDoor.bind(this));
+
+
+            }
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
             console.log("door not allowed to cross");
