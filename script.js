@@ -373,7 +373,7 @@ function handleMovement(player, dx, dy, playerID) {
                 doorAICoords = update_doors(doors, doorAICoords)
                 doorHumanCoords = update_doors(doors, doorHumanCoords)
 
-                console.log("new AI door", doorAIcoords);
+                console.log("new AI door", doorAICoords);
 
                 doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
