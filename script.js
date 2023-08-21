@@ -199,19 +199,26 @@ function containsArray(arr, val) {
 }
 
 function update_doors(A, B) {
+    console.log('Initial A:', JSON.stringify(A));
+    console.log('Initial B:', JSON.stringify(B));
+    
     const toAdd = [];
 
     for (const elem of A) {
         if (containsArray(B, elem)) {
-            B = B.filter(bElem => !areArraysEquivalent(bElem, elem)); // remove from B
-        } else if (!containsArray(toAdd, elem)) { 
-            // Check if elem is not already marked to be added
-            toAdd.push(elem); 
+            console.log('Removing from B:', JSON.stringify(elem));
+            B = B.filter(bElem => !areArraysEquivalent(bElem, elem));
+        } else if (!containsArray(toAdd, elem) && !containsArray(B, elem)) {
+            console.log('Adding to B:', JSON.stringify(elem));
+            toAdd.push(elem);
         }
     }
 
-    return B.concat(toAdd);
+    console.log('Final B:', JSON.stringify([...B, ...toAdd]));
+
+    return [...B, ...toAdd];
 }
+
 
 function findGridForPoint(point, pointsDict) {
     for (let key in pointsDict) {
@@ -414,7 +421,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 doorHumanCoords = update_doors(doors, doorHumanCoords)
 
                 console.log("new AI door", doorAICoords);
-                console.log("new Human door", ddoorHumanCoords);
+                console.log("new Human door", doorHumanCoords);
 
                 doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
