@@ -187,28 +187,31 @@ function areArraysEquivalent(a, b) {
     return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
-function containsArray(arr, val) {
-    return arr.some(item => areArraysEquivalent(item, val));
+function existsInArray(array, element) {
+    return array.some(item => 
+        areArraysEquivalent(item.coord, element.coord) && 
+        item.orientation === element.orientation
+    );
 }
+
 
 function update_doors(A, B) {
+
     console.log('Initial A:', JSON.stringify(A));
     console.log('Initial B:', JSON.stringify(B));
-    
     for (const elem of A) {
-        if (containsArray(B, elem)) {
+        if (existsInArray(B, elem)) {
             console.log('Removing from B:', JSON.stringify(elem));
-            B = B.filter(bElem => !areArraysEquivalent(bElem.coord, elem.coord));  // Filtering by 'coord' property
-        } else if (!containsArray(B, elem)) {
+            B = B.filter(bElem => !areArraysEquivalent(bElem.coord, elem.coord) || bElem.orientation !== elem.orientation); // remove from B
+        } else {
             console.log('Adding to B:', JSON.stringify(elem));
-            B.push(elem);
+            B.push(elem); // add to B
         }
     }
-
     console.log('Final B:', JSON.stringify(B));
-
     return B;
 }
+
 
 
 function findGridForPoint(point, pointsDict) {
