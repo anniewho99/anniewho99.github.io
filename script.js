@@ -142,7 +142,7 @@ function createSubGrids() {
     graphics.strokePath();
 }
 
-function drawDoor(door) {
+function drawDoor(door, scene) {
     const doorX = door.coord[0] * cellSize;
     const doorY = door.coord[1] * cellSize;
 
@@ -165,7 +165,8 @@ function drawDoor(door) {
         console.log("debug door");  // bright purple for debug
     }
 
-    const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
+    //const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
+    const doorGraphics = scene.add.graphics({ fillStyle: { color: doorColor } });
 
     if(door.orientation === "V") {
         doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellSize, doorY - cellSize, DOOR_WIDTH, cellSize);
@@ -323,20 +324,21 @@ function create() {
     calculateDoors();
 
     createSubGrids.call(this);
-    allDoors.forEach(drawDoor.bind(this));
+    //allDoors.forEach(drawDoor.bind(this));
+    allDoors.forEach(door => drawDoor(door, this));
 
     player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
     // Keyboard controls
-    this.input.keyboard.on('keydown', handleKeyDown, this);
+    this.input.keyboard.on('keydown', handleKeyDown, this.bind(this));
 }
 
 function update() {
     // Any continual game logic goes here
 }
 
-function handleMovement(player, dx, dy, playerID) {
+function handleMovement(player, dx, dy, playerID, scene) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
@@ -379,7 +381,8 @@ function handleMovement(player, dx, dy, playerID) {
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                 //redraw door
-                allDoors.forEach(drawDoor.bind(this));
+                //allDoors.forEach(drawDoor.bind(this));
+                allDoors.forEach(door => drawDoor(door, scene));
 
 
             }
@@ -398,33 +401,35 @@ function handleMovement(player, dx, dy, playerID) {
 }
 
 function handleKeyDown(event) {
+    const scene = this;
+
     switch (event.code) {
         // Player 1
         case 'ArrowUp':
-            handleMovement(player1, 0, -cellSize, "Human");
+            handleMovement(player1, 0, -cellSize, "Human", scene);
             break;
         case 'ArrowDown':
-            handleMovement(player1, 0, cellSize, "Human");
+            handleMovement(player1, 0, cellSize, "Human", scene);
             break;
         case 'ArrowLeft':
-            handleMovement(player1, -cellSize, 0, "Human");
+            handleMovement(player1, -cellSize, 0, "Human", scene);
             break;
         case 'ArrowRight':
-            handleMovement(player1, cellSize, 0, "Human");
+            handleMovement(player1, cellSize, 0, "Human", scene);
             break;
 
         // Player 2
         case 'KeyW':
-            handleMovement(player2, 0, -cellSize, "AI");
+            handleMovement(player2, 0, -cellSize, "AI", scene);
             break;
         case 'KeyS':
-            handleMovement(player2, 0, cellSize, "AI");
+            handleMovement(player2, 0, cellSize, "AI", scene);
             break;
         case 'KeyA':
-            handleMovement(player2, -cellSize, 0, "AI");
+            handleMovement(player2, -cellSize, 0, "AI", scene);
             break;
         case 'KeyD':
-            handleMovement(player2, cellSize, 0, "AI");
+            handleMovement(player2, cellSize, 0, "AI", scene);
             break;
     }
 }
