@@ -5,6 +5,20 @@ const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
+const players = {
+    'Human': {
+        id: 0,
+        color: 0xff0000,  // red
+        tokensCollected: 0
+    },
+    'AI': {
+        id: 1,
+        color: 0x0000ff,  // blue
+        tokensCollected: 0
+    }
+};
+
+
 let doorAICoords = [];
 let doorAIadjusted = [];
 let doorHumanCoords = [];
@@ -330,6 +344,63 @@ function calculateDoorsForSubgrid(startX, startY, endX, endY) {
 }
 
 
+function onTokenCollected(playerName) {
+    let playerData = players[playerName];
+    if (playerData.tokensCollected % 3 === 0) {
+        // Place new tokens on the grid
+        addStarTokens(this, playerData.id);  // Assuming `this` refers to your Phaser scene
+    }
+}
+
+function addStarTokens(scene, playerID) {
+    // Find the player object
+    let player = Object.values(players).find(p => p.id === playerID);
+    
+    // Shuffle the GRIDS array to pick a random subgrid
+    let shuffledGrids = GRIDS.sort(() => 0.5 - Math.random());
+    let chosenGrid = shuffledGrids[0];
+
+    // Function to add star tokens in the specified grid for a player
+    function placeTokens(grid, color) {
+        let startX = grid.start[0];
+        let startY = grid.start[1];
+        let endX = grid.end[0];
+        let endY = grid.end[1];
+
+        let count = 0;
+        let addedCoordinates = [];
+
+        while (count < 3) {
+            let x = Math.floor(Math.random() * (endX - startX + 1) + startX);
+            let y = Math.floor(Math.random() * (endY - startY + 1) + startY);
+
+            // Check if the token already exists in the chosen position
+            if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
+                scene.physics.add.sprite(x * cellSize, y * cellSize, 'star').setTint(color);//cellsize
+                tokenGroup.add(star);  
+                addedCoordinates.push([x, y]);
+                count++;
+            }
+        }
+    }
+
+    // Place tokens for the player
+    placeTokens(chosenGrid, player.color);
+}
+
+function onTokenHit(player, token) {
+    // Destroy the token
+    token.destroy();
+    
+    // Update player's token count
+    let playerName = (player === player1) ? 'Human' : 'AI';
+    players[playerName].tokensCollected += 1;
+    
+    // Call any other necessary functions, e.g., to place more tokens or update score
+    onTokenCollected(playerName);
+}
+
+
 let game = new Phaser.Game(config);
 
 let player1, player2;
@@ -359,11 +430,29 @@ function create() {
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, this));
 
-    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); // Assuming your original image is twice the size of the cell.
+    // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
+    // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
+
+    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05);
+    player1.name = 'Human'; // You've already done this
+    player1.data = players['Human']; 
+
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
+    player2.name = 'AI'; // You've already done this
+    player2.data = players['AI']; 
+
+    //star token groups
+    tokenGroup = this.physics.add.group();
+
+    addStarTokens(this, players['Human'].id);
+    addStarTokens(this, players['AI'].id);
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
+
+    this.physics.add.overlap(player1, tokenGroup, onTokenHit, null, this);
+    this.physics.add.overlap(player2, tokenGroup, onTokenHit, null, this);
+
 }
 
 function update() {
