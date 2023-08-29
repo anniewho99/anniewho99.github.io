@@ -34,7 +34,10 @@ let config = {
         preload: preload,
         create: create,
         update: update
-    }
+    },
+    physics: {
+        default: 'arcade'
+      }
 };
 
 const GRIDS = [
