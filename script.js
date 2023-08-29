@@ -380,7 +380,7 @@ function addStarTokens(scene, playerID) {
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
                 scene.physics.add.sprite(x * cellSize, y * cellSize, 'star').setTint(color);//cellsize
-                tokenGroup.add(star);  
+                scene.tokenGroup.add(star);  
                 addedCoordinates.push([x, y]);
                 count++;
             }
@@ -453,8 +453,8 @@ function create() {
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
 
-    this.physics.add.overlap(player1, tokenGroup, onTokenHit, null, this);
-    this.physics.add.overlap(player2, tokenGroup, onTokenHit, null, this);
+    this.physics.add.overlap(player1, this.tokenGroup, onTokenHit, null, this);
+    this.physics.add.overlap(player2, this.tokenGroup, onTokenHit, null, this);
 
 }
 
