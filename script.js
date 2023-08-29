@@ -409,8 +409,10 @@ let game = new Phaser.Game(config);
 let player1, player2;
 
 function preload() {
-    this.load.image('player1', 'p1.png'); // Replace with the correct path
+    this.load.image('player1', 'p1.png'); 
     this.load.image('player2', 'p2.png');
+
+    this.load.image('star', 'star.png');
 }
 
 
