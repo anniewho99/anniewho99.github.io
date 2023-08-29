@@ -24,6 +24,7 @@ let doorAIadjusted = [];
 let doorHumanCoords = [];
 let doorHumanadjusted = [];
 let allDoors = [];
+let usedGrids = [];
 
 let config = {
     type: Phaser.AUTO,
@@ -351,6 +352,7 @@ function onTokenCollected(playerName) {
     let playerData = players[playerName];
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
+        usedGrids = [];
         addStarTokens(this, playerData.id);  // Assuming `this` refers to your Phaser scene
     }
 }
@@ -358,10 +360,14 @@ function onTokenCollected(playerName) {
 function addStarTokens(scene, playerID) {
     // Find the player object
     let player = Object.values(players).find(p => p.id === playerID);
+
+    let availableGrids = GRIDS.filter(grid => !usedGrids.includes(grid));
     
     // Shuffle the GRIDS array to pick a random subgrid
-    let shuffledGrids = GRIDS.sort(() => 0.5 - Math.random());
+    let shuffledGrids = availableGrids.sort(() => 0.5 - Math.random());
     let chosenGrid = shuffledGrids[0];
+
+    usedGrids.push(chosenGrid);
 
     // Function to add star tokens in the specified grid for a player
     function placeTokens(grid, color) {
@@ -393,6 +399,8 @@ function addStarTokens(scene, playerID) {
 }
 
 function onTokenHit(player, token) {
+
+    console.log('Token hit detected.');
     // Destroy the token
     token.destroy();
     
