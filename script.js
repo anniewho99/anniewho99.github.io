@@ -442,7 +442,7 @@ function create() {
     player2.data = players['AI']; 
 
     //star token groups
-    tokenGroup = this.physics.add.group();
+    this.tokenGroup = this.physics.add.group();
 
     addStarTokens(this, players['Human'].id);
     addStarTokens(this, players['AI'].id);
