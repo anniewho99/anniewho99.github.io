@@ -379,8 +379,8 @@ function addStarTokens(scene, playerID) {
 
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
-                let star = scene.physics.add.sprite(x * cellSize, y * cellSize, 'star').setTint(color);//cellsize
-                star.setScale(0.05);
+                let star = scene.physics.add.sprite((x * cellSize) - cellSize, (y * cellSize) - cellSize, 'star').setTint(color);
+                star.setScale(0.04);
                 scene.tokenGroup.add(star);  
                 addedCoordinates.push([x, y]);
                 count++;
