@@ -356,7 +356,7 @@ function onTokenCollected(playerName, scene) {
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
         //usedGrids = [];
-        usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
+        //usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
         console.log("what is scene referring to");
         console.log(scene);
         addStarTokens(scene, playerData.id);  
@@ -381,6 +381,11 @@ function addStarTokens(scene, playerID) {
 
     let chosenGrid = shuffledGrids[0];
     
+    if (usedGrids.length > 0) {
+        console.log("resetting used grids");
+        usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
+    }
+
     // Add the chosenGrid along with the player's ID to the usedGrids array
     usedGrids.push({ coordinates: chosenGrid, playerId: playerID });
     
