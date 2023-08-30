@@ -383,7 +383,8 @@ function addStarTokens(scene, playerID) {
     
     if (usedGrids.length > 0) {
         console.log("resetting used grids");
-        usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
+        console.log(usedGrids);
+        usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerID);
     }
 
     // Add the chosenGrid along with the player's ID to the usedGrids array
