@@ -356,7 +356,9 @@ function onTokenCollected(playerName, scene) {
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
         usedGrids = [];
-        addStarTokens(scene, playerData.id);  // Assuming `this` refers to your Phaser scene
+        console.log("what is scene referring to");
+        console.log(scene);
+        addStarTokens(scene, playerData.id);  
     }
 }
 
@@ -413,7 +415,7 @@ function onTokenHit(player, token) {
     players[playerName].tokensCollected += 1;
     
     // Call any other necessary functions, e.g., to place more tokens or update score
-    onTokenCollected(playerName, this.scene);
+    onTokenCollected(playerName, this);
 }
 
 
