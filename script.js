@@ -366,11 +366,17 @@ function addStarTokens(scene, playerID) {
     // Find the player object
     let player = Object.values(players).find(p => p.id === playerID);
 
+    // Exclude the grids that are already used
     let availableGrids = GRIDS.filter(grid => !usedGrids.includes(grid));
-    
-    // Shuffle the GRIDS array to pick a random subgrid
+
+    // Shuffle the availableGrids array to pick a random subgrid
     let shuffledGrids = availableGrids.sort(() => 0.5 - Math.random());
-    let chosenGrid = shuffledGrids[0];
+
+    // If all grids are used, reset usedGrids
+    if (shuffledGrids.length === 0) {
+        usedGrids = [];
+        shuffledGrids = GRIDS.sort(() => 0.5 - Math.random());
+    }
 
     usedGrids.push(chosenGrid);
 
