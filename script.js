@@ -377,7 +377,8 @@ function addStarTokens(scene, playerID) {
         usedGrids = [];
         shuffledGrids = GRIDS.sort(() => 0.5 - Math.random());
     }
-
+    
+    let chosenGrid = shuffledGrids[0];
     usedGrids.push(chosenGrid);
 
     // Function to add star tokens in the specified grid for a player
