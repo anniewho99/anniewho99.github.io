@@ -351,12 +351,12 @@ function calculateDoorsForSubgrid(startX, startY, endX, endY) {
 }
 
 
-function onTokenCollected(playerName) {
+function onTokenCollected(playerName, scene) {
     let playerData = players[playerName];
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
         usedGrids = [];
-        addStarTokens(this, playerData.id);  // Assuming `this` refers to your Phaser scene
+        addStarTokens(scene, playerData.id);  // Assuming `this` refers to your Phaser scene
     }
 }
 
@@ -412,7 +412,7 @@ function onTokenHit(player, token) {
     players[playerName].tokensCollected += 1;
     
     // Call any other necessary functions, e.g., to place more tokens or update score
-    onTokenCollected(playerName);
+    onTokenCollected(playerName, this.scene);
 }
 
 
