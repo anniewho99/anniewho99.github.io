@@ -355,7 +355,7 @@ function onTokenCollected(playerName, scene) {
     let playerData = players[playerName];
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
-        usedGrids = [];
+        //usedGrids = [];
         console.log("what is scene referring to");
         console.log(scene);
         addStarTokens(scene, playerData.id);  
@@ -392,6 +392,7 @@ function addStarTokens(scene, playerID) {
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
                 let star = scene.physics.add.sprite((x * cellSize) - 20, (y * cellSize) - 20, 'star').setTint(color);
                 star.setScale(0.04);
+                star.color = color;  
                 scene.tokenGroup.add(star);  
                 addedCoordinates.push([x, y]);
                 count++;
@@ -404,18 +405,19 @@ function addStarTokens(scene, playerID) {
 }
 
 function onTokenHit(player, token) {
-
-    console.log('Token hit detected.');
-    console.log(this);
-    // Destroy the token
-    token.destroy();
-    
-    // Update player's token count
     let playerName = (player === player1) ? 'Human' : 'AI';
-    players[playerName].tokensCollected += 1;
     
-    // Call any other necessary functions, e.g., to place more tokens or update score
-    onTokenCollected(playerName, this);
+    // Check if the player's color matches the token's color
+    if (players[playerName].color === token.color) {
+        console.log('Token hit detected.');
+        token.destroy();
+        
+        // Update player's token count
+        players[playerName].tokensCollected += 1;
+        
+        // Call any other necessary functions, e.g., to place more tokens or update score
+        onTokenCollected(playerName, this);
+    }
 }
 
 
