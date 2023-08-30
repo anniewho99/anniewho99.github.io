@@ -474,8 +474,8 @@ function create() {
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
 
-    this.physics.add.overlap(player1, this.tokenGroup, onTokenHit, null, this);
-    this.physics.add.overlap(player2, this.tokenGroup, onTokenHit, null, this);
+    this.physics.add.overlap(player1, this.tokenGroup, onTokenHit.bind(this), null, this);
+    this.physics.add.overlap(player2, this.tokenGroup, onTokenHit.bind(this), null, this);
 
 }
 
