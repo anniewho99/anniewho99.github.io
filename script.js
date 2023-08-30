@@ -37,8 +37,11 @@ let config = {
         update: update
     },
     physics: {
-        default: 'arcade'
-      }
+        default: 'arcade',
+        arcade: {
+            debug: true // set this to true
+        }
+    }
 };
 
 const GRIDS = [
