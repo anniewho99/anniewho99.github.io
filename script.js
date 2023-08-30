@@ -463,6 +463,8 @@ function create() {
     console.log("is token group populated");
     console.log(this.tokenGroup.getChildren().length);
 
+    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
+
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
 
