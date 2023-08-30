@@ -404,6 +404,7 @@ function addStarTokens(scene, playerID) {
 function onTokenHit(player, token) {
 
     console.log('Token hit detected.');
+    console.log(this);
     // Destroy the token
     token.destroy();
     
