@@ -355,7 +355,7 @@ function onTokenCollected(playerName, scene) {
     let playerData = players[playerName];
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
-        usedGrids = [];
+        //usedGrids = [];
         console.log("what is scene referring to");
         console.log(scene);
         addStarTokens(scene, playerData.id);  
@@ -377,7 +377,7 @@ function addStarTokens(scene, playerID) {
         usedGrids = [];
         shuffledGrids = GRIDS.sort(() => 0.5 - Math.random());
     }
-    
+
     let chosenGrid = shuffledGrids[0];
     usedGrids.push(chosenGrid);
 
