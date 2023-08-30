@@ -386,7 +386,7 @@ function addStarTokens(scene, playerID) {
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
                 let star = scene.physics.add.sprite((x * cellSize) - 20, (y * cellSize) - 20, 'star').setTint(color);
-                star.setScale(0.05);
+                star.setScale(0.04);
                 scene.tokenGroup.add(star);  
                 addedCoordinates.push([x, y]);
                 count++;
@@ -448,11 +448,11 @@ function create() {
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
     player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05);
-    player1.name = 'Human'; // You've already done this
+    player1.name = 'Human'; 
     player1.data = players['Human']; 
 
     player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
-    player2.name = 'AI'; // You've already done this
+    player2.name = 'AI'; 
     player2.data = players['AI']; 
 
     //star token groups
@@ -460,6 +460,8 @@ function create() {
 
     addStarTokens(this, players['Human'].id);
     addStarTokens(this, players['AI'].id);
+    console.log("is token group populated");
+    console.log(this.tokenGroup.getChildren().length);
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
