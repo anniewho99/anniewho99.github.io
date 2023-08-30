@@ -450,12 +450,12 @@ function create() {
     // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
-    player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05);
+    player1 = this.physics.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
-    player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
+    player2 = this.physics.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
     player2.setCollideWorldBounds(true); 
     player2.name = 'AI'; 
     player2.data = players['AI']; 
