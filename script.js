@@ -356,6 +356,7 @@ function onTokenCollected(playerName, scene) {
     if (playerData.tokensCollected % 3 === 0) {
         // Place new tokens on the grid
         //usedGrids = [];
+        usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
         console.log("what is scene referring to");
         console.log(scene);
         addStarTokens(scene, playerData.id);  
@@ -367,7 +368,7 @@ function addStarTokens(scene, playerID) {
     let player = Object.values(players).find(p => p.id === playerID);
 
     // Exclude the grids that are already used
-    let availableGrids = GRIDS.filter(grid => !usedGrids.includes(grid));
+    let availableGrids = GRIDS.filter(grid => !usedGrids.some(usedGrid => usedGrid.coordinates === grid));
 
     // Shuffle the availableGrids array to pick a random subgrid
     let shuffledGrids = availableGrids.sort(() => 0.5 - Math.random());
@@ -379,8 +380,10 @@ function addStarTokens(scene, playerID) {
     }
 
     let chosenGrid = shuffledGrids[0];
-    usedGrids.push(chosenGrid);
-
+    
+    // Add the chosenGrid along with the player's ID to the usedGrids array
+    usedGrids.push({ coordinates: chosenGrid, playerId: playerID });
+    
     // Function to add star tokens in the specified grid for a player
     function placeTokens(grid, color) {
         let startX = grid.start[0];
