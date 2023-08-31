@@ -200,35 +200,18 @@ function drawDoor(door, scene) {
 }
 
 function rotateDoor(doorGraphics, door_coord, scene, color) {
-    console.log("rotate door related stuff");
-    //let x = doorGraphics.x;
     let x = door_coord[0] * cellSize;
-    console.log(x);
-    //let y = doorGraphics.y;
     let y = door_coord[1] * cellSize;
-    console.log(y);
     let orientation = "V";
-    console.log(orientation);
-    let originalOrientation = "V";
 
-    
     const rotateStep = () => {
-        // Clear the existing graphics
-        scene.time.delayedCall(100, () => {
-            doorGraphics.clear();
-        });
-        
+        doorGraphics.clear();
         doorGraphics.fillStyle(color);
-        console.log(color);
-
-        // Update orientation
         if (orientation === "V") {
             orientation = "H";
         } else {
             orientation = "V";
         }
-        
-        // Draw new orientation
         if (orientation === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
@@ -236,30 +219,20 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
         }
     };
 
-    //doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellSize, doorY - cellSize, DOOR_WIDTH, cellSize);
-
     const resetStep = () => {
-        // Clear the existing graphics
-        scene.time.delayedCall(100, () => {
-            doorGraphics.clear();
-        });
-        
+        doorGraphics.clear();
         doorGraphics.fillStyle(color);
-        console.log(color);  
-        // Draw original orientation
-        if (originalOrientation === "V") {
+        if (orientation === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
             doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
         }
     };
 
-    // Rotate the door
     rotateStep();
-
-    // Reset the rotation after a delay
     scene.time.delayedCall(500, resetStep);
 }
+
 
 // When you want to find a particular door
 function findDoorSprite(coord, doorSprites) {
