@@ -199,11 +199,13 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, scene) {
+function rotateDoor(doorGraphics, door_coord, scene) {
     console.log("rotate door related stuff");
-    let x = doorGraphics.coord.x;
+    //let x = doorGraphics.x;
+    let x = door_coord[0];
     console.log(x);
-    let y = doorGraphics.coord.y;
+    //let y = doorGraphics.y;
+    let y = door_coord[1];
     console.log(y);
     let orientation = doorGraphics.orientation;
     console.log(orientation);
@@ -378,13 +380,13 @@ function crossesDoor(start, end, playerID) {
     if (startExists) {
         console.log("Entering the start door they own");
         startExists[0] = startExists[0] === 6 ? 7 : startExists[0];
-        startExists[1] = startExists[1] === 13 ? 14 : startExists[1];
+        startExists[0] = startExists[0] === 13 ? 14 : startExists[0];
         //let door = { coord: startExists, orientation: "V" };
         return startExists;
     } else if (endExists) {
         console.log("Entering the end door they own");
         endExists[0] = endExists[0] === 6 ? 7 : endExists[0];
-        endExists[1] = endExists[1] === 13 ? 14 : endExists[1];
+        endExists[0] = endExists[0] === 13 ? 14 : endExists[0];
         //let door = { coord: endExists, orientation: "V" };
         return endExists;
     } else {
@@ -605,7 +607,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
             const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
             console.log("door graphics is");
             console.log(targetDoorGraphics);
-            rotateDoor(targetDoorGraphics, scene);
+            rotateDoor(targetDoorGraphics, door_coord, scene);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
