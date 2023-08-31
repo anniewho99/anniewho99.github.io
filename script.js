@@ -196,7 +196,7 @@ function drawDoor(door, scene) {
     }
     
     //this.doorSprites.push(doorGraphics);
-    scene.doorSprites.push(doorGraphics);
+    scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
 function rotateDoor(doorGraphics, scene) {
@@ -241,6 +241,16 @@ function rotateDoor(doorGraphics, scene) {
 
     // Reset the rotation after a delay
     scene.time.delayedCall(500, resetStep);
+}
+
+// When you want to find a particular door
+function findDoorSprite(coord, doorSprites) {
+    for (let i = 0; i < doorSprites.length; i++) {
+        if (arraysEqual(doorSprites[i].coord, coord)) {
+            return doorSprites[i].graphics; // Return the corresponding doorGraphics object
+        }
+    }
+    return null; // Return null if no match is found
 }
 
 function areArraysEquivalent(a, b) {
@@ -362,14 +372,14 @@ function crossesDoor(start, end, playerID) {
         console.log("Entering the start door they own");
         startExists[0] = startExists[0] === 6 ? 7 : startExists[0];
         startExists[1] = startExists[1] === 13 ? 14 : startExists[1];
-        let door = { coord: startExists, orientation: "V" };
-        return door;
+        //let door = { coord: startExists, orientation: "V" };
+        return startExists;
     } else if (endExists) {
         console.log("Entering the end door they own");
         endExists[0] = endExists[0] === 6 ? 7 : endExists[0];
         endExists[1] = endExists[1] === 13 ? 14 : endExists[1];
-        let door = { coord: endExists, orientation: "V" };
-        return door;
+        //let door = { coord: endExists, orientation: "V" };
+        return endExists;
     } else {
         console.log('Entering a door they don\'t own');
         return false;
@@ -547,7 +557,7 @@ function create() {
     //console.log("is token group populated");
     //console.log(this.tokenGroup.getChildren().length);
 
-    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
+    //this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
@@ -583,7 +593,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
             // Next, check for door crossings
         if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
             // Movement across the door is allowed
-            console.log("door allowed to cross")
+            console.log("door allowed to cross");
+            const targetDoorGraphics = findDoorSprite(cross_door, scene.doorSprites);
+            rotateDoor(targetDoorGraphics, scene);
+
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
                 console.log('entering a subgrid. shuffle door');
