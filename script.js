@@ -199,7 +199,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, door_coord, scene) {
+function rotateDoor(doorGraphics, door_coord, scene, color) {
     console.log("rotate door related stuff");
     //let x = doorGraphics.x;
     let x = door_coord[0] * cellSize;
@@ -210,6 +210,9 @@ function rotateDoor(doorGraphics, door_coord, scene) {
     let orientation = "V";
     console.log(orientation);
     let originalOrientation = "V";
+
+    doorGraphics.fillStyle(color);  
+
     
     const rotateStep = () => {
         // Clear the existing graphics
@@ -224,9 +227,9 @@ function rotateDoor(doorGraphics, door_coord, scene) {
         
         // Draw new orientation
         if (orientation === "V") {
-            doorGraphics.fillRect(x - DOOR_WIDTH / 2, y, DOOR_WIDTH, cellSize);
+            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
-            doorGraphics.fillRect(x, y - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
         }
     };
 
@@ -238,9 +241,9 @@ function rotateDoor(doorGraphics, door_coord, scene) {
         
         // Draw original orientation
         if (originalOrientation === "V") {
-            doorGraphics.fillRect(x - DOOR_WIDTH / 2, y, DOOR_WIDTH, cellSize);
+            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
-            doorGraphics.fillRect(x, y - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
         }
     };
 
@@ -591,6 +594,14 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let nextGridX = Math.round(potentialX / cellSize);
     let nextGridY = Math.round(potentialY / cellSize);
 
+    let doorColor = undefined;
+
+    if (playerID == "Human"){
+        doorColor = 0xFF0000;
+    }else{
+        doorColor = 0x0000FF;
+    }
+
     // First, check for forbidden moves. If forbidden, we immediately return.
     if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
         //console.log("Move is forbidden.");
@@ -609,7 +620,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
             const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
             console.log("door graphics is");
             console.log(targetDoorGraphics);
-            rotateDoor(targetDoorGraphics, door_coord, scene);
+            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
