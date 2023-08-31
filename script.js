@@ -595,6 +595,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
             // Movement across the door is allowed
             console.log("door allowed to cross");
             const targetDoorGraphics = findDoorSprite(cross_door, scene.doorSprites);
+            console.log("door graphics is");
+            console.log(targetDoorGraphics);
             rotateDoor(targetDoorGraphics, scene);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
