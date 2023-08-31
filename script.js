@@ -203,6 +203,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     let x = door_coord[0] * cellSize;
     let y = door_coord[1] * cellSize;
     let orientation = "V";
+    let orientationO = "V";
 
     const rotateStep = () => {
         doorGraphics.clear();
@@ -222,7 +223,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     const resetStep = () => {
         doorGraphics.clear();
         doorGraphics.fillStyle(color);
-        if (orientation === "V") {
+        if (orientationO === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
             doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
