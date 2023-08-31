@@ -214,7 +214,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     
     const rotateStep = () => {
         // Clear the existing graphics
-        doorGraphics.clear();
+        scene.time.delayedCall(100, () => {
+            doorGraphics.clear();
+        });
         
         doorGraphics.fillStyle(color);
         console.log(color);
@@ -238,7 +240,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     const resetStep = () => {
         // Clear the existing graphics
-        doorGraphics.clear();
+        scene.time.delayedCall(100, () => {
+            doorGraphics.clear();
+        });
         
         doorGraphics.fillStyle(color);
         console.log(color);  
