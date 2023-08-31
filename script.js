@@ -594,10 +594,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     if (cross_door != false){
             // Next, check for door crossings
-        if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
+            door_coord = crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID);
+        if (door_coord) {
             // Movement across the door is allowed
             console.log("door allowed to cross");
-            const targetDoorGraphics = findDoorSprite(cross_door, scene.doorSprites);
+            const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
             console.log("door graphics is");
             console.log(targetDoorGraphics);
             rotateDoor(targetDoorGraphics, scene);
