@@ -39,7 +39,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true // set this to true
+            debug: false // set this to true
         }
     }
 };
@@ -246,6 +246,9 @@ function rotateDoor(doorGraphics, scene) {
 // When you want to find a particular door
 function findDoorSprite(coord, doorSprites) {
     for (let i = 0; i < doorSprites.length; i++) {
+        console.log("find door sprite");
+        console.log(doorSprites[i].coord);
+        console.log(coord);
         if (arraysEqual(doorSprites[i].coord, coord)) {
             return doorSprites[i].graphics; // Return the corresponding doorGraphics object
         }
