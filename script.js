@@ -216,25 +216,29 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     const rotateStep = () => {
         doorGraphics.clear();
-        console.log("door cleared");
-        if (orientation === "V") {
-            orientation = "H";
-        } else {
-            orientation = "V";
-        }
-        scene.time.delayedCall(100, () => drawStep(orientation));
+        scene.time.delayedCall(100, () => {
+            if (orientation === "V") {
+                orientation = "H";
+            } else {
+                orientation = "V";
+            }
+            drawStep(orientation);
+        });
     };
 
     const resetStep = () => {
         doorGraphics.clear();
-        console.log("door cleared");
-        scene.time.delayedCall(100, () => drawStep(originalOrientation));
+        scene.time.delayedCall(100, () => {
+            drawStep(originalOrientation);
+        });
     };
 
+    // Start the rotation
     rotateStep();
-    scene.time.delayedCall(500, resetStep);
-}
 
+    // Wait for rotation to finish and then reset
+    scene.time.delayedCall(600, resetStep);  // 600ms to ensure the reset happens after the rotateStep is fully executed
+}
 
 
 // When you want to find a particular door
@@ -633,8 +637,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                 //redraw door
-                //allDoors.forEach(drawDoor.bind(this));
-                allDoors.forEach(door => drawDoor(door, scene));
+                //allDoors.forEach(door => drawDoor(door, scene));
+                scene.time.delayedCall(700, () => {
+                    allDoors.forEach(door => drawDoor(door, scene));
+                });
 
 
             }
