@@ -207,9 +207,9 @@ function rotateDoor(doorGraphics, door_coord, scene) {
     //let y = doorGraphics.y;
     let y = door_coord[1];
     console.log(y);
-    let orientation = doorGraphics.orientation;
+    let orientation = "V";
     console.log(orientation);
-    let originalOrientation = orientation;
+    let originalOrientation = "V";
     
     const rotateStep = () => {
         // Clear the existing graphics
@@ -229,6 +229,8 @@ function rotateDoor(doorGraphics, door_coord, scene) {
             doorGraphics.fillRect(x, y - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
         }
     };
+    
+    //doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellSize, doorY - cellSize, DOOR_WIDTH, cellSize);
 
     const resetStep = () => {
         // Clear the existing graphics
