@@ -200,9 +200,13 @@ function drawDoor(door, scene) {
 }
 
 function rotateDoor(doorGraphics, scene) {
-    let x = doorGraphics.x;
-    let y = doorGraphics.y;
+    console.log("rotate door related stuff");
+    let x = doorGraphics.coord.x;
+    console.log(x);
+    let y = doorGraphics.coord.y;
+    console.log(y);
     let orientation = doorGraphics.orientation;
+    console.log(orientation);
     let originalOrientation = orientation;
     
     const rotateStep = () => {
