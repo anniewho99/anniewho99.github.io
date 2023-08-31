@@ -211,13 +211,14 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     console.log(orientation);
     let originalOrientation = "V";
 
-    doorGraphics.fillStyle(color);  
-
     
     const rotateStep = () => {
         // Clear the existing graphics
         doorGraphics.clear();
         
+        doorGraphics.fillStyle(color);
+        console.log(color);
+
         // Update orientation
         if (orientation === "V") {
             orientation = "H";
@@ -239,6 +240,8 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
         // Clear the existing graphics
         doorGraphics.clear();
         
+        doorGraphics.fillStyle(color);
+        console.log(color);  
         // Draw original orientation
         if (originalOrientation === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
@@ -257,9 +260,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 // When you want to find a particular door
 function findDoorSprite(coord, doorSprites) {
     for (let i = 0; i < doorSprites.length; i++) {
-        console.log("find door sprite");
-        console.log(doorSprites[i].coord);
-        console.log(coord);
+        //console.log("find door sprite");
+        //console.log(doorSprites[i].coord);
+        //console.log(coord);
         if (arraysEqual(doorSprites[i].coord, coord)) {
             return doorSprites[i].graphics; // Return the corresponding doorGraphics object
         }
