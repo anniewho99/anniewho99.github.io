@@ -1,4 +1,7 @@
-const cellSize = 40;
+//const cellSize = 40;
+
+const cellHeight = 60; 
+const cellWidth = 40; 
 const gridSize = 16;
 
 const DOOR_WIDTH = 5;
@@ -151,10 +154,10 @@ function createSubGrids() {
     // Iterate over each grid
     GRIDS.forEach(grid => {
         const { start, end } = grid;
-        const startX = (start[0] - 1) * cellSize;
-        const startY = (start[1] - 1) * cellSize;
-        const endX = end[0] * cellSize;
-        const endY = end[1] * cellSize;
+        const startX = (start[0] - 1) * cellWidth;
+        const startY = (start[1] - 1) * cellHeight;
+        const endX = end[0] * cellWidth;
+        const endY = end[1] * cellHeight;
 
         // Draw the outer grid wall
         graphics.strokeRect(startX, startY, endX - startX, endY - startY);
@@ -164,8 +167,8 @@ function createSubGrids() {
 }
 
 function drawDoor(door, scene) {
-    const doorX = door.coord[0] * cellSize;
-    const doorY = door.coord[1] * cellSize;
+    const doorX = door.coord[0] * cellWidth;
+    const doorY = door.coord[1] * cellHeight;
 
     let doorColor;
 
@@ -190,9 +193,9 @@ function drawDoor(door, scene) {
     const doorGraphics = scene.add.graphics({ fillStyle: { color: doorColor } });
 
     if(door.orientation === "V") {
-        doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellSize, doorY - cellSize, DOOR_WIDTH, cellSize);
+        doorGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellWidth, doorY - cellHeight, DOOR_WIDTH, cellHeight);
     } else {
-        doorGraphics.fillRect(doorX - cellSize / 2, doorY - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+        doorGraphics.fillRect(doorX - cellWidth / 2, doorY - DOOR_WIDTH / 2, cellWidth, DOOR_WIDTH);
     }
     
     //this.doorSprites.push(doorGraphics);
@@ -200,17 +203,17 @@ function drawDoor(door, scene) {
 }
 
 function rotateDoor(doorGraphics, door_coord, scene, color) {
-    let x = door_coord[0] * cellSize;
-    let y = door_coord[1] * cellSize;
+    let x = door_coord[0] * cellWidth;
+    let y = door_coord[1] * cellHeight;
     let orientation = "V";
     let originalOrientation = "V";
 
     const drawStep = (currentOrientation) => {
         doorGraphics.fillStyle(color);
         if (currentOrientation === "V") {
-            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
+            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
         } else {
-            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
+            doorGraphics.fillRect(x - cellWidth, (y - DOOR_WIDTH / 2) - cellHeight, cellWidth, DOOR_WIDTH);
         }
     };
 
@@ -473,7 +476,7 @@ function addStarTokens(scene, playerID) {
 
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
-                let star = scene.physics.add.sprite((x * cellSize) - 20, (y * cellSize) - 20, 'star').setTint(color);
+                let star = scene.physics.add.sprite((x * cellWidth) - 20, (y * cellHeight) - 20, 'star').setTint(color);
                 star.setScale(0.04);
                 star.color = color;  
                 scene.tokenGroup.add(star);  
@@ -519,12 +522,18 @@ function preload() {
 function create() {
     // Create grid graphics
     let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    // Draw vertical lines
     for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(i * cellSize, 0);
-        graphics.lineTo(i * cellSize, gridSize * cellSize);
-        graphics.moveTo(0, i * cellSize);
-        graphics.lineTo(gridSize * cellSize, i * cellSize);
+        graphics.moveTo(i * cellWidth, 0);
+        graphics.lineTo(i * cellWidth, gridSize * cellHeight);
     }
+
+    // Draw horizontal lines
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(0, i * cellHeight);
+        graphics.lineTo(gridSize * cellWidth, i * cellHeight);
+    }
+
     graphics.strokePath();
 
     this.doorSprites = [];
@@ -540,12 +549,12 @@ function create() {
     // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
-    player1 = this.physics.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05);
+    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.05);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
-    player2 = this.physics.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
+    player2 = this.physics.add.sprite(this.sys.game.config.width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
     player2.setCollideWorldBounds(true); 
     player2.name = 'AI'; 
     player2.data = players['AI']; 
@@ -576,10 +585,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let potentialX = player.x + dx;
     let potentialY = player.y + dy;
 
-    let currentGridX = Math.round(player.x / cellSize);
-    let currentGridY = Math.round(player.y / cellSize);
-    let nextGridX = Math.round(potentialX / cellSize);
-    let nextGridY = Math.round(potentialY / cellSize);
+    let currentGridX = Math.round(player.x / cellWidth);
+    let currentGridY = Math.round(player.y / cellHeight);
+    let nextGridX = Math.round(potentialX / cellWidth);
+    let nextGridY = Math.round(potentialY / cellHeight);
 
     let doorColor = undefined;
 
@@ -654,8 +663,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
     }
 
     // If we reach here, it means the movement is allowed.
-    player.x = Phaser.Math.Clamp(potentialX, cellSize / 2, game.config.width - cellSize / 2);
-    player.y = Phaser.Math.Clamp(potentialY, cellSize / 2, game.config.height - cellSize / 2);
+    player.x = Phaser.Math.Clamp(potentialX, cellWidth / 2, game.config.width - cellHeight / 2);
+    player.y = Phaser.Math.Clamp(potentialY, cellWidth / 2, game.config.height - cellHeight / 2);
 }
 
 function handleKeyDown(event) {
@@ -664,30 +673,30 @@ function handleKeyDown(event) {
     switch (event.code) {
         // Player 1
         case 'ArrowUp':
-            handleMovement(player1, 0, -cellSize, "Human", scene);
+            handleMovement(player1, 0, -cellHeight, "Human", scene);
             break;
         case 'ArrowDown':
-            handleMovement(player1, 0, cellSize, "Human", scene);
+            handleMovement(player1, 0, cellHeight, "Human", scene);
             break;
         case 'ArrowLeft':
-            handleMovement(player1, -cellSize, 0, "Human", scene);
+            handleMovement(player1, -cellWidth, 0, "Human", scene);
             break;
         case 'ArrowRight':
-            handleMovement(player1, cellSize, 0, "Human", scene);
+            handleMovement(player1, cellWidth, 0, "Human", scene);
             break;
 
         // Player 2
         case 'KeyW':
-            handleMovement(player2, 0, -cellSize, "AI", scene);
+            handleMovement(player2, 0, -cellHeight, "AI", scene);
             break;
         case 'KeyS':
-            handleMovement(player2, 0, cellSize, "AI", scene);
+            handleMovement(player2, 0, cellHeight, "AI", scene);
             break;
         case 'KeyA':
-            handleMovement(player2, -cellSize, 0, "AI", scene);
+            handleMovement(player2, -cellWidth, 0, "AI", scene);
             break;
         case 'KeyD':
-            handleMovement(player2, cellSize, 0, "AI", scene);
+            handleMovement(player2, cellWidth, 0, "AI", scene);
             break;
     }
 }
