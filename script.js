@@ -203,43 +203,38 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     let x = door_coord[0] * cellSize;
     let y = door_coord[1] * cellSize;
     let orientation = "V";
-    let orientationO = "V";
+    let originalOrientation = "V";
+
+    const drawStep = (currentOrientation) => {
+        doorGraphics.fillStyle(color);
+        if (currentOrientation === "V") {
+            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
+        } else {
+            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
+        }
+    };
 
     const rotateStep = () => {
         doorGraphics.clear();
         console.log("door cleared");
-        doorGraphics.fillStyle(color);
         if (orientation === "V") {
             orientation = "H";
         } else {
             orientation = "V";
         }
-
-        scene.time.delayedCall(100, drawStep); 
-
-        if (orientation === "V") {
-            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
-        } else {
-            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
-        }
+        scene.time.delayedCall(100, () => drawStep(orientation));
     };
 
     const resetStep = () => {
         doorGraphics.clear();
-        console.log("door reset cleared");
-        scene.time.delayedCall(100, drawStep);
-
-        doorGraphics.fillStyle(color);
-        if (orientationO === "V") {
-            doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
-        } else {
-            doorGraphics.fillRect(x - cellSize, (y - DOOR_WIDTH / 2) - cellSize, cellSize, DOOR_WIDTH);
-        }
+        console.log("door cleared");
+        scene.time.delayedCall(100, () => drawStep(originalOrientation));
     };
 
     rotateStep();
     scene.time.delayedCall(500, resetStep);
 }
+
 
 
 // When you want to find a particular door
