@@ -1,7 +1,7 @@
 //const cellSize = 40;
 
-const cellHeight = 60; 
-const cellWidth = 40; 
+const cellHeight = 40; 
+const cellWidth = 60; 
 const gridSize = 16;
 
 const DOOR_WIDTH = 5;
