@@ -77,7 +77,7 @@ for (let grid of GRIDS) {
     pointsDict[JSON.stringify(key)] = points;
 }
 
-console.log(pointsDict);
+//console.log(pointsDict);
 
 let forbidden_moves = [];
 
@@ -128,7 +128,7 @@ for (let grid of GRIDS) {
     door_movements.push([right_middle, [right_middle[0], right_middle[1] + 1]]);
 }
 
-console.log("door_movements:", door_movements);
+//console.log("door_movements:", door_movements);
 
 
 function isMoveForbidden(currX, currY, nextX, nextY) {
@@ -199,6 +199,50 @@ function drawDoor(door, scene) {
     scene.doorSprites.push(doorGraphics);
 }
 
+function rotateDoor(doorGraphics, scene) {
+    let x = doorGraphics.x;
+    let y = doorGraphics.y;
+    let orientation = doorGraphics.orientation;
+    let originalOrientation = orientation;
+    
+    const rotateStep = () => {
+        // Clear the existing graphics
+        doorGraphics.clear();
+        
+        // Update orientation
+        if (orientation === "V") {
+            orientation = "H";
+        } else {
+            orientation = "V";
+        }
+        
+        // Draw new orientation
+        if (orientation === "V") {
+            doorGraphics.fillRect(x - DOOR_WIDTH / 2, y, DOOR_WIDTH, cellSize);
+        } else {
+            doorGraphics.fillRect(x, y - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+        }
+    };
+
+    const resetStep = () => {
+        // Clear the existing graphics
+        doorGraphics.clear();
+        
+        // Draw original orientation
+        if (originalOrientation === "V") {
+            doorGraphics.fillRect(x - DOOR_WIDTH / 2, y, DOOR_WIDTH, cellSize);
+        } else {
+            doorGraphics.fillRect(x, y - DOOR_WIDTH / 2, cellSize, DOOR_WIDTH);
+        }
+    };
+
+    // Rotate the door
+    rotateStep();
+
+    // Reset the rotation after a delay
+    scene.time.delayedCall(500, resetStep);
+}
+
 function areArraysEquivalent(a, b) {
     //console.log('A:', a, 'B:', b); // This will help you see what's being passed to the function
 
@@ -218,18 +262,18 @@ function existsInArray(array, element) {
 
 function update_doors(A, B) {
 
-    console.log('Initial A:', JSON.stringify(A));
-    console.log('Initial B:', JSON.stringify(B));
+    //console.log('Initial A:', JSON.stringify(A));
+    //console.log('Initial B:', JSON.stringify(B));
     for (const elem of A) {
         if (existsInArray(B, elem)) {
-            console.log('Removing from B:', JSON.stringify(elem));
+            //console.log('Removing from B:', JSON.stringify(elem));
             B = B.filter(bElem => !areArraysEquivalent(bElem.coord, elem.coord) || bElem.orientation !== elem.orientation); // remove from B
         } else {
-            console.log('Adding to B:', JSON.stringify(elem));
+            //console.log('Adding to B:', JSON.stringify(elem));
             B.push(elem); // add to B
         }
     }
-    console.log('Final B:', JSON.stringify(B));
+    //console.log('Final B:', JSON.stringify(B));
     return B;
 }
 
@@ -278,9 +322,9 @@ function calculateDoors() {
         allDoors.push(...doors);
     }
 
-    console.log("door for movement AI:", doorAIadjusted);
-    console.log("door for movement Human:", doorHumanadjusted);
-    console.log("all_doors:", allDoors);
+    //console.log("door for movement AI:", doorAIadjusted);
+    //console.log("door for movement Human:", doorHumanadjusted);
+    //console.log("all_doors:", allDoors);
 }
 
 function arraysEqual(arr1, arr2) {
@@ -308,17 +352,29 @@ function crossesDoor(start, end, playerID) {
     console.log(playerID, validAdjustedDoors)
     console.log(start, end)
 
-    const startExists = validAdjustedDoors.some(door => arraysEqual(door, start));
-    const endExists = validAdjustedDoors.some(door => arraysEqual(door, end));
+    // const startExists = validAdjustedDoors.some(door => arraysEqual(door, start));
+    // const endExists = validAdjustedDoors.some(door => arraysEqual(door, end));
 
-    if (startExists || endExists){
-        console.log("Entering the door they own")
-        return true
-    }else{
-        console.log('Entering a door they dont own')
-        return false
-    }
-
+    const startExists = validAdjustedDoors.find(door => arraysEqual(door, start));
+    const endExists = validAdjustedDoors.find(door => arraysEqual(door, end));
+    
+    if (startExists) {
+        console.log("Entering the start door they own");
+        startExists[0] = startExists[0] === 6 ? 7 : startExists[0];
+        startExists[1] = startExists[1] === 13 ? 14 : startExists[1];
+        let door = { coord: startExists, orientation: "V" };
+        return door;
+    } else if (endExists) {
+        console.log("Entering the end door they own");
+        endExists[0] = endExists[0] === 6 ? 7 : endExists[0];
+        endExists[1] = endExists[1] === 13 ? 14 : endExists[1];
+        let door = { coord: endExists, orientation: "V" };
+        return door;
+    } else {
+        console.log('Entering a door they don\'t own');
+        return false;
+    }    
+    
 }
 
 function playerEntersSubgrid(currentX, currentY, newX, newY) {
@@ -425,7 +481,7 @@ function onTokenHit(player, token) {
     
     // Check if the player's color matches the token's color
     if (players[playerName].color === token.color) {
-        console.log('Token hit detected.');
+        //console.log('Token hit detected.');
         token.destroy();
         
         // Update player's token count
@@ -467,6 +523,8 @@ function create() {
     createSubGrids.call(this);
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, this));
+    console.log("door sprites:");
+    console.log(this.doorSprites);
 
     // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
@@ -486,8 +544,8 @@ function create() {
 
     addStarTokens(this, players['Human'].id);
     addStarTokens(this, players['AI'].id);
-    console.log("is token group populated");
-    console.log(this.tokenGroup.getChildren().length);
+    //console.log("is token group populated");
+    //console.log(this.tokenGroup.getChildren().length);
 
     this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
@@ -514,14 +572,14 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     // First, check for forbidden moves. If forbidden, we immediately return.
     if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
-        console.log("Move is forbidden.");
+        //console.log("Move is forbidden.");
         return;
     }
 
     movement = [[currentGridX, currentGridY], [nextGridX, nextGridY]];
     const cross_door = door_movements.some(door_movement => arraysEqual(door_movement[0], movement[0]) && arraysEqual(door_movement[1], movement[1]));
 
-    if (cross_door == true){
+    if (cross_door != false){
             // Next, check for door crossings
         if (crossesDoor([currentGridX, currentGridY], [nextGridX, nextGridY], playerID)) {
             // Movement across the door is allowed
@@ -537,12 +595,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     endGrid = grids[1];
                 }
 
-                console.log('startGrid', startGrid);
-                console.log('endGrid', endGrid );
+                //console.log('startGrid', startGrid);
+                //console.log('endGrid', endGrid );
                 
-                console.log('startGrid first element', startGrid[0]);
+                //console.log('startGrid first element', startGrid[0]);
                 let doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
-                console.log(doors);
+                //console.log(doors);
 
                 doorAICoords = update_doors(doors, doorAICoords)
                 doorHumanCoords = update_doors(doors, doorHumanCoords)
