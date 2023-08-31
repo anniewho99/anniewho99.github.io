@@ -31,7 +31,7 @@ let usedGrids = [];
 
 let config = {
     type: Phaser.AUTO,
-    width: 640, // 16 cells * 40 pixels/cell
+    width: 960,
     height: 640,
     backgroundColor: '#D2B48C',
     scene: {
