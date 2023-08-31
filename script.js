@@ -207,12 +207,16 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     const rotateStep = () => {
         doorGraphics.clear();
+        console.log("door cleared");
         doorGraphics.fillStyle(color);
         if (orientation === "V") {
             orientation = "H";
         } else {
             orientation = "V";
         }
+
+        scene.time.delayedCall(100, drawStep); 
+
         if (orientation === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
         } else {
@@ -222,6 +226,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     const resetStep = () => {
         doorGraphics.clear();
+        console.log("door reset cleared");
+        scene.time.delayedCall(100, drawStep);
+
         doorGraphics.fillStyle(color);
         if (orientationO === "V") {
             doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellSize, y - cellSize, DOOR_WIDTH, cellSize);
