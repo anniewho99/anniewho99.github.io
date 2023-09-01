@@ -28,6 +28,7 @@ let doorHumanCoords = [];
 let doorHumanadjusted = [];
 let allDoors = [];
 let usedGrids = [];
+let isDoorRotating = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -167,6 +168,9 @@ function createSubGrids() {
 }
 
 function drawDoor(door, scene) {
+
+    if (isDoorRotating) return; 
+
     const doorX = door.coord[0] * cellWidth;
     const doorY = door.coord[1] * cellHeight;
 
@@ -203,6 +207,9 @@ function drawDoor(door, scene) {
 }
 
 function rotateDoor(doorGraphics, door_coord, scene, color) {
+
+    isDoorRotating = true;  
+
     let x = door_coord[0] * cellWidth;
     let y = door_coord[1] * cellHeight;
     let orientation = "V";
@@ -241,6 +248,8 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     // Wait for rotation to finish and then reset
     scene.time.delayedCall(600, resetStep);  // 600ms to ensure the reset happens after the rotateStep is fully executed
+
+    isDoorRotating = false;  
 }
 
 
