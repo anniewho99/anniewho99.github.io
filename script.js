@@ -660,13 +660,13 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 if (doors[0].coord == door_coord){
 
                     console.log("door0 is the old door");
-                    newDoor = findDoorSprite(doors[1].coord, scene.doorSprites);
-                    newDoorOther = targetDoorGraphics;
+                    newDoorOther = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    newDoor = targetDoorGraphics;
 
                 }else{
                     console.log("door1 is the old door");
-                    newDoor = targetDoorGraphics;
-                    newDoorOther = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    newDoorOther = targetDoorGraphics;
+                    newDoor = findDoorSprite(doors[1].coord, scene.doorSprites);
                 }
 
                 doorAICoords = update_doors(doors, doorAICoords)
