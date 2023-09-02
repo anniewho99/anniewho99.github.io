@@ -206,7 +206,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, door_coord, scene, color) {
+function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
 
     console.log("set isDoorRotating to true");
 
@@ -250,12 +250,15 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     // Start the rotation
     rotateStep();
 
-    // Wait for rotation to finish and then reset
-    scene.time.delayedCall(600, () => {  // Wrapped inside a callback
-        resetStep();
-        isDoorRotating = false;  // Moved inside the delayed call
-        console.log("setting isDoorRotating to false");
-    });
+    if (doorSwitch == false){
+
+        // Wait for rotation to finish and then reset
+        scene.time.delayedCall(600, () => {  // Wrapped inside a callback
+            resetStep();
+            isDoorRotating = false;  // Moved inside the delayed call
+            console.log("exiting subgrid");
+        });
+    }
 }
 
 
@@ -702,9 +705,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 console.log("redraw door since player enters subgrid");
                 scene.time.delayedCall(700, () => {
                     //allDoors.forEach(door => drawDoor(door, scene));
-                    console.log("the door graphics");
+                    console.log("door color for the other player");
                     newDoor.clear();
                     newDoor.fillStyle(doorColorOther);
+                    console.log(doorColorOther);
+                    console.log(x);
+                    console.log(y);
                     newDoor.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
 
                     newDoorOther.clear();
