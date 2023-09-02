@@ -208,8 +208,6 @@ function drawDoor(door, scene) {
 
 function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
 
-    isDoorRotating = true;  
-
     console.log("set isDoorRotating to true");
 
     let x = door_coord[0] * cellWidth;
@@ -228,6 +226,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
 
     const rotateStep = () => {
         doorGraphics.clear();
+        console.log("clear door rotateStep");
         scene.time.delayedCall(100, () => {
             if (orientation === "V") {
                 orientation = "H";
@@ -240,23 +239,25 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
 
     const resetStep = () => {
         doorGraphics.clear();
+        console.log("celar door resetStep");
         scene.time.delayedCall(100, () => {
             drawStep(originalOrientation);
         });
     };
 
+    isDoorRotating = true;  
+
     // Start the rotation
     rotateStep();
 
     // Wait for rotation to finish and then reset
-    scene.time.delayedCall(600, resetStep);  // 600ms to ensure the reset happens after the rotateStep is fully executed
-
-    isDoorRotating = false; 
-    
-    console.log("set isDoorRotating to false");
+    scene.time.delayedCall(600, () => {  // Wrapped inside a callback
+        resetStep();
+        isDoorRotating = false;  // Moved inside the delayed call
+        console.log("setting isDoorRotating to false");
+    });
 
     if (doorSwitch){
-
         console.log("redraw door since player enters subgrid");
         scene.time.delayedCall(700, () => {
             allDoors.forEach(door => drawDoor(door, scene));
