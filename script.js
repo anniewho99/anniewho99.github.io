@@ -206,7 +206,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, door_coord, scene, color) {
+function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
 
     isDoorRotating = true;  
 
@@ -254,6 +254,14 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     isDoorRotating = false; 
     
     console.log("set isDoorRotating to false");
+
+    if (doorSwitch){
+
+        console.log("redraw door since player enters subgrid");
+        scene.time.delayedCall(700, () => {
+            allDoors.forEach(door => drawDoor(door, scene));
+        });
+    }
 }
 
 
@@ -630,7 +638,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
             const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
             console.log("door graphics is");
             console.log(targetDoorGraphics);
-            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
@@ -673,18 +680,9 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
 
             }
+            if(doorSwitch){console.log("time to switch door");}
 
-            //redraw door when a player enter subgrid
-            if (doorSwitch){
-
-                console.log("redraw door since player enters subgrid");
-                scene.time.delayedCall(700, () => {
-                    allDoors.forEach(door => drawDoor(door, scene));
-                });
-
-                doorSwitch = false;
-                console.log("set doorSwtich to false");
-            }
+            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch);
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
