@@ -610,6 +610,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let newDoor = undefined;
     let newDoorOther = undefined;
 
+    let x = 0;
+    let y = 0;
+    let xOther = 0;
+    let yOther = 0;
+
     if (playerID == "Human"){
         doorColor = 0xFF0000;
         doorColorOther = 0x0000FF;
@@ -660,13 +665,21 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 if (doors[0].coord == door_coord){
 
                     console.log("door0 is the old door");
-                    newDoorOther = findDoorSprite(doors[1].coord, scene.doorSprites);
-                    newDoor = targetDoorGraphics;
+                    newDoor = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    x = doors[1].coord[0] * cellWidth;
+                    y = doors[1].coord[1] * cellHeight;
+                    newDoorOther = targetDoorGraphics;
+                    xOther = doors[0].coord[0] * cellWidth;
+                    yOther = doors[0].coord[1] * cellHeight;
 
                 }else{
                     console.log("door1 is the old door");
-                    newDoorOther = targetDoorGraphics;
-                    newDoor = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    newDoor = targetDoorGraphics;
+                    x = doors[0].coord[0] * cellWidth;
+                    y = doors[0].coord[1] * cellHeight;
+                    newDoorOther = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    xOther = doors[1].coord[0] * cellWidth;
+                    yOther = doors[1].coord[1] * cellHeight;
                 }
 
                 doorAICoords = update_doors(doors, doorAICoords)
@@ -689,8 +702,14 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 console.log("redraw door since player enters subgrid");
                 scene.time.delayedCall(700, () => {
                     //allDoors.forEach(door => drawDoor(door, scene));
+                    console.log("the door graphics");
+                    newDoor.clear();
                     newDoor.fillStyle(doorColor);
+                    doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
+
+                    newDoorOther.clear();
                     newDoorOther.fillStyle(doorColorOther);
+                    doorGraphics.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
                 });
             }
 
