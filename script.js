@@ -703,13 +703,13 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 scene.time.delayedCall(700, () => {
                     //allDoors.forEach(door => drawDoor(door, scene));
                     console.log("the door graphics");
-                    newDoorOther.clear();
-                    newDoorOther.fillStyle(doorColor);
-                    newDoorOther.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
-
                     newDoor.clear();
                     newDoor.fillStyle(doorColorOther);
-                    newDoor.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
+                    newDoor.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
+
+                    newDoorOther.clear();
+                    newDoorOther.fillStyle(doorColor);
+                    newDoorOther.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
                 });
             }
 
