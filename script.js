@@ -699,7 +699,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
             }
             if(doorSwitch){console.log("time to switch door");}
 
-            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor);
+            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch);
 
             if (doorSwitch){
                 console.log("redraw door since player enters subgrid");
