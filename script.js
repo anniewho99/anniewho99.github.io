@@ -210,6 +210,8 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
 
     isDoorRotating = true;  
 
+    console.log("set isDoorRotating to true");
+
     let x = door_coord[0] * cellWidth;
     let y = door_coord[1] * cellHeight;
     let orientation = "V";
@@ -249,7 +251,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color) {
     // Wait for rotation to finish and then reset
     scene.time.delayedCall(600, resetStep);  // 600ms to ensure the reset happens after the rotateStep is fully executed
 
-    isDoorRotating = false;  
+    isDoorRotating = false; 
+    
+    console.log("set isDoorRotating to false");
 }
 
 
