@@ -654,8 +654,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 //console.log('startGrid first element', startGrid[0]);
                 let doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
                 //console.log(doors);
+                console.log("door in subgrid");
+                console.log(doors[0].coord);
 
-                if (door[0].coord == door_coord){
+                if (doors[0].coord == door_coord){
 
                     console.log("door0 is the old door");
                     newDoor = findDoorSprite(door[1].coord, scene.doorSprites);
