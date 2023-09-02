@@ -705,11 +705,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log("the door graphics");
                     newDoor.clear();
                     newDoor.fillStyle(doorColor);
-                    doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
+                    newDoor.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
 
                     newDoorOther.clear();
                     newDoorOther.fillStyle(doorColorOther);
-                    doorGraphics.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
+                    newDoorOther.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
                 });
             }
 
