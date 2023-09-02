@@ -604,6 +604,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let nextGridY = Math.round(potentialY / cellHeight);
 
     let doorColor = undefined;
+    let doorSwitch = false;
 
     if (playerID == "Human"){
         doorColor = 0xFF0000;
@@ -658,16 +659,33 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                 doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
+                doorSwitch = true;
+
+
+
                 //redraw door
                 //allDoors.forEach(door => drawDoor(door, scene));
-                if (isDoorRotating){
-                    scene.time.delayedCall(700, () => {
-                        allDoors.forEach(door => drawDoor(door, scene));
-                    });
-                }
+                // if (isDoorRotating){
+                //     scene.time.delayedCall(700, () => {
+                //         allDoors.forEach(door => drawDoor(door, scene));
+                //     });
+                // }
 
 
             }
+
+            //redraw door when a player enter subgrid
+            if (doorSwitch){
+
+                console.log("redraw door since player enters subgrid");
+                scene.time.delayedCall(700, () => {
+                    allDoors.forEach(door => drawDoor(door, scene));
+                });
+
+                doorSwitch = false;
+                console.log("set doorSwtich to false");
+            }
+
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
             console.log("door not allowed to cross");
