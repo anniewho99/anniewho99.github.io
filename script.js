@@ -656,9 +656,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 //redraw door
                 //allDoors.forEach(door => drawDoor(door, scene));
-                scene.time.delayedCall(700, () => {
-                    allDoors.forEach(door => drawDoor(door, scene));
-                });
+                if (isDoorRotating){
+                    scene.time.delayedCall(700, () => {
+                        allDoors.forEach(door => drawDoor(door, scene));
+                    });
+                }
 
 
             }
