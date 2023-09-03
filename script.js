@@ -706,9 +706,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 doorSwitch = true;
 
+                //will change this later
+                allDoors.forEach(door => drawDoor(door, scene));
+
             }
 
-            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
+            //rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
