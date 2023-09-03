@@ -567,6 +567,8 @@ function updatePlayerPosition(player1, player2) {
     } else {
       // Reset their positions so they are not offset when they are not in the same cell
       player1.x = cellToPixel(player1.cellX);
+      console.log("cellX");
+      console.log(player1.cellX);
       player2.x = cellToPixel(player2.cellX);
     }
 }
