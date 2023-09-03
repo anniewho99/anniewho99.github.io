@@ -36,6 +36,9 @@ let player2TrapTimeStart, player2TrapTimeEnd;
 let currentTime = 0; // Start time in seconds
 let gameDuration = 60; // Game lasts for 60 seconds
 
+let playerOneTrapped = false;
+let playerTwoTrapped = false;
+
 let config = {
     type: Phaser.AUTO,
     width: 960,
@@ -632,6 +635,14 @@ function create() {
     // Initialize at the start of the game
     generateRandomTimeframe();
 
+    console.log("player 1 timeframe");
+
+    console.log(player1TrapTimeStart, player1TrapTimeEnd);
+
+    console.log("player 1 timeframe");
+
+    console.log(player2TrapTimeStart, player2TrapTimeEnd);
+
     // Call this function every second
     setInterval(updateGameTime, 1000);
 
@@ -720,7 +731,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
-                console.log('entering a subgrid. shuffle door');
+                //console.log('entering a subgrid. shuffle door');
                 let whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
                 console.log("which grid", whichGrid);
                 if (whichGrid) {
@@ -736,31 +747,85 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 let doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
                 //console.log(doors);
 
-                if (doors[0].coord == door_coord){
+                // if (doors[0].coord == door_coord){
 
-                    console.log("door0 is the old door");
-                    otherDoorinSubgrid = findDoorSprite(doors[1].coord, scene.doorSprites);
-                    otherDoorinSubgridCoords = doors[1].coord;
+                //     console.log("door0 is the old door");
+                //     otherDoorinSubgrid = findDoorSprite(doors[1].coord, scene.doorSprites);
+                //     otherDoorinSubgridCoords = doors[1].coord;
 
-                }else{
-                    console.log("door1 is the old door");
-                    otherDoorinSubgrid = findDoorSprite(doors[0].coord, scene.doorSprites);
-                    otherDoorinSubgridCoords = doors[0].coord;
+                // }else{
+                //     console.log("door1 is the old door");
+                //     otherDoorinSubgrid = findDoorSprite(doors[0].coord, scene.doorSprites);
+                //     otherDoorinSubgridCoords = doors[0].coord;
+                // }
+
+                if (!playerOneTrapped && !playerTwoTrapped){
+
+                    doorAICoords = update_doors(doors, doorAICoords)
+                    doorHumanCoords = update_doors(doors, doorHumanCoords)
+
+                    console.log("new AI door", doorAICoords);
+                    console.log("new Human door", doorHumanCoords);
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    doorSwitch = true;
+
+                    //will change this later
+                    allDoors.forEach(door => drawDoor(door, scene));
+                    console.log('entering a subgrid. shuffle door');
                 }
 
-                doorAICoords = update_doors(doors, doorAICoords)
-                doorHumanCoords = update_doors(doors, doorHumanCoords)
 
-                console.log("new AI door", doorAICoords);
-                console.log("new Human door", doorHumanCoords);
+                // Check if within trap timeframe for player1
+                if (playerID === "Human" && currentTime >= player1TrapTimeStart && currentTime <= player1TrapTimeEnd) {
+                    // Change both doors to player2's color
+                    doorColor = 0x0000FF;
+                    console.log("Human trapped");
 
-                doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
-                doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+                    doorTrappedPlayer = { coord: door_coord, orientation: "V" };
+                    doorAICoords.push(doorTrappedPlayer);
+                    console.log("new AI door", doorAICoords); 
 
-                doorSwitch = true;
+                    const index = doorHumanCoords.indexOf(doorTrappedPlayer);
 
-                //will change this later
-                allDoors.forEach(door => drawDoor(door, scene));
+                    if (index > -1) {
+                        doorHumanCoords.splice(index, 1);
+                      }
+                    
+                    console.log("new Human door", doorHumanCoords); 
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    allDoors.forEach(door => drawDoor(door, scene));
+
+                }
+
+                // Check if within trap timeframe for player2
+                if (playerID === "AI" && currentTime >= player2TrapTimeStart && currentTime <= player2TrapTimeEnd) {
+                    // Change both doors to player1's color
+                    doorColor = 0xFF0000;
+                    console.log("AI trapped");
+
+                    oorTrappedPlayer = { coord: door_coord, orientation: "V" };
+                    doorHumanCoords.push(doorTrappedPlayer);
+                    console.log("new Human door", doorHumanCoords); 
+
+                    const index = doorAICoords.indexOf(doorTrappedPlayer);
+
+                    if (index > -1) {
+                        doorAICoords.splice(index, 1);
+                      }
+
+                    console.log("new AI door", doorAICoords); 
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    allDoors.forEach(door => drawDoor(door, scene));
+                }
 
             }
 
