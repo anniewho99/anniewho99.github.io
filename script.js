@@ -207,7 +207,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch, otherDoorinSubgrid, otherDoorinSubgridCoords, otherColor) {
+function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, otherDoorinSubgridCoords, otherColor) {
 
     console.log("set isDoorRotating to true");
 
@@ -708,7 +708,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
             }
 
-            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
+            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
