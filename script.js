@@ -275,8 +275,14 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch, otherDoo
     scene.time.delayedCall(600, () => {
         resetStep();
         if (doorSwitch) {
-            scene.time.delayedCall(100, redrawDoors);
-        }
+            scene.time.delayedCall(100, () => {
+                redrawDoors();
+                scene.time.delayedCall(100, () => {
+                    doorSwitch = false; // Reset the flag here
+                    console.log("setting doorSwtich to false");
+                });
+            });}
+
         isDoorRotating = false;
     });
 }
@@ -703,8 +709,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
             }
 
             rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
-            doorSwitch = false;
-            console.log("setting doorSwtich to false");
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
