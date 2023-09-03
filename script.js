@@ -550,40 +550,30 @@ function onTokenHit(player, token) {
     }
 }
 
-function cellToPixel(cellX) {
-    return cellX * cellWidth;
-  }  
-
 function updatePlayerPosition(player1, player2) {
-    // Check if they are in the same pixel cell
-    const playerOnecellX = Math.floor(player1.x/ cellWidth);
-    const playerTwocellX = Math.floor(player2.x/ cellWidth);
-    
-    if (arePlayersInSameCell) {
-      // Apply an offset to each player's position
-      const offset = 5; // 5 pixels to the left and right
-      player1.x -= offset;
-      player2.x += offset;
-    } else {
-      // Reset their positions so they are not offset when they are not in the same cell
-      player1.x = cellToPixel(playerOnecellX);
-      console.log("cellX");
-      console.log(playerOnecellX);
-      player2.x = cellToPixel(playerTwocellX);
-    }
-}
-  
-
-function arePlayersInSameCell(player1, player2) {
-  
+    // Calculate cellX and cellY for both players
     const player1CellX = Math.floor(player1.x / cellWidth);
     const player1CellY = Math.floor(player1.y / cellHeight);
     const player2CellX = Math.floor(player2.x / cellWidth);
     const player2CellY = Math.floor(player2.y / cellHeight);
-  
-    return player1CellX === player2CellX && player1CellY === player2CellY;
+    
+    // Check if they are in the same cell
+    if (player1CellX === player2CellX && player1CellY === player2CellY) {
+      // Apply an offset to each player's position
+      const offset = 5; // 5 pixels to the left and right
+      player1.x = cellToPixel(player1CellX) - offset;
+      player2.x = cellToPixel(player2CellX) + offset;
+    } else {
+      // Reset their positions so they are not offset when they are not in the same cell
+      player1.x = cellToPixel(player1CellX);
+      player2.x = cellToPixel(player2CellX);
+    }
   }
-
+  
+function cellToPixel(cellX) {
+    return cellX * cellWidth + cellWidth / 2;
+  }
+  
 
 let game = new Phaser.Game(config);
 
