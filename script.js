@@ -556,20 +556,20 @@ function cellToPixel(cellX) {
 
 function updatePlayerPosition(player1, player2) {
     // Check if they are in the same pixel cell
-    const sameCellX = Math.floor(player1.x / cellWidth) === Math.floor(player2.x / cellWidth);
-    const sameCellY = Math.floor(player1.y / cellHeight) === Math.floor(player2.y / cellHeight);
+    const playerOnecellX = Math.floor(player1.x/ cellWidth);
+    const playerTwocellX = Math.floor(player2.x/ cellWidth);
     
-    if (sameCellX && sameCellY) {
+    if (arePlayersInSameCell) {
       // Apply an offset to each player's position
       const offset = 5; // 5 pixels to the left and right
       player1.x -= offset;
       player2.x += offset;
     } else {
       // Reset their positions so they are not offset when they are not in the same cell
-      player1.x = cellToPixel(player1.cellX);
+      player1.x = cellToPixel(playerOnecellX);
       console.log("cellX");
-      console.log(player1.cellX);
-      player2.x = cellToPixel(player2.cellX);
+      console.log(playerOnecellX);
+      player2.x = cellToPixel(playerTwocellX);
     }
 }
   
