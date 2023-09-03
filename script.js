@@ -272,7 +272,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
     rotateStep();
 
     // Wrap both resetStep and redrawDoors in delayed calls to ensure correct execution order
-    scene.time.delayedCall(600, () => {
+    scene.time.delayedCall(100, () => {
         resetStep();
         if (doorSwitch) {
             scene.time.delayedCall(100, () => {
