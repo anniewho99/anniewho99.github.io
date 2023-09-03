@@ -550,6 +550,26 @@ function onTokenHit(player, token) {
     }
 }
 
+function updatePlayerPosition(player1, player2) {
+    // Check if they are in the same cell
+    if (arePlayersInSameCell(player1, player2)) {
+      // Apply an offset to each player's position
+      const offset = 5; // 5 pixels to the left and right
+      player1.x -= offset;
+      player2.x += offset;
+    }
+  }
+
+function arePlayersInSameCell(player1, player2) {
+  
+    const player1CellX = Math.floor(player1.x / cellWidth);
+    const player1CellY = Math.floor(player1.y / cellHeight);
+    const player2CellX = Math.floor(player2.x / cellWidth);
+    const player2CellY = Math.floor(player2.y / cellHeight);
+  
+    return player1CellX === player2CellX && player1CellY === player2CellY;
+  }
+
 
 let game = new Phaser.Game(config);
 
@@ -622,7 +642,7 @@ function create() {
 }
 
 function update() {
-    // Any continual game logic goes here
+    updatePlayerPosition(player1, player2);
 }
 
 function handleMovement(player, dx, dy, playerID, scene) {
