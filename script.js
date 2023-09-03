@@ -29,6 +29,7 @@ let doorHumanadjusted = [];
 let allDoors = [];
 let usedGrids = [];
 let isDoorRotating = false;
+let doorSwitch = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -206,7 +207,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
+function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch, otherDoorinSubgrid, otherDoorinSubgridCoords, otherColor) {
 
     console.log("set isDoorRotating to true");
 
@@ -214,6 +215,9 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
     let y = door_coord[1] * cellHeight;
     let orientation = "V";
     let originalOrientation = "V";
+
+    let xOther = otherDoorinSubgridCoords[0] * cellWidth;
+    let yOther = otherDoorinSubgridCoords[1] * cellHeight;
 
     const drawStep = (currentOrientation) => {
         doorGraphics.fillStyle(color);
@@ -223,6 +227,23 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
             doorGraphics.fillRect(x - cellWidth, (y - DOOR_WIDTH / 2) - cellHeight, cellWidth, DOOR_WIDTH);
         }
     };
+
+    const redrawDoors = () => {
+        console.log("redraw door since player enters subgrid");
+
+        //allDoors.forEach(door => drawDoor(door, scene));
+        console.log("door color for the other player");
+        doorGraphics.clear();
+        doorGraphics.fillStyle(doorColorOther);
+        console.log(otherColor);
+        console.log(x);
+        console.log(y);
+        doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
+
+        otherDoorinSubgrid.clear();
+        otherDoorinSubgrid.fillStyle(color);
+        otherDoorinSubgrid.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
+    }
 
     const rotateStep = () => {
         doorGraphics.clear();
@@ -250,15 +271,14 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch) {
     // Start the rotation
     rotateStep();
 
-    if (doorSwitch == false){
-
-        // Wait for rotation to finish and then reset
-        scene.time.delayedCall(600, () => {  // Wrapped inside a callback
-            resetStep();
-            isDoorRotating = false;  // Moved inside the delayed call
-            console.log("exiting subgrid");
-        });
-    }
+    // Wrap both resetStep and redrawDoors in delayed calls to ensure correct execution order
+    scene.time.delayedCall(600, () => {
+        resetStep();
+        if (doorSwitch) {
+            scene.time.delayedCall(100, redrawDoors);
+        }
+        isDoorRotating = false;
+    });
 }
 
 
@@ -609,14 +629,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let nextGridY = Math.round(potentialY / cellHeight);
 
     let doorColor = undefined;
-    let doorSwitch = false;
-    let newDoor = undefined;
-    let newDoorOther = undefined;
-
-    let x = 0;
-    let y = 0;
-    let xOther = 0;
-    let yOther = 0;
+    let otherDoorinSubgrid = undefined;
+    let otherDoorinSubgridCoords = [];
 
     if (playerID == "Human"){
         doorColor = 0xFF0000;
@@ -662,27 +676,17 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 //console.log('startGrid first element', startGrid[0]);
                 let doors = calculateDoorsForSubgrid(startGrid[0], startGrid[1], endGrid[0], endGrid[1]);
                 //console.log(doors);
-                console.log("door in subgrid");
-                console.log(doors[0].coord);
 
                 if (doors[0].coord == door_coord){
 
                     console.log("door0 is the old door");
-                    newDoor = findDoorSprite(doors[1].coord, scene.doorSprites);
-                    x = doors[1].coord[0] * cellWidth;
-                    y = doors[1].coord[1] * cellHeight;
-                    newDoorOther = targetDoorGraphics;
-                    xOther = doors[0].coord[0] * cellWidth;
-                    yOther = doors[0].coord[1] * cellHeight;
+                    otherDoorinSubgrid = findDoorSprite(doors[1].coord, scene.doorSprites);
+                    otherDoorinSubgridCoords = doors[1].coord;
 
                 }else{
                     console.log("door1 is the old door");
-                    newDoor = targetDoorGraphics;
-                    x = doors[0].coord[0] * cellWidth;
-                    y = doors[0].coord[1] * cellHeight;
-                    newDoorOther = findDoorSprite(doors[1].coord, scene.doorSprites);
-                    xOther = doors[1].coord[0] * cellWidth;
-                    yOther = doors[1].coord[1] * cellHeight;
+                    otherDoorinSubgrid = findDoorSprite(doors[0].coord, scene.doorSprites);
+                    otherDoorinSubgridCoords = doors[0].coord;
                 }
 
                 doorAICoords = update_doors(doors, doorAICoords)
@@ -697,27 +701,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 doorSwitch = true;
 
             }
-            if(doorSwitch){console.log("time to switch door");}
 
-            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch);
-
-            if (doorSwitch){
-                console.log("redraw door since player enters subgrid");
-                scene.time.delayedCall(700, () => {
-                    //allDoors.forEach(door => drawDoor(door, scene));
-                    console.log("door color for the other player");
-                    newDoor.clear();
-                    newDoor.fillStyle(doorColorOther);
-                    console.log(doorColorOther);
-                    console.log(x);
-                    console.log(y);
-                    newDoor.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
-
-                    newDoorOther.clear();
-                    newDoorOther.fillStyle(doorColor);
-                    newDoorOther.fillRect((xOther - DOOR_WIDTH / 2) - cellWidth, yOther - cellHeight, DOOR_WIDTH, cellHeight);
-                });
-            }
+            rotateDoor(targetDoorGraphics, door_coord, scene, doorColor, doorSwitch, otherDoorinSubgrid, otherDoorinSubgridCoords, doorColorOther);
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
