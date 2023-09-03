@@ -550,15 +550,27 @@ function onTokenHit(player, token) {
     }
 }
 
+function cellToPixel(cellX) {
+    return cellX * cellWidth;
+  }  
+
 function updatePlayerPosition(player1, player2) {
-    // Check if they are in the same cell
-    if (arePlayersInSameCell(player1, player2)) {
+    // Check if they are in the same pixel cell
+    const sameCellX = Math.floor(player1.x / cellWidth) === Math.floor(player2.x / cellWidth);
+    const sameCellY = Math.floor(player1.y / cellHeight) === Math.floor(player2.y / cellHeight);
+    
+    if (sameCellX && sameCellY) {
       // Apply an offset to each player's position
       const offset = 5; // 5 pixels to the left and right
       player1.x -= offset;
       player2.x += offset;
+    } else {
+      // Reset their positions so they are not offset when they are not in the same cell
+      player1.x = cellToPixel(player1.cellX);
+      player2.x = cellToPixel(player2.cellX);
     }
-  }
+}
+  
 
 function arePlayersInSameCell(player1, player2) {
   
