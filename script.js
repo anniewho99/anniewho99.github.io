@@ -278,6 +278,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, doorSwitch, otherDoo
             scene.time.delayedCall(100, redrawDoors);
         }
         isDoorRotating = false;
+        doorSwitch = false;
     });
 }
 
