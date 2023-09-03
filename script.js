@@ -31,6 +31,11 @@ let usedGrids = [];
 let isDoorRotating = false;
 let doorSwitch = false;
 
+let player1TrapTimeStart, player1TrapTimeEnd;
+let player2TrapTimeStart, player2TrapTimeEnd;
+let currentTime = 0; // Start time in seconds
+let gameDuration = 60; // Game lasts for 60 seconds
+
 let config = {
     type: Phaser.AUTO,
     width: 960,
@@ -573,6 +578,24 @@ function updatePlayerPosition(player1, player2) {
 function cellToPixel(cellX) {
     return cellX * cellWidth + cellWidth / 2;
   }
+
+function generateRandomTimeframe() {
+    // Generate random start and end time for trapping, between 0 and 60 seconds
+    player1TrapTimeStart = Math.floor(Math.random() * 60);
+    player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
+    
+    player2TrapTimeStart = Math.floor(Math.random() * 60);
+    player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
+}
+
+// Increment current time and check for game end
+function updateGameTime() {
+  currentTime++;
+  if (currentTime >= gameDuration) {
+    // End the game
+  }
+}
+  
   
 
 let game = new Phaser.Game(config);
@@ -605,6 +628,12 @@ function create() {
     graphics.strokePath();
 
     this.doorSprites = [];
+
+    // Initialize at the start of the game
+    generateRandomTimeframe();
+
+    // Call this function every second
+    setInterval(updateGameTime, 1000);
 
     calculateDoors();
 
