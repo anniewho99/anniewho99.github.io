@@ -34,7 +34,7 @@ let doorSwitch = false;
 let player1TrapTimeStart, player1TrapTimeEnd;
 let player2TrapTimeStart, player2TrapTimeEnd;
 let currentTime = 0; // Start time in seconds
-let gameDuration = 60; // Game lasts for 60 seconds
+let gameDuration = 20; // Game lasts for 60 seconds
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -639,12 +639,17 @@ function create() {
 
     console.log(player1TrapTimeStart, player1TrapTimeEnd);
 
-    console.log("player 1 timeframe");
+    console.log("player 2 timeframe");
 
     console.log(player2TrapTimeStart, player2TrapTimeEnd);
 
     // Call this function every second
     setInterval(updateGameTime, 1000);
+
+    setInterval(() => {
+        const currentTime = new Date().toLocaleTimeString();
+        console.log("Current Time:", currentTime);
+      }, 5000); 
 
     calculateDoors();
 
