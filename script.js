@@ -560,7 +560,7 @@ function updatePlayerPosition(player1, player2) {
     // Check if they are in the same cell
     if (player1CellX === player2CellX && player1CellY === player2CellY) {
       // Apply an offset to each player's position
-      const offset = 5; // 5 pixels to the left and right
+      const offset = 7; // 5 pixels to the left and right
       player1.x = cellToPixel(player1CellX) - offset;
       player2.x = cellToPixel(player2CellX) + offset;
     } else {
@@ -617,7 +617,7 @@ function create() {
     // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
 
-    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.05);
+    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
