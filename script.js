@@ -234,7 +234,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
         //allDoors.forEach(door => drawDoor(door, scene));
         console.log("door color for the other player");
         doorGraphics.clear();
-        doorGraphics.fillStyle(doorColorOther);
+        doorGraphics.fillStyle(otherColor);
         console.log(otherColor);
         console.log(x);
         console.log(y);
