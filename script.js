@@ -763,24 +763,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 //     otherDoorinSubgridCoords = doors[0].coord;
                 // }
 
-
-                if (!playerOneTrapped && !playerTwoTrapped){
-
-                    doorAICoords = update_doors(doors, doorAICoords)
-                    doorHumanCoords = update_doors(doors, doorHumanCoords)
-
-                    console.log("new AI door", doorAICoords);
-                    console.log("new Human door", doorHumanCoords);
-
-                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
-                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
-
-                    doorSwitch = true;
-
-                    //will change this later
-                    allDoors.forEach(door => drawDoor(door, scene));
-                    console.log('entering a subgrid. shuffle door');
-                }
                 console.log(`Enter subgrid`);
                 console.log(`player1TrapTimeStart: ${player1TrapTimeStart}`);
                 console.log(`player1TrapTimeEnd: ${player1TrapTimeEnd}`);
@@ -808,6 +790,9 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log("Human trapped");
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
+
+                    console.log(doorTrappedPlayer);
+
                     doorAICoords.push(doorTrappedPlayer);
                     console.log("new AI door", doorAICoords); 
 
@@ -850,6 +835,24 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                     allDoors.forEach(door => drawDoor(door, scene));
+                }
+
+                if (!playerOneTrapped && !playerTwoTrapped){
+
+                    doorAICoords = update_doors(doors, doorAICoords)
+                    doorHumanCoords = update_doors(doors, doorHumanCoords)
+
+                    console.log("new AI door", doorAICoords);
+                    console.log("new Human door", doorHumanCoords);
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    doorSwitch = true;
+
+                    //will change this later
+                    allDoors.forEach(door => drawDoor(door, scene));
+                    console.log('entering a subgrid. shuffle door');
                 }
 
             }
