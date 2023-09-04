@@ -47,7 +47,7 @@ let trappedDoors = null;
 
 let config = {
     type: Phaser.AUTO,
-    width: 1160,
+    width: 1200,
     height: 640,
     backgroundColor: '#D2B48C',
     scene: {
