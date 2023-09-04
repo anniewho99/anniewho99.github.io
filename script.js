@@ -34,7 +34,7 @@ let doorSwitch = false;
 let player1TrapTimeStart, player1TrapTimeEnd;
 let player2TrapTimeStart, player2TrapTimeEnd;
 let currentTime = 0; // Start time in seconds
-let gameDuration = 20; // Game lasts for 60 seconds
+let gameDuration = 60; // Game lasts for 60 seconds
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -193,13 +193,13 @@ function drawDoor(door, scene) {
     if (isDoorInList(door, doorAICoords)) {
         doorColor = door_AI_color;
 
-        console.log("AI door");
+        //console.log("AI door");
     } else if (isDoorInList(door, doorHumanCoords)) {
         doorColor = door_human_color;
-        console.log("Human door");
+        //console.log("Human door");
     } else {
         doorColor = 0xFF00FF;
-        console.log("debug door");  // bright purple for debug
+        //console.log("debug door");  // bright purple for debug
     }
 
     //const doorGraphics = this.add.graphics({ fillStyle: { color: doorColor } });
@@ -217,7 +217,7 @@ function drawDoor(door, scene) {
 
 function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, otherDoorinSubgridCoords, otherColor) {
 
-    console.log("set isDoorRotating to true");
+    //console.log("set isDoorRotating to true");
 
     let x = door_coord[0] * cellWidth;
     let y = door_coord[1] * cellHeight;
@@ -237,15 +237,15 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
     };
 
     const redrawDoors = () => {
-        console.log("redraw door since player enters subgrid");
+        //console.log("redraw door since player enters subgrid");
 
         //allDoors.forEach(door => drawDoor(door, scene));
-        console.log("door color for the other player");
+        //console.log("door color for the other player");
         doorGraphics.clear();
         doorGraphics.fillStyle(otherColor);
-        console.log(otherColor);
-        console.log(x);
-        console.log(y);
+       // console.log(otherColor);
+        //console.log(x);
+        //console.log(y);
         doorGraphics.fillRect((x - DOOR_WIDTH / 2) - cellWidth, y - cellHeight, DOOR_WIDTH, cellHeight);
 
         otherDoorinSubgrid.clear();
@@ -255,7 +255,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
 
     const rotateStep = () => {
         doorGraphics.clear();
-        console.log("clear door rotateStep");
+        //("clear door rotateStep");
         scene.time.delayedCall(100, () => {
             if (orientation === "V") {
                 orientation = "H";
@@ -268,7 +268,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
 
     const resetStep = () => {
         doorGraphics.clear();
-        console.log("celar door resetStep");
+        //console.log("celar door resetStep");
         scene.time.delayedCall(100, () => {
             drawStep(originalOrientation);
         });
@@ -287,7 +287,7 @@ function rotateDoor(doorGraphics, door_coord, scene, color, otherDoorinSubgrid, 
                 redrawDoors();
                 scene.time.delayedCall(100, () => {
                     doorSwitch = false; // Reset the flag here
-                    console.log("setting doorSwtich to false");
+                    //console.log("setting doorSwtich to false");
                 });
             });}
 
@@ -415,8 +415,8 @@ function crossesDoor(start, end, playerID) {
         return false; // Invalid player type
     }
 
-    console.log(playerID, validAdjustedDoors)
-    console.log(start, end)
+    //console.log(playerID, validAdjustedDoors)
+    //console.log(start, end)
 
     // const startExists = validAdjustedDoors.some(door => arraysEqual(door, start));
     // const endExists = validAdjustedDoors.some(door => arraysEqual(door, end));
@@ -425,19 +425,19 @@ function crossesDoor(start, end, playerID) {
     const endExists = validAdjustedDoors.find(door => arraysEqual(door, end));
     
     if (startExists) {
-        console.log("Entering the start door they own");
+        //console.log("Entering the start door they own");
         startExists[0] = startExists[0] === 6 ? 7 : startExists[0];
         startExists[0] = startExists[0] === 13 ? 14 : startExists[0];
         //let door = { coord: startExists, orientation: "V" };
         return startExists;
     } else if (endExists) {
-        console.log("Entering the end door they own");
+        //console.log("Entering the end door they own");
         endExists[0] = endExists[0] === 6 ? 7 : endExists[0];
         endExists[0] = endExists[0] === 13 ? 14 : endExists[0];
         //let door = { coord: endExists, orientation: "V" };
         return endExists;
     } else {
-        console.log('Entering a door they don\'t own');
+        //console.log('Entering a door they don\'t own');
         return false;
     }    
     
@@ -445,9 +445,9 @@ function crossesDoor(start, end, playerID) {
 
 function playerEntersSubgrid(currentX, currentY, newX, newY) {
     let currentPositionInSubgrid = playerInSubgrid(currentX, currentY);
-    console.log("current positioin in subgrid", currentPositionInSubgrid)
+    //console.log("current positioin in subgrid", currentPositionInSubgrid)
     let newPositionInSubgrid = playerInSubgrid(newX, newY);
-    console.log("new positioin in subgrid", newPositionInSubgrid)
+    //console.log("new positioin in subgrid", newPositionInSubgrid)
 
     return (!currentPositionInSubgrid && newPositionInSubgrid);
 }
@@ -479,8 +479,8 @@ function onTokenCollected(playerName, scene) {
         // Place new tokens on the grid
         //usedGrids = [];
         //usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerData.id);
-        console.log("what is scene referring to");
-        console.log(scene);
+        //console.log("what is scene referring to");
+        //console.log(scene);
         addStarTokens(scene, playerData.id);  
     }
 }
@@ -504,8 +504,8 @@ function addStarTokens(scene, playerID) {
     let chosenGrid = shuffledGrids[0];
     
     if (usedGrids.length > 0) {
-        console.log("resetting used grids");
-        console.log(usedGrids);
+        //console.log("resetting used grids");
+        //console.log(usedGrids);
         usedGrids = usedGrids.filter(usedGrid => usedGrid.playerId !== playerID);
     }
 
@@ -584,10 +584,10 @@ function cellToPixel(cellX) {
 
 function generateRandomTimeframe() {
     // Generate random start and end time for trapping, between 0 and 60 seconds
-    player1TrapTimeStart = Math.floor(Math.random() * 60);
+    player1TrapTimeStart = Math.floor(Math.random() * 30);
     player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
     
-    player2TrapTimeStart = Math.floor(Math.random() * 60);
+    player2TrapTimeStart = Math.floor(Math.random() * 30);
     player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
 }
 
@@ -646,17 +646,17 @@ function create() {
     // Call this function every second
     setInterval(updateGameTime, 1000);
 
-    setInterval(() => {
-        console.log("Current Time:", currentTime);
-      }, 5000); 
+    // setInterval(() => {
+    //     console.log("Current Time:", currentTime);
+    //   }, 5000); 
 
     calculateDoors();
 
     createSubGrids.call(this);
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, this));
-    console.log("door sprites:");
-    console.log(this.doorSprites);
+    //console.log("door sprites:");
+    //console.log(this.doorSprites);
 
     // player1 = this.add.sprite(cellSize / 2, cellSize / 2, 'player1').setScale(0.05); 
     // player2 = this.add.sprite(this.sys.game.config.width - cellSize / 2, this.sys.game.config.height - cellSize / 2, 'player2').setScale(0.05);
@@ -730,14 +730,14 @@ function handleMovement(player, dx, dy, playerID, scene) {
             // Movement across the door is allowed
             console.log("door allowed to cross");
             const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
-            console.log("door graphics is");
-            console.log(door_coord);
+            //console.log("door graphics is");
+            //console.log(door_coord);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
                 // Player has entered a sub-grid, so shuffle doors or perform other required actions.
                 //console.log('entering a subgrid. shuffle door');
                 let whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
-                console.log("which grid", whichGrid);
+                //console.log("which grid", whichGrid);
                 if (whichGrid) {
                     let grids = JSON.parse(whichGrid);
                     startGrid = grids[0];
@@ -763,6 +763,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 //     otherDoorinSubgridCoords = doors[0].coord;
                 // }
 
+
                 if (!playerOneTrapped && !playerTwoTrapped){
 
                     doorAICoords = update_doors(doors, doorAICoords)
@@ -780,10 +781,28 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     allDoors.forEach(door => drawDoor(door, scene));
                     console.log('entering a subgrid. shuffle door');
                 }
+                console.log(`Enter subgrid`);
+                console.log(`player1TrapTimeStart: ${player1TrapTimeStart}`);
+                console.log(`player1TrapTimeEnd: ${player1TrapTimeEnd}`);
+                console.log(`player2TrapTimeStart: ${player2TrapTimeStart}`);
+                console.log(`player2TrapTimeEnd: ${player2TrapTimeEnd}`);
+                console.log(`currentTime: ${currentTime}`);
+
+                if (playerID === "Human") {
+                    console.log("Condition 1: PlayerID is Human");
+                }
+                if (currentTime >= player1TrapTimeStart) {
+                    console.log("Condition 2: Current time is >= player1TrapTimeStart");
+                }
+                if (currentTime <= player1TrapTimeEnd) {
+                    console.log("Condition 3: Current time is <= player1TrapTimeEnd");
+                }
 
 
                 // Check if within trap timeframe for player1
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && currentTime <= player1TrapTimeEnd) {
+
+                    playerOneTrapped = true;
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
                     console.log("Human trapped");
@@ -809,6 +828,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 // Check if within trap timeframe for player2
                 if (playerID === "AI" && currentTime >= player2TrapTimeStart && currentTime <= player2TrapTimeEnd) {
+
+                    playerTwoTrapped = true;
                     // Change both doors to player1's color
                     doorColor = 0xFF0000;
                     console.log("AI trapped");
