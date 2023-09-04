@@ -56,7 +56,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true // set this to true
+            debug: false // set this to true
         }
     }
 };
@@ -704,7 +704,7 @@ function create() {
     //console.log("is token group populated");
     //console.log(this.tokenGroup.getChildren().length);
 
-    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
+    //this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
@@ -933,7 +933,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log("AI trapped");
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
-                    console.log(doorTrappedPlayer);
+                    //console.log(doorTrappedPlayer);
                     doorHumanCoords.push(doorTrappedPlayer);
                     console.log("new Human door", doorHumanCoords); 
 
