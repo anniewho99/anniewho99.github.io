@@ -604,8 +604,10 @@ function updateGameTime() {
 }
   
 function isCloseToDoor(player, nexToDoorPos) {
-    const doorStart = nexToDoorPos[0];
-    const doorEnd = nexToDoorPos[1];
+
+    console.log(nexToDoorPos);
+    let doorStart = nexToDoorPos[0];
+    let doorEnd = nexToDoorPos[1];
 
     console.log("next to door positions");
 
