@@ -8,6 +8,8 @@ const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
+const grid_width = 960;
+
 const players = {
     'Human': {
         id: 0,
@@ -691,7 +693,7 @@ function create() {
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
-    player2 = this.physics.add.sprite(this.sys.game.config.width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
+    player2 = this.physics.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
     player2.setCollideWorldBounds(true); 
     player2.name = 'AI'; 
     player2.data = players['AI']; 
@@ -994,7 +996,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
     }
 
     // If we reach here, it means the movement is allowed.
-    player.x = Phaser.Math.Clamp(potentialX, cellWidth / 2, game.config.width - cellHeight / 2);
+    player.x = Phaser.Math.Clamp(potentialX, cellWidth / 2, grid_width - cellHeight / 2);
     player.y = Phaser.Math.Clamp(potentialY, cellWidth / 2, game.config.height - cellHeight / 2);
 }
 
