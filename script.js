@@ -833,7 +833,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 // Check if within trap timeframe for player1
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && currentTime <= player1TrapTimeEnd) {
 
-                    playerOneTrapped = true;
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
                     console.log("Human trapped");
@@ -868,6 +867,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                     allDoors.forEach(door => drawDoor(door, scene));
+
+                    playerOneTrapped = true;
 
                 }
 
