@@ -609,16 +609,16 @@ function isCloseToDoor(player, nexToDoorPos) {
     let doorStart = nexToDoorPos[0];
     let doorEnd = nexToDoorPos[1];
 
-    console.log("next to door positions");
+    // console.log("next to door positions");
 
-    console.log(doorStart, doorEnd);
+    // console.log(doorStart, doorEnd);
 
     const playerCellX = Math.floor(player.x / cellWidth) + 1;
     const playerCellY = Math.floor(player.y / cellHeight) + 1;
 
-    console.log("player cellX, cellY");
+    // console.log("player cellX, cellY");
 
-    console.log(playerCellX, playerCellY);
+    // console.log(playerCellX, playerCellY);
 
 
     return (playerCellX === doorStart[0] && playerCellY === doorStart[1]) || 
@@ -727,9 +727,24 @@ function update() {
                 }
                 const currentTime = new Date().getTime();
                 if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
-                    console.log("saved trapped player");
-                    //reshuffleDoors(trappedSubgridDoors);
+                    
+                    doorToAdd = doorAICoords.pop();
+                    doorHumanCoords.push(doorToAdd);
+
+                    console.log("new human door");
+                    console.log(doorHumanCoords);
+
+                    console.log("new AI door");
+                    console.log(doorAICoords);
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    allDoors.forEach(door => drawDoor(door, this));
+
                     rescueStartTime = null; // Reset the start time
+                    playerOneTrapped = false;
+                    console.log("saved trapped player");
                 }
             } else {
             rescueStartTime = null; // Reset the start time
