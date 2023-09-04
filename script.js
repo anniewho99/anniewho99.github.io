@@ -819,7 +819,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorColor = 0xFF0000;
                     console.log("AI trapped");
 
-                    oorTrappedPlayer = { coord: door_coord, orientation: "V" };
+                    doorTrappedPlayer = { coord: door_coord, orientation: "V" };
+                    console.log(doorTrappedPlayer);
                     doorHumanCoords.push(doorTrappedPlayer);
                     console.log("new Human door", doorHumanCoords); 
 
