@@ -706,6 +706,8 @@ function create() {
 
     //this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
+    timeText = this.add.text(10, 10, '', { fontSize: '16px', fill: '#fff' });
+
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
 
@@ -716,6 +718,8 @@ function create() {
 
 function update() {
     updatePlayerPosition(player1, player2);
+
+    timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer1 Trap End: ${player1TrapTimeEnd}\nPlayer2 Trap Start: ${player2TrapTimeStart}\nPlayer2 Trap End: ${player2TrapTimeEnd}`);
 
     if(playerOneTrapped) {
         if (trappedDoors != null){
