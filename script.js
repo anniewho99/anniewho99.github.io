@@ -796,11 +796,18 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorAICoords.push(doorTrappedPlayer);
                     console.log("new AI door", doorAICoords); 
 
-                    const index = doorHumanCoords.indexOf(doorTrappedPlayer);
+                    let index = -1;
+                    for (let i = 0; i < doorHumanCoords.length; i++) {
+                    if (doorHumanCoords[i].coord === doorTrappedPlayer.coord) {
+                        index = i;
+                        break;
+                    }
+                    }
 
                     if (index > -1) {
                         doorHumanCoords.splice(index, 1);
-                      }
+                    }
+                    console.log(index);
                     
                     console.log("new Human door", doorHumanCoords); 
 
@@ -824,12 +831,19 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorHumanCoords.push(doorTrappedPlayer);
                     console.log("new Human door", doorHumanCoords); 
 
-                    const index = doorAICoords.indexOf(doorTrappedPlayer);
+                    let index = -1;
+                    for (let i = 0; i < doorAICoords.length; i++) {
+                    if (doorAICoords[i].coord === doorTrappedPlayer.coord) {
+                        index = i;
+                        break;
+                    }
+                    }
 
                     if (index > -1) {
                         doorAICoords.splice(index, 1);
-                      }
-
+                    }
+                    console.log(index);
+                    
                     console.log("new AI door", doorAICoords); 
 
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
