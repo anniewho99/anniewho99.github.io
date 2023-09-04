@@ -611,8 +611,8 @@ function isCloseToDoor(player, nexToDoorPos) {
 
     console.log(doorStart, doorEnd);
 
-    const playerCellX = Math.floor(player.x / cellWidth);
-    const playerCellY = Math.floor(player.y / cellHeight);
+    const playerCellX = Math.floor(player.x / cellWidth) + 1;
+    const playerCellY = Math.floor(player.y / cellHeight) + 1;
 
     console.log("player cellX, cellY");
 
@@ -824,7 +824,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 let startDoor = doors[0].coord;
                 let endDoor = doors[1].coord;
 
-                trappedDoors = ([startDoor [0] -  1, startDoor[1]], endDoor);
+                let trappedDoors = [[startDoor[0] - 1, startDoor[1]], endDoor];
                 // console.log("next to trapped door positions");
                 // console.log(trappedDoors);
 
