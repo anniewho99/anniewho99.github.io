@@ -719,7 +719,7 @@ function update() {
 
     if(playerOneTrapped) {
         if (trappedDoors != null){
-            console.log("trapped door updated");
+            //console.log("trapped door updated");
             if(isCloseToDoor(player2, trappedDoors)) {
                 if(rescueStartTime === null) {
                     console.log("start counting down");
@@ -744,6 +744,41 @@ function update() {
 
                     rescueStartTime = null; // Reset the start time
                     playerOneTrapped = false;
+                    console.log("saved trapped player");
+                }
+            } else {
+            rescueStartTime = null; // Reset the start time
+            }
+      }
+    }
+
+    if(playerTwoTrapped) {
+        if (trappedDoors != null){
+            //console.log("trapped door updated");
+            if(isCloseToDoor(player1, trappedDoors)) {
+                if(rescueStartTime === null) {
+                    console.log("start counting down");
+                    rescueStartTime = new Date().getTime();
+                }
+                const currentTime = new Date().getTime();
+                if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
+                    
+                    doorToAdd = doorHumanCoords.pop();
+                    doorAICoords.push(doorToAdd);
+
+                    console.log("new human door");
+                    console.log(doorHumanCoords);
+
+                    console.log("new AI door");
+                    console.log(doorAICoords);
+
+                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+
+                    allDoors.forEach(door => drawDoor(door, this));
+
+                    rescueStartTime = null; // Reset the start time
+                    playerTwoTrapped = false;
                     console.log("saved trapped player");
                 }
             } else {
