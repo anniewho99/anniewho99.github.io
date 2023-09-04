@@ -647,7 +647,6 @@ function create() {
     setInterval(updateGameTime, 1000);
 
     setInterval(() => {
-        const currentTime = new Date().toLocaleTimeString();
         console.log("Current Time:", currentTime);
       }, 5000); 
 
