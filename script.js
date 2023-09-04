@@ -45,7 +45,7 @@ let trappedDoors = null;
 
 let config = {
     type: Phaser.AUTO,
-    width: 960,
+    width: 1160,
     height: 640,
     backgroundColor: '#D2B48C',
     scene: {
@@ -706,7 +706,7 @@ function create() {
 
     //this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
-    timeText = this.add.text(10, 10, '', { fontSize: '16px', fill: '#fff' });
+    timeText = this.add.text(970, 10, '', { fontSize: '16px', fill: '#000' });
 
     // Keyboard controls
     this.input.keyboard.on('keydown', handleKeyDown.bind(this));
