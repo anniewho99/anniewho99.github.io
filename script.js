@@ -39,6 +39,10 @@ let gameDuration = 60; // Game lasts for 60 seconds
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
 
+let rescueStartTime = null;
+
+let trappedDoors = null;
+
 let config = {
     type: Phaser.AUTO,
     width: 960,
@@ -599,7 +603,26 @@ function updateGameTime() {
   }
 }
   
-  
+function isCloseToDoor(player, nexToDoorPos) {
+    const doorStart = nexToDoorPos[0];
+    const doorEnd = nexToDoorPos[1];
+
+    console.log("next to door positions");
+
+    console.log(doorStart, doorEnd);
+
+    const playerCellX = Math.floor(player.x / cellWidth);
+    const playerCellY = Math.floor(player.y / cellHeight);
+
+    console.log("player cellX, cellY");
+
+    console.log(playerCellX, playerCellY);
+
+
+    return (playerCellX === doorStart[0] && playerCellY === doorStart[1]) || 
+           (playerCellX === doorEnd[0] && playerCellY === doorEnd[1]);
+}
+
 
 let game = new Phaser.Game(config);
 
@@ -691,6 +714,24 @@ function create() {
 
 function update() {
     updatePlayerPosition(player1, player2);
+
+    if(playerOneTrapped) {
+        if(isCloseToDoor(player2, trappedDoors)) {
+          if(rescueStartTime === null) {
+            console.log("start counting down");
+            rescueStartTime = new Date().getTime();
+          }
+          const currentTime = new Date().getTime();
+          if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
+            console.log("saved trapped player");
+            //reshuffleDoors(trappedSubgridDoors);
+            rescueStartTime = null; // Reset the start time
+          }
+        } else {
+          rescueStartTime = null; // Reset the start time
+        }
+      }
+    
 }
 
 function handleMovement(player, dx, dy, playerID, scene) {
@@ -770,16 +811,22 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 console.log(`player2TrapTimeEnd: ${player2TrapTimeEnd}`);
                 console.log(`currentTime: ${currentTime}`);
 
-                if (playerID === "Human") {
-                    console.log("Condition 1: PlayerID is Human");
-                }
-                if (currentTime >= player1TrapTimeStart) {
-                    console.log("Condition 2: Current time is >= player1TrapTimeStart");
-                }
-                if (currentTime <= player1TrapTimeEnd) {
-                    console.log("Condition 3: Current time is <= player1TrapTimeEnd");
-                }
+                // if (playerID === "Human") {
+                //     console.log("Condition 1: PlayerID is Human");
+                // }
+                // if (currentTime >= player1TrapTimeStart) {
+                //     console.log("Condition 2: Current time is >= player1TrapTimeStart");
+                // }
+                // if (currentTime <= player1TrapTimeEnd) {
+                //     console.log("Condition 3: Current time is <= player1TrapTimeEnd");
+                // }
 
+                let startDoor = doors[0].coord;
+                let endDoor = doors[1].coord;
+
+                trappedDoors = ([startDoor [0] -  1, startDoor[1]], [endDoor]);
+                // console.log("next to trapped door positions");
+                // console.log(trappedDoors);
 
                 // Check if within trap timeframe for player1
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && currentTime <= player1TrapTimeEnd) {
@@ -811,6 +858,9 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log(index);
                     
                     console.log("new Human door", doorHumanCoords); 
+
+                    console.log("next to trapped door positions");
+                    console.log(trappedDoors);
 
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
