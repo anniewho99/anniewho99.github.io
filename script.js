@@ -828,7 +828,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 let startDoor = doors[0].coord;
                 let endDoor = doors[1].coord;
 
-                let trappedDoors = [[startDoor[0] - 1, startDoor[1]], endDoor];
+                trappedDoors = [[startDoor[0] - 1, startDoor[1]], endDoor];
                 // console.log("next to trapped door positions");
                 // console.log(trappedDoors);
 
