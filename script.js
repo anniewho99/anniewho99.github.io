@@ -798,15 +798,16 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     let index = -1;
                     for (let i = 0; i < doorHumanCoords.length; i++) {
-                    if (doorHumanCoords[i].coord === doorTrappedPlayer.coord) {
+                    if (arraysEqual(doorHumanCoords[i].coord, doorTrappedPlayer.coord)) {
                         index = i;
                         break;
                     }
                     }
 
                     if (index > -1) {
-                        doorHumanCoords.splice(index, 1);
+                    doorHumanCoords.splice(index, 1);
                     }
+
                     console.log(index);
                     
                     console.log("new Human door", doorHumanCoords); 
@@ -833,10 +834,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     let index = -1;
                     for (let i = 0; i < doorAICoords.length; i++) {
-                    if (doorAICoords[i].coord === doorTrappedPlayer.coord) {
-                        index = i;
-                        break;
-                    }
+                        if (arraysEqual(doorAICoords[i].coord, doorTrappedPlayer.coord)) {
+                            index = i;
+                            break;
+                        }
                     }
 
                     if (index > -1) {
