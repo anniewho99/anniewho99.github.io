@@ -718,22 +718,24 @@ function update() {
     updatePlayerPosition(player1, player2);
 
     if(playerOneTrapped) {
-        if(isCloseToDoor(player2, trappedDoors)) {
-          if(rescueStartTime === null) {
-            console.log("start counting down");
-            rescueStartTime = new Date().getTime();
-          }
-          const currentTime = new Date().getTime();
-          if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
-            console.log("saved trapped player");
-            //reshuffleDoors(trappedSubgridDoors);
+        if (trappedDoors != null){
+            console.log("trapped door updated");
+            if(isCloseToDoor(player2, trappedDoors)) {
+                if(rescueStartTime === null) {
+                    console.log("start counting down");
+                    rescueStartTime = new Date().getTime();
+                }
+                const currentTime = new Date().getTime();
+                if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
+                    console.log("saved trapped player");
+                    //reshuffleDoors(trappedSubgridDoors);
+                    rescueStartTime = null; // Reset the start time
+                }
+            } else {
             rescueStartTime = null; // Reset the start time
-          }
-        } else {
-          rescueStartTime = null; // Reset the start time
-        }
+            }
       }
-    
+    }
 }
 
 function handleMovement(player, dx, dy, playerID, scene) {
