@@ -58,7 +58,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false // set this to true
+            debug: true // set this to true
         }
     }
 };
@@ -706,7 +706,7 @@ function create() {
     //console.log("is token group populated");
     //console.log(this.tokenGroup.getChildren().length);
 
-    //this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
+    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
 
     timeText = this.add.text(970, 10, '', { fontSize: '16px', fill: '#000' });
 
@@ -817,7 +817,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     // First, check for forbidden moves. If forbidden, we immediately return.
     if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
-        //console.log("Move is forbidden.");
+        console.log("Move is forbidden.");
         return;
     }
 
