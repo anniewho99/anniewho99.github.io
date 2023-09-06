@@ -566,28 +566,18 @@ function onTokenHit(player, token) {
 
 //let playersMet = false;  // Flag variable, initialized outside of the update loop
 
-// function updatePlayerPosition(player1, player2) {
-//     const player1CellX = Math.floor(player1.x / cellWidth);
-//     const player1CellY = Math.floor(player1.y / cellHeight);
-//     const player2CellX = Math.floor(player2.x / cellWidth);
-//     const player2CellY = Math.floor(player2.y / cellHeight);
+function isPlayerinSameCell(player1, player2) {
+    const player1CellX = Math.floor(player1.x / cellWidth);
+    const player1CellY = Math.floor(player1.y / cellHeight);
+    const player2CellX = Math.floor(player2.x / cellWidth);
+    const player2CellY = Math.floor(player2.y / cellHeight);
     
-//     if (player1CellX === player2CellX && player1CellY === player2CellY) {
-//         playersMet = true;
-//         const offset = 7;
-//         player1.x = cellToPixel(player1CellX) - offset;
-//         player2.x = cellToPixel(player2CellX) + offset;
-//     } else {
-//         if (playersMet) {
-//             // This is the first frame after they have separated
-//             player1.x += 1;  // adjust the x-coordinate
-//             player2.x -= 1;  // adjust the x-coordinate
-//             playersMet = false;  // reset the flag
-//         }
-//         player1.x = cellToPixel(player1CellX);
-//         player2.x = cellToPixel(player2CellX);
-//     }
-// }
+    if (player1CellX === player2CellX && player1CellY === player2CellY) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function cellToPixel(cellX) {
     return cellX * cellWidth + cellWidth / 2;
@@ -733,31 +723,24 @@ function create() {
 
 function update() {
 
-    // Inside your update() method
-
-    const player1CellX = Math.floor(this.player1.x / cellWidth);
-    const player1CellY = Math.floor(this.player1.y / cellHeight);
-    const player2CellX = Math.floor(this.player2.x / cellWidth);
-    const player2CellY = Math.floor(this.player2.y / cellHeight);
-
-    if (player1CellX === player2CellX && player1CellY === player2CellY) {
+    if (isPlayerinSameCell(player1, player2)) {
         console.log("Players are in the same cell");
 
         // Update the position of the ghost sprites to match the real players
-        this.player1Ghost.x = this.player1.x - 7;
-        this.player2Ghost.x = this.player2.x + 7;
-        this.player1Ghost.y = this.player1.y;
-        this.player2Ghost.y = this.player2.y;
+        this.player1Ghost.x = player1.x - 7;
+        this.player2Ghost.x = player2.x + 7;
+        this.player1Ghost.y = player1.y;
+        this.player2Ghost.y = player2.y;
 
         // Hide the real players and show the ghosts
-        this.player1.setVisible(false);
-        this.player2.setVisible(false);
+        player1.setVisible(false);
+        player2.setVisible(false);
         this.player1Ghost.setVisible(true);
         this.player2Ghost.setVisible(true);
     } else {
         // Show the real players and hide the ghosts
-        this.player1.setVisible(true);
-        this.player2.setVisible(true);
+        player1.setVisible(true);
+        player2.setVisible(true);
         this.player1Ghost.setVisible(false);
         this.player2Ghost.setVisible(false);
     }
