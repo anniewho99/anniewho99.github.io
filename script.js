@@ -601,8 +601,6 @@ function updateGameTime() {
 }
   
 function isCloseToDoor(player, nexToDoorPos) {
-
-    console.log(nexToDoorPos);
     let doorStart = nexToDoorPos[0];
     let doorEnd = nexToDoorPos[1];
 
@@ -807,7 +805,7 @@ function update() {
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
-                    scene.doorSprites = [];
+                    this.doorSprites = [];
                     allDoors.forEach(door => drawDoor(door, this));
 
                     rescueStartTime = null; // Reset the start time
