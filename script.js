@@ -994,12 +994,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
             console.log("door not allowed to cross");
-            console.log(Math.floor(player.x/ cellWidth), Math.floor(player.y/ cellHeight), Math.floor((player.x + dx)/cellWidth), Math.floor((player.y + dy)/ cellHeight));
+            console.log(currentGridX, currentGridY, nextGridX, nextGridY);
             return;
         }
     }else{
         console.log("not door movement");
-        console.log(Math.floor(player.x/ cellWidth), Math.floor(player.y/ cellHeight), Math.floor((player.x + dx)/cellWidth), Math.floor((player.y + dy)/ cellHeight));
+        console.log(currentGridX, currentGridY,nextGridX, nextGridY);
     }
 
     // If we reach here, it means the movement is allowed.
@@ -1008,12 +1008,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
     player.x = potentialX;
     player.y = potentialY;
 
-    const playerCellX = Math.floor(player.x / cellWidth);
-    const playerCellY = Math.floor(player.y / cellHeight);
     console.log("current player X");
-    console.log(playerCellX);
+    console.log(nextGridX);
     console.log("current player Y");
-    console.log(playerCellY);
+    console.log(nextGridY);
 }
 
 function handleKeyDown(event) {
