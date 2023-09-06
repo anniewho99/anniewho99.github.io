@@ -711,7 +711,7 @@ function create() {
     //console.log("is token group populated");
     //console.log(this.tokenGroup.getChildren().length);
 
-    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0.75);
+    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0);
 
     timeText = this.add.text(970, 10, '', { fontSize: '16px', fill: '#000' });
 
