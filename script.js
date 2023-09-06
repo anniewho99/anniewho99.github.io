@@ -534,8 +534,8 @@ function addStarTokens(scene, playerID) {
 
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
-                let star = scene.physics.add.sprite((x * cellWidth) - 20, (y * cellHeight) - 20, 'star').setTint(color);
-                star.setScale(0.04);
+                let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'star').setTint(color);
+                star.setScale(0.03);
                 star.color = color;  
                 scene.tokenGroup.add(star);  
                 addedCoordinates.push([x, y]);
@@ -821,6 +821,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
         return;
     }
 
+    if (potentialX > grid_width || potentialX < 0 || potentialY < 0 || potentialY > game.config.height) {
+        console.log("Attempt to move out of board detected.");
+        return;
+    }    
+
     movement = [[currentGridX, currentGridY], [nextGridX, nextGridY]];
     const cross_door = door_movements.some(door_movement => arraysEqual(door_movement[0], movement[0]) && arraysEqual(door_movement[1], movement[1]));
 
@@ -996,8 +1001,17 @@ function handleMovement(player, dx, dy, playerID, scene) {
     }
 
     // If we reach here, it means the movement is allowed.
-    player.x = Phaser.Math.Clamp(potentialX, cellWidth / 2, grid_width - cellHeight / 2);
-    player.y = Phaser.Math.Clamp(potentialY, cellWidth / 2, game.config.height - cellHeight / 2);
+    // player.x = Phaser.Math.Clamp(potentialX, cellWidth / 2, grid_width - cellHeight / 2);
+    // player.y = Phaser.Math.Clamp(potentialY, cellWidth / 2, game.config.height - cellHeight / 2);
+    player.x = potentialX;
+    player.y = potentialY;
+
+    const playerCellX = Math.floor(player.x / cellWidth);
+    const playerCellY = Math.floor(player.y / cellHeight);
+    console.log("current player X");
+    console.log(playerCellX);
+    console.log("current player Y");
+    console.log(playerCellY);
 }
 
 function handleKeyDown(event) {
