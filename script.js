@@ -564,30 +564,30 @@ function onTokenHit(player, token) {
     }
 }
 
-let playersMet = false;  // Flag variable, initialized outside of the update loop
+//let playersMet = false;  // Flag variable, initialized outside of the update loop
 
-function updatePlayerPosition(player1, player2) {
-    const player1CellX = Math.floor(player1.x / cellWidth);
-    const player1CellY = Math.floor(player1.y / cellHeight);
-    const player2CellX = Math.floor(player2.x / cellWidth);
-    const player2CellY = Math.floor(player2.y / cellHeight);
+// function updatePlayerPosition(player1, player2) {
+//     const player1CellX = Math.floor(player1.x / cellWidth);
+//     const player1CellY = Math.floor(player1.y / cellHeight);
+//     const player2CellX = Math.floor(player2.x / cellWidth);
+//     const player2CellY = Math.floor(player2.y / cellHeight);
     
-    if (player1CellX === player2CellX && player1CellY === player2CellY) {
-        playersMet = true;
-        const offset = 7;
-        player1.x = cellToPixel(player1CellX) - offset;
-        player2.x = cellToPixel(player2CellX) + offset;
-    } else {
-        if (playersMet) {
-            // This is the first frame after they have separated
-            player1.x += 1;  // adjust the x-coordinate
-            player2.x -= 1;  // adjust the x-coordinate
-            playersMet = false;  // reset the flag
-        }
-        player1.x = cellToPixel(player1CellX);
-        player2.x = cellToPixel(player2CellX);
-    }
-}
+//     if (player1CellX === player2CellX && player1CellY === player2CellY) {
+//         playersMet = true;
+//         const offset = 7;
+//         player1.x = cellToPixel(player1CellX) - offset;
+//         player2.x = cellToPixel(player2CellX) + offset;
+//     } else {
+//         if (playersMet) {
+//             // This is the first frame after they have separated
+//             player1.x += 1;  // adjust the x-coordinate
+//             player2.x -= 1;  // adjust the x-coordinate
+//             playersMet = false;  // reset the flag
+//         }
+//         player1.x = cellToPixel(player1CellX);
+//         player2.x = cellToPixel(player2CellX);
+//     }
+// }
 
 function cellToPixel(cellX) {
     return cellX * cellWidth + cellWidth / 2;
@@ -596,10 +596,10 @@ function cellToPixel(cellX) {
 function generateRandomTimeframe() {
     // Generate random start and end time for trapping, between 0 and 60 seconds
     player1TrapTimeStart = Math.floor(Math.random() * 30);
-    player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
+    //player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
     
     player2TrapTimeStart = Math.floor(Math.random() * 30);
-    player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
+    //player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
 }
 
 // Increment current time and check for game end
@@ -724,9 +724,9 @@ function create() {
 }
 
 function update() {
-    updatePlayerPosition(player1, player2);
+    //updatePlayerPosition(player1, player2);
 
-    timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer1 Trap End: ${player1TrapTimeEnd}\nPlayer2 Trap Start: ${player2TrapTimeStart}\nPlayer2 Trap End: ${player2TrapTimeEnd}`);
+    timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer2 Trap Start: ${player2TrapTimeStart}`);
 
     if(playerOneTrapped) {
         if (trappedDoors != null){
@@ -899,7 +899,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 // console.log(trappedDoors);
 
                 // Check if within trap timeframe for player1
-                if (playerID === "Human" && currentTime >= player1TrapTimeStart && currentTime <= player1TrapTimeEnd) {
+                if (playerID === "Human" && currentTime >= player1TrapTimeStart) {
 
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
@@ -941,7 +941,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 }
 
                 // Check if within trap timeframe for player2
-                if (playerID === "AI" && currentTime >= player2TrapTimeStart && currentTime <= player2TrapTimeEnd) {
+                if (playerID === "AI" && currentTime >= player2TrapTimeStart) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
