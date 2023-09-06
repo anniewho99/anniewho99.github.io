@@ -698,10 +698,18 @@ function create() {
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
+
     player2 = this.physics.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
     player2.setCollideWorldBounds(true); 
     player2.name = 'AI'; 
     player2.data = players['AI']; 
+
+    //player ghost for when in the same cell  
+    this.player1Ghost = this.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04);
+    this.player2Ghost = this.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
+    this.player1Ghost.setVisible(false);
+    this.player2Ghost.setVisible(false);
+
 
     //star token groups
     this.tokenGroup = this.physics.add.group();
@@ -724,7 +732,35 @@ function create() {
 }
 
 function update() {
-    //updatePlayerPosition(player1, player2);
+
+    // Inside your update() method
+
+    const player1CellX = Math.floor(this.player1.x / cellWidth);
+    const player1CellY = Math.floor(this.player1.y / cellHeight);
+    const player2CellX = Math.floor(this.player2.x / cellWidth);
+    const player2CellY = Math.floor(this.player2.y / cellHeight);
+
+    if (player1CellX === player2CellX && player1CellY === player2CellY) {
+        console.log("Players are in the same cell");
+
+        // Update the position of the ghost sprites to match the real players
+        this.player1Ghost.x = this.player1.x - 7;
+        this.player2Ghost.x = this.player2.x + 7;
+        this.player1Ghost.y = this.player1.y;
+        this.player2Ghost.y = this.player2.y;
+
+        // Hide the real players and show the ghosts
+        this.player1.setVisible(false);
+        this.player2.setVisible(false);
+        this.player1Ghost.setVisible(true);
+        this.player2Ghost.setVisible(true);
+    } else {
+        // Show the real players and hide the ghosts
+        this.player1.setVisible(true);
+        this.player2.setVisible(true);
+        this.player1Ghost.setVisible(false);
+        this.player2Ghost.setVisible(false);
+    }
 
     timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer2 Trap Start: ${player2TrapTimeStart}`);
 
