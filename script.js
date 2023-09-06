@@ -754,7 +754,7 @@ function update() {
                     allDoors.forEach(door => drawDoor(door, this));
 
                     rescueStartTime = null; // Reset the start time
-                    playerOneTrapped = false;
+                    playerOneTrapped = 0;
                     console.log("saved trapped player");
                 }
             } else {
@@ -789,7 +789,7 @@ function update() {
                     allDoors.forEach(door => drawDoor(door, this));
 
                     rescueStartTime = null; // Reset the start time
-                    playerTwoTrapped = false;
+                    playerTwoTrapped = 0;
                     console.log("saved trapped player");
                 }
             } else {
@@ -899,7 +899,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 // console.log(trappedDoors);
 
                 // Check if within trap timeframe for player1
-                if (playerID === "Human" && currentTime >= player1TrapTimeStart) {
+                if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped != 0) {
 
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
@@ -941,7 +941,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 }
 
                 // Check if within trap timeframe for player2
-                if (playerID === "AI" && currentTime >= player2TrapTimeStart) {
+                if (playerID === "AI" && currentTime >= player2TrapTimeStart && playerTwoTrapped != 0) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
