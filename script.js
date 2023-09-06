@@ -33,8 +33,8 @@ let usedGrids = [];
 let isDoorRotating = false;
 let doorSwitch = false;
 
-let player1TrapTimeStart, player1TrapTimeEnd;
-let player2TrapTimeStart, player2TrapTimeEnd;
+let player1TrapTimeStart;
+let player2TrapTimeStart;
 let currentTime = 0; // Start time in seconds
 let gameDuration = 60; // Game lasts for 60 seconds
 
@@ -669,11 +669,11 @@ function create() {
 
     console.log("player 1 timeframe");
 
-    console.log(player1TrapTimeStart, player1TrapTimeEnd);
+    console.log(player1TrapTimeStart);
 
     console.log("player 2 timeframe");
 
-    console.log(player2TrapTimeStart, player2TrapTimeEnd);
+    console.log(player2TrapTimeStart);
 
     // Call this function every second
     setInterval(updateGameTime, 1000);
@@ -876,9 +876,9 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 console.log(`Enter subgrid`);
                 console.log(`player1TrapTimeStart: ${player1TrapTimeStart}`);
-                console.log(`player1TrapTimeEnd: ${player1TrapTimeEnd}`);
+                //console.log(`player1TrapTimeEnd: ${player1TrapTimeEnd}`);
                 console.log(`player2TrapTimeStart: ${player2TrapTimeStart}`);
-                console.log(`player2TrapTimeEnd: ${player2TrapTimeEnd}`);
+                //console.log(`player2TrapTimeEnd: ${player2TrapTimeEnd}`);
                 console.log(`currentTime: ${currentTime}`);
 
                 // if (playerID === "Human") {
@@ -899,7 +899,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 // console.log(trappedDoors);
 
                 // Check if within trap timeframe for player1
-                if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped != 0) {
+                if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped == false) {
 
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
@@ -941,7 +941,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 }
 
                 // Check if within trap timeframe for player2
-                if (playerID === "AI" && currentTime >= player2TrapTimeStart && playerTwoTrapped != 0) {
+                if (playerID === "AI" && currentTime >= player2TrapTimeStart && playerTwoTrapped == false) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
