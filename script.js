@@ -728,7 +728,7 @@ function update() {
 
     timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer2 Trap Start: ${player2TrapTimeStart}`);
 
-    if(playerOneTrapped) {
+    if(playerOneTrapped === true) {
         if (trappedDoors != null){
             //console.log("trapped door updated");
             if(isCloseToDoor(player2, trappedDoors)) {
@@ -763,7 +763,7 @@ function update() {
       }
     }
 
-    if(playerTwoTrapped) {
+    if(playerTwoTrapped === true) {
         if (trappedDoors != null){
             //console.log("trapped door updated");
             if(isCloseToDoor(player1, trappedDoors)) {
@@ -974,7 +974,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     allDoors.forEach(door => drawDoor(door, scene));
                 }
 
-                if (!playerOneTrapped && !playerTwoTrapped){
+                if (playerOneTrapped !== true && playerTwoTrapped !== true){
 
                     doorAICoords = update_doors(doors, doorAICoords)
                     doorHumanCoords = update_doors(doors, doorHumanCoords)
@@ -998,13 +998,13 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
         } else {
             // If the player is trying to cross a door and it's not allowed, then return
-            console.log("door not allowed to cross");
-            console.log(currentGridX, currentGridY, nextGridX, nextGridY);
+            // console.log("door not allowed to cross");
+            // console.log(currentGridX, currentGridY, nextGridX, nextGridY);
             return;
         }
     }else{
         console.log("not door movement");
-        console.log(currentGridX, currentGridY,nextGridX, nextGridY);
+        // console.log(currentGridX, currentGridY,nextGridX, nextGridY);
     }
 
     // If we reach here, it means the movement is allowed.
@@ -1013,10 +1013,10 @@ function handleMovement(player, dx, dy, playerID, scene) {
     player.x = potentialX;
     player.y = potentialY;
 
-    console.log("current player X");
-    console.log(nextGridX);
-    console.log("current player Y");
-    console.log(nextGridY);
+    // console.log("current player X");
+    // console.log(nextGridX);
+    // console.log("current player Y");
+    // console.log(nextGridY);
 }
 
 function handleKeyDown(event) {
