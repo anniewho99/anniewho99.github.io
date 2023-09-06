@@ -770,6 +770,8 @@ function update() {
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
+                    this.doorSprites = [];
+
                     allDoors.forEach(door => drawDoor(door, this));
 
                     rescueStartTime = null; // Reset the start time
@@ -805,6 +807,7 @@ function update() {
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
+                    scene.doorSprites = [];
                     allDoors.forEach(door => drawDoor(door, this));
 
                     rescueStartTime = null; // Reset the start time
@@ -953,6 +956,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
+                    scene.doorSprites = [];
                     allDoors.forEach(door => drawDoor(door, scene));
 
                     playerOneTrapped = true;
@@ -990,6 +994,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
+                    scene.doorSprites = [];
                     allDoors.forEach(door => drawDoor(door, scene));
                 }
 
@@ -1007,6 +1012,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorSwitch = true;
 
                     //will change this later
+                    scene.doorSprites = [];
                     allDoors.forEach(door => drawDoor(door, scene));
                     console.log('entering a subgrid. shuffle door');
                 }
