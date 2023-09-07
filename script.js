@@ -231,7 +231,7 @@ const coverDoor = (doorCoord, scene) => {
     const coverGraphics = scene.add.graphics();
     
     // Set the fill style to the background color (replace with your background color)
-    coverGraphics.fillStyle('#D2B48C');
+    coverGraphics.fillStyle(0xD2B48C);
   
     // Draw the rectangle at the door's position
     coverGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellWidth, doorY - cellHeight, DOOR_WIDTH, cellHeight);
