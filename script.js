@@ -238,7 +238,7 @@ const coverDoor = (doorCoord, scene) => {
     console.log("generate covered door");
   
     // Make the cover disappear after a set time (e.g., 1 second)
-    scene.time.delayedCall(500, () => {
+    scene.time.delayedCall(300, () => {
       coverGraphics.clear();
       console.log("clear covered door");
     });
@@ -868,7 +868,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                     doorSwitch = true;
-                    scene.time.delayedCall(500, () => {
+                    scene.time.delayedCall(300, () => {
                         scene.doorSprites = [];
                         allDoors.forEach(door => drawDoor(door, scene));
                         console.log('entering a subgrid. shuffle door');
