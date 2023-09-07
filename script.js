@@ -868,7 +868,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
                     doorSwitch = true;
-                    scene.time.delayedCall(600, () => {
+                    scene.time.delayedCall(500, () => {
                         scene.doorSprites = [];
                         allDoors.forEach(door => drawDoor(door, scene));
                         console.log('entering a subgrid. shuffle door');
