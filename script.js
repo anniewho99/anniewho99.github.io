@@ -221,9 +221,7 @@ function drawDoor(door, scene) {
     scene.doorSprites.push({graphics: doorGraphics, coord: door.coord});
 }
 
-const coverDoor = (doorObj, scene) => {
-    // Extract the Graphics object and coordinates from the doorObj
-    const { graphics: doorGraphics, coord: doorCoord } = doorObj;
+const coverDoor = (doorCoord, scene) => {
   
     // Calculate doorX and doorY based on doorCoord
     const doorX = doorCoord[0] * cellWidth;
@@ -732,10 +730,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let nextGridX = Math.round(potentialX / cellWidth);
     let nextGridY = Math.round(potentialY / cellHeight);
 
-    let doorColor = undefined;
-    let otherDoorinSubgrid = undefined;
-    let otherDoorinSubgridCoords = [];
-
     if (playerID == "Human"){
         doorColor = 0xFF0000;
         doorColorOther = 0x0000FF;
@@ -764,8 +758,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
         if (door_coord) {
             // Movement across the door is allowed
             console.log("door allowed to cross");
-            const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
-            coverDoor(targetDoorGraphics, scene);
+            //const targetDoorGraphics = findDoorSprite(door_coord, scene.doorSprites);
+            coverDoor(door_coord, scene);
             //console.log("door graphics is");
             //console.log(door_coord);
 
