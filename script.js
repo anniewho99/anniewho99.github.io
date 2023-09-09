@@ -777,7 +777,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 let startDoor = doors[0].coord;
                 let endDoor = doors[1].coord;
 
-                trappedDoors = [[startDoor[0], startDoor[1]], (endDoor[0] -1, endDoor[1])];
+                trappedDoors = [[startDoor[0], startDoor[1]], [endDoor[0] -1, endDoor[1]]];
 
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false) {
 
