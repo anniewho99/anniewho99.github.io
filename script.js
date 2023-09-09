@@ -779,7 +779,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 trappedDoors = [[startDoor[0], startDoor[1]], [endDoor[0] -1, endDoor[1]]];
 
-                if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false) {
+                if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false && playerTwoTrapped !== true) {
 
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
@@ -822,7 +822,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 }
 
                 // Check if within trap timeframe for player2
-                if (playerID === "AI" && currentTime >= player2TrapTimeStart && playerTwoTrapped === false) {
+                if (playerID === "AI" && currentTime >= player2TrapTimeStart && playerTwoTrapped === false && playerOneTrapped !== true) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
