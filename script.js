@@ -466,8 +466,13 @@ function addStarTokens(scene, playerID) {
 
     let chosenGrid = shuffledGrids[0];
 
-    tokenInfo.locations = [];
-    tokenInfo.subgrid = chosenGrid;
+    if (playerID === 1){
+
+        tokenInfo.locations = [];
+        tokenInfo.subgrid = chosenGrid;
+        console.log("update tokenInfo");
+        console.log(tokenInfo.subgrid);
+    }
     
     if (usedGrids.length > 0) {
         //console.log("resetting used grids");
@@ -497,9 +502,13 @@ function addStarTokens(scene, playerID) {
                 let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'star').setTint(color);
                 star.setScale(0.03);
                 star.color = color;  
-                scene.tokenGroup.add(star);  
+                scene.tokenGroup.add(star);
+                
+                if (playerID === 1){
 
-                tokenInfo.locations.push({x, y});
+                    tokenInfo.locations.push({x, y});
+                    console.log(tokenInfo.locations);
+                }
 
                 addedCoordinates.push([x, y]);
                 count++;
