@@ -583,6 +583,39 @@ function isCloseToDoor(player, nexToDoorPos) {
            (playerCellX === doorEnd[0] && playerCellY === doorEnd[1]);
 }
 
+function findEndCoordinates(chosenGrid, aiDoors) {
+    // Calculate the average y-coordinate of the chosenGrid
+    const avgY = (chosenGrid.start[1] + chosenGrid.end[1]) / 2;
+    
+    // Search through doorAIadjusted to find a door with the same x-coordinate
+    // as either the start or end x-coordinate of the chosenGrid and a y-coordinate close to avgY.
+    const matchingDoor = aiDoors.find(door => {
+      return (door[0] === chosenGrid.start[0] || door[0] === chosenGrid.end[0]) &&
+             Math.abs(door[1] - avgY) < 1e-6;  // The '1e-6' is a small tolerance value
+    });
+  
+    console.log("matchingDoor");
+    console.log(matchingDoor);
+
+    console.log(aiDoors);
+    console.log(avgY);
+
+    let endX, endY;
+  
+    if (matchingDoor) {
+      if (matchingDoor[0] === chosenGrid.start[0]) {
+        endX = matchingDoor[0] - 1;
+      } else if (matchingDoor[0] === chosenGrid.end[0]) {
+        endX = matchingDoor[0] + 1;
+      }
+      endY = matchingDoor[1];
+    } else {
+      // Handle case where no matching door is found if needed
+    }
+  
+    return { endX, endY };
+  }
+
 
 let game = new Phaser.Game(config);
 
@@ -1012,33 +1045,6 @@ function moveAIAlongPath(path) {
         pathIndex++;
     }
 }
-
-function findEndCoordinates(chosenGrid, aiDoors) {
-    // Calculate the average y-coordinate of the chosenGrid
-    const avgY = (chosenGrid.start[1] + chosenGrid.end[1]) / 2;
-    
-    // Search through doorAIadjusted to find a door with the same x-coordinate
-    // as either the start or end x-coordinate of the chosenGrid and a y-coordinate close to avgY.
-    const matchingDoor = aiDoors.find(door => {
-      return (door[0] === chosenGrid.start[0] || door[0] === chosenGrid.end[0]) &&
-             Math.abs(door[1] - avgY) < 1e-6;  // The '1e-6' is a small tolerance value
-    });
-  
-    let endX, endY;
-  
-    if (matchingDoor) {
-      if (matchingDoor[0] === chosenGrid.start[0]) {
-        endX = matchingDoor[0] - 1;
-      } else if (matchingDoor[0] === chosenGrid.end[0]) {
-        endX = matchingDoor[0] + 1;
-      }
-      endY = matchingDoor[1];
-    } else {
-      // Handle case where no matching door is found if needed
-    }
-  
-    return { endX, endY };
-  }
   
 
 
