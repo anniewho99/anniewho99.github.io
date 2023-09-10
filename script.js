@@ -47,6 +47,9 @@ let trappedDoors = null;
 
 let lastAIUpdate = 0;
 const AIUpdateInterval = 500;
+let aiStartX = 15;
+let aiStartY = 15;
+
 let tokenInfo = {
     locations: [],
     subgrid: null
@@ -959,7 +962,13 @@ function handleKeyDown(event) {
 }
 
 function handleAIMovement() {
-    easystar.findPath(startX, startY, endX, endY, function(path) {
+
+    const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+
+    console.log("aistartX, aistartY, endX, endY");
+    console.log(aistartX, aistartY, endX, endY);
+
+    easystar.findPath(aistartX, aistartY, endX, endY, function(path) {
         if (path === null) {
             console.log("Path was not found.");
         } else {
@@ -974,6 +983,9 @@ function moveAIAlongPath(path) {
     if (pathIndex < path.length - 1) {
         const nextPoint = path[pathIndex + 1];
         const currentPoint = path[pathIndex];
+
+        aiStartX = nextPoint.x;
+        aiStartY = nextPoint.y;
 
         const dx = nextPoint.x - currentPoint.x;
         const dy = nextPoint.y - currentPoint.y;
@@ -992,6 +1004,32 @@ function moveAIAlongPath(path) {
     }
 }
 
-
+function findEndCoordinates(chosenGrid, aiDoors) {
+    // Calculate the average y-coordinate of the chosenGrid
+    const avgY = (chosenGrid.start[1] + chosenGrid.end[1]) / 2;
+    
+    // Search through doorAIadjusted to find a door with the same x-coordinate
+    // as either the start or end x-coordinate of the chosenGrid and a y-coordinate close to avgY.
+    const matchingDoor = aiDoors.find(door => {
+      return (door[0] === chosenGrid.start[0] || door[0] === chosenGrid.end[0]) &&
+             Math.abs(door[1] - avgY) < 1e-6;  // The '1e-6' is a small tolerance value
+    });
+  
+    let endX, endY;
+  
+    if (matchingDoor) {
+      if (matchingDoor[0] === chosenGrid.start[0]) {
+        endX = matchingDoor[0] - 1;
+      } else if (matchingDoor[0] === chosenGrid.end[0]) {
+        endX = matchingDoor[0] + 1;
+      }
+      endY = matchingDoor[1];
+    } else {
+      // Handle case where no matching door is found if needed
+    }
+  
+    return { endX, endY };
+  }
+  
 
 
