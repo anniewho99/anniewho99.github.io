@@ -596,16 +596,17 @@ function findEndCoordinates(chosenGrid, aiDoors) {
   
     console.log("matchingDoor");
     console.log(matchingDoor);
+    console.log(doorAIadjusted);
 
     let endX, endY;
   
     if (matchingDoor) {
       if (matchingDoor[0] === chosenGrid.start[0]) {
-        endX = matchingDoor[0] - 1;
+        endX = matchingDoor[0] - 2;
       } else if (matchingDoor[0] === chosenGrid.end[0]) {
-        endX = matchingDoor[0] + 1;
+        endX = matchingDoor[0];
       }
-      endY = matchingDoor[1];
+      endY = matchingDoor[1] - 1;
     } else {
       // Handle case where no matching door is found if needed
     }
@@ -1006,9 +1007,6 @@ function handleKeyDown(event) {
 function handleAIMovement() {
 
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
-
-    console.log("aistartX, aistartY, endX, endY");
-    console.log(aiStartX, aiStartY, endX, endY);
 
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
         if (path === null) {
