@@ -50,6 +50,8 @@ const AIUpdateInterval = 500;
 let aiStartX = 15;
 let aiStartY = 15;
 
+let pathIndex = 0;
+
 let tokenInfo = {
     locations: [],
     subgrid: null
