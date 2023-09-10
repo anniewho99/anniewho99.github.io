@@ -597,9 +597,6 @@ function findEndCoordinates(chosenGrid, aiDoors) {
     console.log("matchingDoor");
     console.log(matchingDoor);
 
-    console.log(aiDoors);
-    console.log(avgY);
-
     let endX, endY;
   
     if (matchingDoor) {
@@ -612,8 +609,11 @@ function findEndCoordinates(chosenGrid, aiDoors) {
     } else {
       // Handle case where no matching door is found if needed
     }
+
+    console.log(endX, endY);
+
   
-    return { endX, endY };
+    return [ endX, endY ];
   }
 
 
