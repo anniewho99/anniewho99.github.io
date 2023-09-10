@@ -1008,9 +1008,9 @@ function handleAIMovement() {
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
 
     console.log("aistartX, aistartY, endX, endY");
-    console.log(aistartX, aistartY, endX, endY);
+    console.log(aiStartX, aiStartY, endX, endY);
 
-    easystar.findPath(aistartX, aistartY, endX, endY, function(path) {
+    easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
         if (path === null) {
             console.log("Path was not found.");
         } else {
