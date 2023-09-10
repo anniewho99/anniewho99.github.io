@@ -45,6 +45,13 @@ let rescueStartTime = null;
 
 let trappedDoors = null;
 
+let lastAIUpdate = 0;
+const AIUpdateInterval = 500;
+let tokenInfo = {
+    locations: [],
+    subgrid: null
+  };
+
 let config = {
     type: Phaser.AUTO,
     width: 1200,
@@ -76,6 +83,31 @@ const DIRECTIONS = [
     [-1, 0],  // left
     [1, 0]    // right
 ];
+
+const initialGrid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ];
+
+const subGrid = [
+    [1, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 1]
+]
 
 let pointsDict = {};
 
@@ -430,6 +462,9 @@ function addStarTokens(scene, playerID) {
     }
 
     let chosenGrid = shuffledGrids[0];
+
+    tokenInfo.locations = [];
+    tokenInfo.subgrid = chosenGrid;
     
     if (usedGrids.length > 0) {
         //console.log("resetting used grids");
@@ -460,6 +495,9 @@ function addStarTokens(scene, playerID) {
                 star.setScale(0.03);
                 star.color = color;  
                 scene.tokenGroup.add(star);  
+
+                tokenInfo.locations.push({x, y});
+
                 addedCoordinates.push([x, y]);
                 count++;
             }
@@ -602,6 +640,10 @@ function create() {
     this.player1Ghost.setVisible(false);
     this.player2Ghost.setVisible(false);
 
+    easystar = new EasyStar.js();
+    easystar.setGrid(initialGrid);
+    easystar.setAcceptableTiles([0]); 
+
 
     //star token groups
     this.tokenGroup = this.physics.add.group();
@@ -621,7 +663,12 @@ function create() {
 
 }
 
-function update() {
+function update(time) {
+
+    if (time - lastAIUpdate > AIUpdateInterval) {
+        handleAIMovement();
+        lastAIUpdate = time;
+    }
 
     if (isPlayerinSameCell(player1, player2)) {
         console.log("Players are in the same cell");
@@ -908,21 +955,43 @@ function handleKeyDown(event) {
             handleMovement(player1, cellWidth, 0, "Human", scene);
             break;
 
-        // Player 2
-        case 'KeyW':
-            handleMovement(player2, 0, -cellHeight, "AI", scene);
-            break;
-        case 'KeyS':
-            handleMovement(player2, 0, cellHeight, "AI", scene);
-            break;
-        case 'KeyA':
-            handleMovement(player2, -cellWidth, 0, "AI", scene);
-            break;
-        case 'KeyD':
-            handleMovement(player2, cellWidth, 0, "AI", scene);
-            break;
     }
 }
+
+function handleAIMovement() {
+    easystar.findPath(startX, startY, endX, endY, function(path) {
+        if (path === null) {
+            console.log("Path was not found.");
+        } else {
+            moveAIAlongPath(path);
+        }
+    });
+    easystar.calculate(); // Important to run calculations
+}
+
+function moveAIAlongPath(path) {
+
+    if (pathIndex < path.length - 1) {
+        const nextPoint = path[pathIndex + 1];
+        const currentPoint = path[pathIndex];
+
+        const dx = nextPoint.x - currentPoint.x;
+        const dy = nextPoint.y - currentPoint.y;
+
+        if (dx > 0) {
+            handleMovement(player2, cellWidth, 0, "AI", this);
+        } else if (dx < 0) {
+            handleMovement(player2, -cellWidth, 0, "AI", this);
+        } else if (dy > 0) {
+            handleMovement(player2, 0, cellHeight, "AI", this);
+        } else if (dy < 0) {
+            handleMovement(player2, 0, -cellHeight, "AI", this);
+        }
+
+        pathIndex++;
+    }
+}
+
 
 
 
