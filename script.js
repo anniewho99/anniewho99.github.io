@@ -574,7 +574,8 @@ function generateRandomTimeframe() {
     player1TrapTimeStart = Math.floor(Math.random() * 30);
     //player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
     
-    player2TrapTimeStart = Math.floor(Math.random() * 30);
+    //player2TrapTimeStart = Math.floor(Math.random() * 30);
+    player2TrapTimeStart = 60;
     //player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
 }
 
