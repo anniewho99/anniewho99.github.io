@@ -52,6 +52,8 @@ let aiStartY = 15;
 
 let pathIndex = 0;
 
+let isAIMoving = false;
+
 let tokenInfo = {
     locations: [],
     subgrid: null
@@ -1007,21 +1009,25 @@ function handleKeyDown(event) {
 }
 
 function handleAIMovement(scene) {
+    if (isAIMoving) {
+      return; // Exit early if the AI is still moving along a path
+    }
 
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
-
+  
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
-        if (path === null) {
-            console.log("Path was not found.");
-        } else {
-            moveAIAlongPath(path, scene);
-            console.log("this is the path");
-            console.log(path);
-        }
+      if (path === null) {
+        console.log("Path was not found.");
+      } else {
+        moveAIAlongPath(path, scene);
+        console.log("this is the path");
+        console.log(path);
+        isAIMoving = true; // Set the flag to indicate that the AI is moving
+      }
     });
+    
     easystar.calculate(); // Important to run calculations
-
-}
+  }
 
 function moveAIAlongPath(path, scene) {
 
@@ -1057,6 +1063,10 @@ function moveAIAlongPath(path, scene) {
 
         console.log("this is the next point");
         console.log(aiStartX, aiStartY);
+    }
+
+    if (pathIndex === path.length - 1){
+        pathIndex = 0;
     }
 }
   
