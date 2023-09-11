@@ -460,6 +460,9 @@ function onTokenCollected(playerName, scene) {
 }
 
 function addStarTokens(scene, playerID) {
+
+    console.log("playerID for addStarToken");
+    console.log(playerID);
     // Find the player object
     let player = Object.values(players).find(p => p.id === playerID);
 
