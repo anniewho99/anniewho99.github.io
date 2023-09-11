@@ -59,6 +59,8 @@ let currentPath = null; // You can store the current path here
 
 let aiState = "NAVIGATING_TO_SUBGRID";
 
+let localTargets = [];
+
 let tokenInfo = {
     locations: [],
     subgrid: null
@@ -631,7 +633,7 @@ function getLocalCoordinates(globalX, globalY, subgridStartX, subgridStartY) {
   }
 
 function getTargetsInLocalCoordinates() {
-    let localTargets = [];
+    localTargets = [];
   
     const [subgridStartX, subgridStartY] = tokenInfo.subgrid.start;
     let [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
@@ -1176,7 +1178,7 @@ function onComplete() {
     pathIndex = 0;
   
     // Start moving to the next target
-    moveToNextTarget();
+    moveToNextTarget(localTargets);
 }
   
 
