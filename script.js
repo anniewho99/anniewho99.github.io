@@ -1123,8 +1123,8 @@ function moveToNextTarget(localTargets) {
         isPathBeingFollowed = false; 
         console.log("finished collecting all tokens");
         console.log(aiState);
-        aiStartX =  Math.round(player2.x / cellWidth);
-        aiStartY = Math.round(player2.y / cellHeight);
+        aiStartX =  Math.round(player2.x / cellWidth) - 1;
+        aiStartY = Math.round(player2.y / cellHeight) -  1;
         console.log("current AI position");
         console.log(aiStartX , aiStartY);
 
