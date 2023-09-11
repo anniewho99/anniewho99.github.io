@@ -46,7 +46,7 @@ let rescueStartTime = null;
 let trappedDoors = null;
 
 let lastAIUpdate = 0;
-const AIUpdateInterval = 500;
+const AIUpdateInterval = 2000;
 let aiStartX = 15;
 let aiStartY = 15;
 
