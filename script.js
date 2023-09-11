@@ -1018,6 +1018,10 @@ function handleAIMovement() {
         }
     });
     easystar.calculate(); // Important to run calculations
+
+    console.log("this is the path");
+    console.log(path);
+
 }
 
 function moveAIAlongPath(path) {
