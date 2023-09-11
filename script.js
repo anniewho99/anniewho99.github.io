@@ -1109,7 +1109,7 @@ function moveToNextTarget(localTargets) {
     } else {
         // Reset index and do something now that all targets have been reached
         currentTargetIndex = 0;
-        aiState == "NAVIGATING_TO_SUBGRID";
+        aiState = "NAVIGATING_TO_SUBGRID";
         isPathBeingFollowed = false; 
         console.log("fnished collecting all tokens");
         console.log(aiState);
@@ -1167,7 +1167,7 @@ function moveAIAlongPath(path, scene) {
             isPathBeingFollowed = false; 
             pathIndex = 0;
             aiState = "COLLECTING";
-        }else if (aiState == "COLLECTING"){
+        }else if (aiState === "COLLECTING"){
             onComplete();
         }
     }
