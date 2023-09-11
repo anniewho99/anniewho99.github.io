@@ -637,8 +637,9 @@ function getTargetsInLocalCoordinates() {
     const [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
   
     for (const location of tokenInfo.locations) {
-      const [globalX, globalY] = location;
-      localTargets.push(getLocalCoordinates(globalX, globalY, subgridStartX, subgridStartY));
+        const globalX = location.x + 1;
+        const globalY = location.y;
+        localTargets.push(getLocalCoordinates(globalX, globalY, subgridStartX, subgridStartY));
     }
   
     // Adding either (0, 1) or (4, 0) based on the AI's current position in the subgrid
