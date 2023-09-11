@@ -1052,6 +1052,9 @@ function moveAIAlongPath(path, scene) {
 
         pathIndex++;
 
+        console.log("pathIndex");
+        console.log(pathIndex);
+
         console.log("this is the next point");
         console.log(aiStartX, aiStartY);
     }
