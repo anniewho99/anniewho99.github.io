@@ -1121,8 +1121,13 @@ function moveToNextTarget(localTargets) {
         currentTargetIndex = 0;
         aiState = "NAVIGATING_TO_SUBGRID";
         isPathBeingFollowed = false; 
-        console.log("fnished collecting all tokens");
+        console.log("finished collecting all tokens");
         console.log(aiState);
+        aiStartX =  Math.round(player2.x / cellWidth);
+        aiStartY = Math.round(player2.y / cellHeight);
+        console.log("current AI position");
+        console.log(aiStartX , aiStartY);
+
     }
 }
 
