@@ -634,7 +634,7 @@ function getTargetsInLocalCoordinates() {
     let localTargets = [];
   
     const [subgridStartX, subgridStartY] = tokenInfo.subgrid.start;
-    const [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
+    let [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
 
     currentX = currentX + 1;
   
