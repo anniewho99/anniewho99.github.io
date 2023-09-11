@@ -759,8 +759,8 @@ function update(time) {
             }else if(aiState === "COLLECTING"){
                 console.log("COLLECTING");
                 console.log("local targets");
-                console.log(localTargets);
                 localTargets = getTargetsInLocalCoordinates();
+                console.log(localTargets);
                 moveToNextTarget(localTargets);
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
