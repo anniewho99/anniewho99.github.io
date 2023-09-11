@@ -1069,8 +1069,8 @@ function moveAIAlongPath(path, scene) {
         console.log("this is the next point");
         console.log(aiStartX, aiStartY);
 
-        config.log("current path is");
-        config.log(path);
+        console.log("current path is");
+        console.log(path);
     }
 
     if (pathIndex === path.length - 1){
