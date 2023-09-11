@@ -1066,6 +1066,13 @@ function handleKeyDown(event) {
 
 //Handle subgrid door navigation
 function handleAIMovement() {
+
+    console.log("current token info");
+    console.log(tokenInfo);
+
+    console.log("current aiPosition");
+    console.log(aiStartX, aiStartY);
+
    
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
