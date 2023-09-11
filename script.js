@@ -52,7 +52,8 @@ let aiStartY = 15;
 
 let pathIndex = 0;
 
-let isAIMoving = false;
+let isPathBeingFollowed = false;
+let currentPath = null; // You can store the current path here
 
 let tokenInfo = {
     locations: [],
@@ -716,10 +717,17 @@ function create() {
 function update(time) {
 
     if (time - lastAIUpdate > AIUpdateInterval) {
-        handleAIMovement(this);
-        lastAIUpdate = time;
+        if (!isPathBeingFollowed) {
+            // If not currently following a path, calculate a new one
+            handleAIMovement();
+            isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
+        } else {
+            // If currently following a path, continue moving along it
+            moveAIAlongPath(currentPath, this);
+        }
+        lastAIUpdate = time; // Update the timestamp whether you're calculating a new path or following an old one
     }
-
+    
     if (isPlayerinSameCell(player1, player2)) {
         console.log("Players are in the same cell");
 
@@ -1008,26 +1016,23 @@ function handleKeyDown(event) {
     }
 }
 
-function handleAIMovement(scene) {
-    if (isAIMoving) {
-      return; // Exit early if the AI is still moving along a path
-    }
+function handleAIMovement() {
 
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
-  
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
-      if (path === null) {
-        console.log("Path was not found.");
-      } else {
-        moveAIAlongPath(path, scene);
-        console.log("this is the path");
-        console.log(path);
-        isAIMoving = true; // Set the flag to indicate that the AI is moving
-      }
+        if (path === null) {
+            console.log("Path was not found.");
+            isPathBeingFollowed = false; // No path to follow
+        } else {
+            currentPath = path; // Store the new path
+            pathIndex = 0; // Reset the index for the new path
+            console.log("the path");
+            console.log(currentPath);
+        }
     });
-    
-    easystar.calculate(); // Important to run calculations
-  }
+    easystar.calculate();
+}
+
 
 function moveAIAlongPath(path, scene) {
 
@@ -1063,9 +1068,13 @@ function moveAIAlongPath(path, scene) {
 
         console.log("this is the next point");
         console.log(aiStartX, aiStartY);
+
+        config.log("current path is");
+        config.log(path);
     }
 
     if (pathIndex === path.length - 1){
+        isPathBeingFollowed = false; 
         pathIndex = 0;
     }
 }
