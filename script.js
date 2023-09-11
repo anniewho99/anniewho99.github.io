@@ -635,6 +635,8 @@ function getTargetsInLocalCoordinates() {
   
     const [subgridStartX, subgridStartY] = tokenInfo.subgrid.start;
     const [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
+
+    currentX = currentX + 1;
   
     for (const location of tokenInfo.locations) {
         const globalX = location.x + 1;
@@ -1084,7 +1086,12 @@ function moveToNextTarget(localTargets) {
     if (currentTargetIndex < localTargets.length) {
         const nextTarget = localTargets[currentTargetIndex];
         // Calculate the path to nextTarget
-        easystarSubgrid.findPath(aiStartX - tokenInfo.subgrid.start[0], aiStartY - tokenInfo.subgrid.start[1], nextTarget[0], nextTarget[1], function(path) {
+
+        subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 1;
+        subgridStartY = aiStartY - tokenInfo.subgrid.start[1];
+        console.log("start point for subgrid");
+        console.log(subgridStartX, subgridStartY);
+        easystarSubgrid.findPath(subgridStartX, subgridStartY, nextTarget[0], nextTarget[1], function(path) {
             if (path !== null) {
                 currentPath = path;
                 isPathBeingFollowed = true; // Set this flag to start following this path
@@ -1116,7 +1123,7 @@ function moveAIAlongPath(path, scene) {
             aiStartY = nextPoint.y;
         }else if(aiState == "COLLECTING"){
 
-            aiStartX = nextPoint.x + tokenInfo.subgrid.start[0];
+            aiStartX = nextPoint.x + tokenInfo.subgrid.start[0] - 1;
             aiStartY = nextPoint.y + tokenInfo.subgrid.start[1];
         }
 
