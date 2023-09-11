@@ -52,8 +52,12 @@ let aiStartY = 15;
 
 let pathIndex = 0;
 
+let currentTargetIndex = 0;
+
 let isPathBeingFollowed = false;
 let currentPath = null; // You can store the current path here
+
+let aiState = "NAVIGATING_TO_SUBGRID";
 
 let tokenInfo = {
     locations: [],
@@ -622,6 +626,32 @@ function findEndCoordinates(chosenGrid, aiDoors) {
     return [ endX, endY ];
   }
 
+function getLocalCoordinates(globalX, globalY, subgridStartX, subgridStartY) {
+    return [globalX - subgridStartX, globalY - subgridStartY];
+  }
+
+function getTargetsInLocalCoordinates() {
+    let localTargets = [];
+  
+    const [subgridStartX, subgridStartY] = tokenInfo.subgrid.start;
+    const [currentX, currentY] = getLocalCoordinates(aiStartX, aiStartY, subgridStartX, subgridStartY);
+  
+    for (const location of tokenInfo.locations) {
+      const [globalX, globalY] = location;
+      localTargets.push(getLocalCoordinates(globalX, globalY, subgridStartX, subgridStartY));
+    }
+  
+    // Adding either (0, 1) or (4, 0) based on the AI's current position in the subgrid
+    if (currentX === 0 && currentY === 1) {
+      localTargets.push([4, 1]);
+    } else if (currentX === 4 && currentY === 1) {
+      localTargets.push([0, 1]);
+    }
+  
+    return localTargets;
+  }
+  
+
 
 let game = new Phaser.Game(config);
 
@@ -695,6 +725,9 @@ function create() {
     easystar.setGrid(initialGrid);
     easystar.setAcceptableTiles([0]); 
 
+    easystarSubgrid = new EasyStar.js();
+    easystarSubgrid.setGrid(subGrid);
+    easystarSubgrid.setAcceptableTiles([0]);
 
     //star token groups
     this.tokenGroup = this.physics.add.group();
@@ -719,7 +752,16 @@ function update(time) {
     if (time - lastAIUpdate > AIUpdateInterval) {
         if (!isPathBeingFollowed) {
             // If not currently following a path, calculate a new one
-            handleAIMovement();
+            if (aiState === "NAVIGATING_TO_SUBGRID"){
+                console.log("NAVIGATING_TO_SUBGRID");
+                handleAIMovement();
+            }else if(aiState === "COLLECTING"){
+                localTargets = getTargetsInLocalCoordinates();
+                moveToNextTarget(localTargets);
+                console.log("COLLECTING");
+                console.log("local targets");
+                console.log(localTargets);
+            }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         } else {
             // If currently following a path, continue moving along it
@@ -1016,8 +1058,9 @@ function handleKeyDown(event) {
     }
 }
 
+//Handle subgrid door navigation
 function handleAIMovement() {
-
+   
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
         if (path === null) {
@@ -1031,8 +1074,35 @@ function handleAIMovement() {
         }
     });
     easystar.calculate();
+
 }
 
+//navigate to collect tokens
+function moveToNextTarget(localTargets) {
+
+    if (currentTargetIndex < localTargets.length) {
+        const nextTarget = localTargets[currentTargetIndex];
+        // Calculate the path to nextTarget
+        easystarSubgrid.findPath(aiStartX - tokenInfo.subgrid.start[0], aiStartY - tokenInfo.subgrid.start[1], nextTarget[0], nextTarget[1], function(path) {
+            if (path !== null) {
+                currentPath = path;
+                isPathBeingFollowed = true; // Set this flag to start following this path
+                console.log("path to collect tokens");
+                console.log(currentPath);
+            } else {
+                console.error("No path found to target");
+            }
+        });
+        easystarSubgrid.calculate(); // Don't forget to calculate
+        currentTargetIndex++;
+    } else {
+        // Reset index and do something now that all targets have been reached
+        currentTargetIndex = 0;
+        aiState === "NAVIGATING_TO_SUBGRID";
+        isPathBeingFollowed = false; 
+        console.log("fnished collecting all tokens");
+    }
+}
 
 function moveAIAlongPath(path, scene) {
 
@@ -1040,8 +1110,14 @@ function moveAIAlongPath(path, scene) {
         const nextPoint = path[pathIndex + 1];
         const currentPoint = path[pathIndex];
 
-        aiStartX = nextPoint.x;
-        aiStartY = nextPoint.y;
+        if(aiState === "NAVIGATING_TO_SUBGRID"){
+            aiStartX = nextPoint.x;
+            aiStartY = nextPoint.y;
+        }else if(aiState == "COLLECTING"){
+
+            aiStartX = nextPoint.x + tokenInfo.subgrid.start[0];
+            aiStartY = nextPoint.y + tokenInfo.subgrid.start[1];
+        }
 
         const dx = nextPoint.x - currentPoint.x;
         const dy = nextPoint.y - currentPoint.y;
@@ -1074,9 +1150,25 @@ function moveAIAlongPath(path, scene) {
     }
 
     if (pathIndex === path.length - 1){
-        isPathBeingFollowed = false; 
-        pathIndex = 0;
+
+        if(aiState === "NAVIGATING_TO_SUBGRID"){
+            isPathBeingFollowed = false; 
+            pathIndex = 0;
+            aiState = "COLLECTING";
+        }
+        if (aiState == "COLLECTING"){
+            onComplete();
+        }
     }
+}
+
+function onComplete() {
+    // // Reset any variables or flags that need to be reset
+    // isPathBeingFollowed = false;
+    pathIndex = 0;
+  
+    // Start moving to the next target
+    moveToNextTarget();
 }
   
 
