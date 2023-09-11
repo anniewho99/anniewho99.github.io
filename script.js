@@ -1136,6 +1136,8 @@ function moveAIAlongPath(path, scene) {
 
             aiStartX = nextPoint.x + tokenInfo.subgrid.start[0] - 2;
             aiStartY = nextPoint.y + tokenInfo.subgrid.start[1] - 1;
+            console.log("AI position when in collecting mode");
+            console.log(aiStartX, aiStartY);
         }
 
         const dx = nextPoint.x - currentPoint.x;
