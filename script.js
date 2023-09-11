@@ -757,11 +757,11 @@ function update(time) {
                 console.log("NAVIGATING_TO_SUBGRID");
                 handleAIMovement();
             }else if(aiState === "COLLECTING"){
-                localTargets = getTargetsInLocalCoordinates();
-                moveToNextTarget(localTargets);
                 console.log("COLLECTING");
                 console.log("local targets");
                 console.log(localTargets);
+                localTargets = getTargetsInLocalCoordinates();
+                moveToNextTarget(localTargets);
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         } else {
