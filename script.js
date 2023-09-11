@@ -1155,8 +1155,7 @@ function moveAIAlongPath(path, scene) {
             isPathBeingFollowed = false; 
             pathIndex = 0;
             aiState = "COLLECTING";
-        }
-        if (aiState == "COLLECTING"){
+        }else if (aiState == "COLLECTING"){
             onComplete();
         }
     }
