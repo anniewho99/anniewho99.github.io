@@ -714,7 +714,7 @@ function create() {
 function update(time) {
 
     if (time - lastAIUpdate > AIUpdateInterval) {
-        handleAIMovement();
+        handleAIMovement(this);
         lastAIUpdate = time;
     }
 
@@ -1006,7 +1006,7 @@ function handleKeyDown(event) {
     }
 }
 
-function handleAIMovement() {
+function handleAIMovement(scene) {
 
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
 
@@ -1014,7 +1014,7 @@ function handleAIMovement() {
         if (path === null) {
             console.log("Path was not found.");
         } else {
-            moveAIAlongPath(path);
+            moveAIAlongPath(path, scene);
             console.log("this is the path");
             console.log(path);
         }
@@ -1023,7 +1023,7 @@ function handleAIMovement() {
 
 }
 
-function moveAIAlongPath(path) {
+function moveAIAlongPath(path, scene) {
 
     if (pathIndex < path.length - 1) {
         const nextPoint = path[pathIndex + 1];
@@ -1034,15 +1034,20 @@ function moveAIAlongPath(path) {
 
         const dx = nextPoint.x - currentPoint.x;
         const dy = nextPoint.y - currentPoint.y;
+        console.log("current point");
+        console.log(currentPoint);
+
+        console.log("movement");
+        console.log(dx, dy);
 
         if (dx > 0) {
-            handleMovement(player2, cellWidth, 0, "AI", this);
+            handleMovement(player2, cellWidth, 0, "AI", scene);
         } else if (dx < 0) {
-            handleMovement(player2, -cellWidth, 0, "AI", this);
+            handleMovement(player2, -cellWidth, 0, "AI", scene);
         } else if (dy > 0) {
-            handleMovement(player2, 0, cellHeight, "AI", this);
+            handleMovement(player2, 0, cellHeight, "AI", scene);
         } else if (dy < 0) {
-            handleMovement(player2, 0, -cellHeight, "AI", this);
+            handleMovement(player2, 0, -cellHeight, "AI", scene);
         }
 
         pathIndex++;
