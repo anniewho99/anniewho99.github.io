@@ -596,9 +596,9 @@ function findEndCoordinates(chosenGrid, aiDoors) {
              Math.abs(door[1] - avgY) < 1e-6;  // The '1e-6' is a small tolerance value
     });
   
-    console.log("matchingDoor");
-    console.log(matchingDoor);
-    console.log(doorAIadjusted);
+    // console.log("matchingDoor");
+    // console.log(matchingDoor);
+    // console.log(doorAIadjusted);
 
     let endX, endY;
   
@@ -613,7 +613,7 @@ function findEndCoordinates(chosenGrid, aiDoors) {
       // Handle case where no matching door is found if needed
     }
 
-    console.log(endX, endY);
+    //console.log(endX, endY);
 
   
     return [ endX, endY ];
@@ -1015,12 +1015,11 @@ function handleAIMovement() {
             console.log("Path was not found.");
         } else {
             moveAIAlongPath(path);
+            console.log("this is the path");
+            console.log(path);
         }
     });
     easystar.calculate(); // Important to run calculations
-
-    console.log("this is the path");
-    console.log(path);
 
 }
 
@@ -1047,6 +1046,9 @@ function moveAIAlongPath(path) {
         }
 
         pathIndex++;
+
+        console.log("this is the next point");
+        console.log(aiStartX, aiStartY);
     }
 }
   
