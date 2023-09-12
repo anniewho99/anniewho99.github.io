@@ -513,7 +513,7 @@ function addStarTokens(scene, playerID) {
 
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
-                let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'star').setTint(color);
+                let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'star').setTint(color).setDepth(0);
                 star.setScale(0.03);
                 star.color = color;  
                 scene.tokenGroup.add(star);
@@ -714,20 +714,20 @@ function create() {
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, this));
 
-    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04);
+    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
 
-    player2 = this.physics.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
+    player2 = this.physics.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
     player2.setCollideWorldBounds(true); 
     player2.name = 'AI'; 
     player2.data = players['AI']; 
 
     //player ghost for when in the same cell  
-    this.player1Ghost = this.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04);
-    this.player2Ghost = this.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05);
+    this.player1Ghost = this.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    this.player2Ghost = this.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
     this.player1Ghost.setVisible(false);
     this.player2Ghost.setVisible(false);
 
