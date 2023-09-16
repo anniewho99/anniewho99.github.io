@@ -750,7 +750,7 @@ function create() {
     timeText = this.add.text(970, 10, '', { fontSize: '16px', fill: '#000' });
 
     // Keyboard controls
-    this.input.keyboard.on('keydown', handleKeyDown.bind(this));
+    this.input.keyboard.on('keydown', handleKeyUp.bind(this));
 
     this.physics.add.overlap(player1, this.tokenGroup, onTokenHit.bind(this), null, this);
     this.physics.add.overlap(player2, this.tokenGroup, onTokenHit.bind(this), null, this);
