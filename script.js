@@ -2,7 +2,7 @@
 
 const cellHeight = 40; 
 const cellWidth = 60; 
-const gridSize = 16;
+const gridSize = 13;
 
 const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
