@@ -47,8 +47,8 @@ let trappedDoors = null;
 
 let lastAIUpdate = 0;
 const AIUpdateInterval = 500;
-let aiStartX = 15;
-let aiStartY = 15;
+let aiStartX = 12;
+let aiStartY = 12;
 
 let pathIndex = 0;
 
