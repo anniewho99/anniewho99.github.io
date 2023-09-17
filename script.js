@@ -763,7 +763,7 @@ function create() {
 
     this.physics.world.debugGraphic = this.add.graphics().setAlpha(0);
 
-    timeText = this.add.text(970, 10, '', { fontSize: '16px', fill: '#000' });
+    timeText = this.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
 
     // Keyboard controls
     this.input.keyboard.on('keyup', handleKeyDown.bind(this));
