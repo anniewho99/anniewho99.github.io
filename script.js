@@ -86,9 +86,9 @@ let config = {
 
 const GRIDS = [
     {start: [3, 3], end: [5, 5]},
-    {start: [3, 8], end: [5, 10]},
-    {start: [8, 3], end: [10, 5]},
-    {start: [8, 8], end: [10, 10]}
+    {start: [3, 9], end: [5, 11]},
+    {start: [9, 3], end: [11, 5]},
+    {start: [9, 9], end: [11, 11]}
 ];  
 
 const DIRECTIONS = [
@@ -220,8 +220,8 @@ function isMoveForbidden(currX, currY, nextX, nextY) {
 
 function adjustCoord(coord) {
     return [
-        coord[0] === 6 ? 5 : (coord[0] === 11 ? 10 : coord[0]),
-        coord[1] === 6 ? 5 : (coord[1] === 11 ? 10 : coord[1])
+        coord[0] === 6 ? 5 : (coord[0] === 12 ? 11 : coord[0]),
+        coord[1] === 6 ? 5 : (coord[1] === 12 ? 11 : coord[1])
     ];
 }
 
@@ -422,13 +422,13 @@ function crossesDoor(start, end, playerID) {
     if (startExists) {
         //console.log("Entering the start door they own");
         startExists[0] = startExists[0] === 5 ? 6 : startExists[0];
-        startExists[0] = startExists[0] === 10 ? 11 : startExists[0];
+        startExists[0] = startExists[0] === 11 ? 12 : startExists[0];
         //let door = { coord: startExists, orientation: "V" };
         return startExists;
     } else if (endExists) {
         //console.log("Entering the end door they own");
         endExists[0] = endExists[0] === 5 ? 6 : endExists[0];
-        endExists[0] = endExists[0] === 10 ? 11 : endExists[0];
+        endExists[0] = endExists[0] === 11 ? 12 : endExists[0];
         //let door = { coord: endExists, orientation: "V" };
         return endExists;
     } else {
