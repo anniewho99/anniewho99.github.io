@@ -8,7 +8,7 @@ const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
-const grid_width = 960;
+const grid_width = 780;
 
 const players = {
     'Human': {
@@ -68,8 +68,8 @@ let tokenInfo = {
 
 let config = {
     type: Phaser.AUTO,
-    width: 1200,
-    height: 640,
+    width: 1020,
+    height: 520,
     backgroundColor: '#D2B48C',
     scene: {
         preload: preload,
@@ -85,10 +85,10 @@ let config = {
 };
 
 const GRIDS = [
-    {start: [4, 4], end: [6, 6]},
-    {start: [4, 11], end: [6, 13]},
-    {start: [11, 4], end: [13, 6]},
-    {start: [11, 11], end: [13, 13]}
+    {start: [3, 3], end: [5, 5]},
+    {start: [3, 8], end: [5, 10]},
+    {start: [8, 3], end: [10, 5]},
+    {start: [8, 8], end: [10, 10]}
 ];  
 
 const DIRECTIONS = [
@@ -98,23 +98,39 @@ const DIRECTIONS = [
     [1, 0]    // right
 ];
 
-const initialGrid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+// const initialGrid = [
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//   ];
+
+  const initialGrid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
 const subGrid = [
@@ -204,8 +220,8 @@ function isMoveForbidden(currX, currY, nextX, nextY) {
 
 function adjustCoord(coord) {
     return [
-        coord[0] === 7 ? 6 : (coord[0] === 14 ? 13 : coord[0]),
-        coord[1] === 7 ? 6 : (coord[1] === 14 ? 13 : coord[1])
+        coord[0] === 6 ? 5 : (coord[0] === 11 ? 10 : coord[0]),
+        coord[1] === 6 ? 5 : (coord[1] === 11 ? 10 : coord[1])
     ];
 }
 
@@ -405,14 +421,14 @@ function crossesDoor(start, end, playerID) {
     
     if (startExists) {
         //console.log("Entering the start door they own");
-        startExists[0] = startExists[0] === 6 ? 7 : startExists[0];
-        startExists[0] = startExists[0] === 13 ? 14 : startExists[0];
+        startExists[0] = startExists[0] === 5 ? 6 : startExists[0];
+        startExists[0] = startExists[0] === 10 ? 11 : startExists[0];
         //let door = { coord: startExists, orientation: "V" };
         return startExists;
     } else if (endExists) {
         //console.log("Entering the end door they own");
-        endExists[0] = endExists[0] === 6 ? 7 : endExists[0];
-        endExists[0] = endExists[0] === 13 ? 14 : endExists[0];
+        endExists[0] = endExists[0] === 5 ? 6 : endExists[0];
+        endExists[0] = endExists[0] === 10 ? 11 : endExists[0];
         //let door = { coord: endExists, orientation: "V" };
         return endExists;
     } else {
