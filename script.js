@@ -61,6 +61,8 @@ let aiState = "NAVIGATING_TO_SUBGRID";
 
 let localTargets = [];
 
+let otherPlayerinSubgrid = false;
+
 let tokenInfo = {
     locations: [],
     subgrid: null
@@ -828,8 +830,20 @@ function update(time) {
                 moveToNextTarget(localTargets);
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
-        } else {
+        }else {
             // If currently following a path, continue moving along it
+
+            if (otherPlayerinSubgrid === true) {
+
+                console.log("recalculate AI path");
+
+                if(aiState === "COLLECTING"){
+                    updateDoorWhenInSubgrid(localTargets);
+                }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
+                    handleAIMovement();
+                }
+    
+            }
             moveAIAlongPath(currentPath, this);
         }
         lastAIUpdate = time; // Update the timestamp whether you're calculating a new path or following an old one
@@ -1070,6 +1084,13 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if (playerOneTrapped !== true && playerTwoTrapped !== true){
 
+                    if(playerID == "Human" && tokenInfo.subgrid.end === endGrid){
+
+                        console.log("human player enters AI target grid");
+                        otherPlayerinSubgrid = true;
+                        isPathBeingFollowed = false;
+                    }
+
                     doorAICoords = update_doors(doors, doorAICoords)
                     doorHumanCoords = update_doors(doors, doorHumanCoords)
 
@@ -1254,6 +1275,24 @@ function onComplete() {
     // Start moving to the next target
     moveToNextTarget(localTargets);
 }
+
+function updateDoorWhenInSubgrid(arr) {
+    // Check if the array is empty
+    if (arr.length === 0) {
+      return;
+    }
+  
+    // Get the last element
+    const lastElement = arr[arr.length - 1];
+  
+    // Check its value and toggle it
+    if (lastElement[0] === 4 && lastElement[1] === 1) {
+      arr[arr.length - 1] = [0, 1];
+    } else if (lastElement[0] === 0 && lastElement[1] === 1) {
+      arr[arr.length - 1] = [4, 1];
+    }
+  }
+  
   
 
 
