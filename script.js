@@ -779,11 +779,11 @@ function create() {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
 
-    let scaleW = windowWidth / gridWidth;
-    let scaleH = windowHeight / gridHeight;
+    let scaleW = windowWidth / this.sys.game.config.width;
+    let scaleH = windowHeight / this.sys.game.config.height;
 
-    if (gridHeight * scaleH < 400) {
-        scaleH = 400 / gridHeight;
+    if (this.sys.game.config.height * scaleH < 400) {
+        scaleH = 400 / this.sys.game.config.height;
     }
 
     scaleW = scaleH * aspectRatio;
