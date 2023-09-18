@@ -786,10 +786,16 @@ function create() {
         scaleH = 400 / this.sys.game.config.height;
     }
 
+    // Recalculate scaleW based on new scaleH to maintain aspect ratio
     scaleW = scaleH * aspectRatio;
 
+    // Reduce the scale to 80% to fit the screen better
+    scaleW *= 0.8;
+    scaleH *= 0.8;
+
+    // Set the scaling factor in Phaser
     this.scale.displaySize.setAspectRatio(aspectRatio);
-    this.scale.displaySize.resize(windowWidth, windowWidth / aspectRatio);
+    this.scale.displaySize.resize(windowWidth * 0.8, windowWidth * 0.8 / aspectRatio);  // reduced to 80%
     this.scale.setZoom(scaleH);
 
 
