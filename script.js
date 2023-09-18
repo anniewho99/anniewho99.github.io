@@ -71,6 +71,10 @@ let config = {
     width: 1020,
     height: 520,
     backgroundColor: '#D2B48C',
+    scale: {
+        mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
     scene: {
         preload: preload,
         create: create,
@@ -770,6 +774,25 @@ function create() {
 
     this.physics.add.overlap(player1, this.tokenGroup, onTokenHit.bind(this), null, this);
     this.physics.add.overlap(player2, this.tokenGroup, onTokenHit.bind(this), null, this);
+
+    const aspectRatio = this.sys.game.config.width / this.sys.game.config.height;
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    let scaleW = windowWidth / gridWidth;
+    let scaleH = windowHeight / gridHeight;
+
+    if (gridHeight * scaleH < 400) {
+        scaleH = 400 / gridHeight;
+    }
+
+    scaleW = scaleH * aspectRatio;
+
+    this.scale.displaySize.setAspectRatio(aspectRatio);
+    this.scale.displaySize.resize(windowWidth, windowWidth / aspectRatio);
+    this.scale.setZoom(scaleH);
+
+
 
 }
 
