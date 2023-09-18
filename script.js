@@ -1088,7 +1088,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                         console.log("human player enters AI target grid");
                         otherPlayerinSubgrid = true;
-                        isPathBeingFollowed = false;
                     }
 
                     doorAICoords = update_doors(doors, doorAICoords)
