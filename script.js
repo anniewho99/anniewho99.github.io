@@ -533,10 +533,18 @@ function addStarTokens(scene, playerID) {
 
             // Check if the token already exists in the chosen position
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
-                let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'star').setTint(color).setDepth(0);
-                star.setScale(0.03);
-                star.color = color;  
-                scene.tokenGroup.add(star);
+
+                if (playerID === 0){
+                    let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'flower').setTint(color).setDepth(0);
+                    star.setScale(0.03);
+                    star.color = color;  
+                    scene.tokenGroup.add(star);
+                }else{
+                    let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'butterfly').setTint(color).setDepth(0);
+                    star.setScale(0.03);
+                    star.color = color;  
+                    scene.tokenGroup.add(star);
+                }
                 
                 if (playerID === 1){
 
@@ -692,6 +700,8 @@ function preload() {
     this.load.image('player2', 'p2.png');
 
     this.load.image('star', 'star.png');
+    this.load.image('flower', 'flower.png');
+    this.load.image('butterfly', 'butterfly.png');
 }
 
 
