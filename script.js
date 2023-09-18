@@ -536,7 +536,7 @@ function addStarTokens(scene, playerID) {
 
                 if (playerID === 0){
                     let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'flower').setTint(color).setDepth(0);
-                    star.setScale(0.07);
+                    star.setScale(0.06);
                     star.color = color;  
                     scene.tokenGroup.add(star);
                 }else{
