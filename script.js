@@ -606,7 +606,7 @@ function generateRandomTimeframe() {
     
     //player2TrapTimeStart = Math.floor(Math.random() * 30);
     player1TrapTimeStart = 1000000;
-    player2TrapTimeStart = 1000000;
+    player2TrapTimeStart = 5;
     //player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
 }
 
@@ -831,6 +831,8 @@ function update(time) {
                 moveToNextTarget(localTargets);
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
+        }else if(playerTwoTrapped === true){
+                moveAIWhenTrapped();
         }else {
             // If currently following a path, continue moving along it
 
@@ -1055,6 +1057,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     // Change both doors to player1's color
                     doorColor = 0xFF0000;
                     console.log("AI trapped");
+
+
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
                     //console.log(doorTrappedPlayer);
@@ -1292,6 +1296,35 @@ function updateDoorWhenInSubgrid(arr) {
       arr[arr.length - 1] = [4, 1];
     }
   }
+
+  function moveAIWhenTrapped() {
+
+    console.log("move AI when it is trapped");
+
+    // Pick a random direction
+    const randomIndex = Math.floor(Math.random() * directions.length);
+    const { dx, dy } = DIRECTIONS[randomIndex];
+
+    // Calculate the new proposed position
+    const newX = aiStartX - tokenInfo.subgrid.start[0] + 2 + dx;
+    const newY = aiStartY - tokenInfo.subgrid.start[1] + 1 + dy;
+
+    // Check if the new position is within the 3x3 grid
+    if (newX >= 0 && newX <= 2 && newY >= 0 && newY <= 2) {
+        // Update the AI position
+        aiStartX = newX + tokenInfo.subgrid.start[0] - 2;
+        aiStartY = newY + tokenInfo.subgrid.start[1] - 1;
+
+        // Assuming aiSprite is your AI's Phaser sprite and cellSize is the size of each grid cell
+        player2.x = player2.x + dx * cellWidth;
+        player2.y = player2.y + dy * cellHeight;
+
+        // Debugging output
+        console.log(`AI moved to (${aiStartX}, ${aiStartY})`);
+    }
+}
+
+
   
   
 
