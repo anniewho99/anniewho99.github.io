@@ -1315,8 +1315,8 @@ function updateDoorWhenInSubgrid(arr) {
     // Check if the new position is within the 3x3 grid
     if (newX >= 1 && newX <= 3 && newY >= 0 && newY <= 2) {
         // Update the AI position
-        aiStartX = newX + tokenInfo.subgrid.start[0] - 2;
-        aiStartY = newY + tokenInfo.subgrid.start[1] - 1;
+        aiStartX = aiStartX + dx;
+        aiStartY = aiStartY + dy;
 
         // Assuming aiSprite is your AI's Phaser sprite and cellSize is the size of each grid cell
         player2.x = player2.x + dx * cellWidth;
