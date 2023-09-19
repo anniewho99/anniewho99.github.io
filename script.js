@@ -1302,7 +1302,7 @@ function updateDoorWhenInSubgrid(arr) {
     console.log("move AI when it is trapped");
 
     // Pick a random direction
-    const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
+    const randomIndex = Math.floor(Math.random() * 4);
     const { dx, dy } = DIRECTIONS[randomIndex];
 
     console.log(`AI position in grid (${aiStartX - tokenInfo.subgrid.start[0] + 2}, ${aiStartY - tokenInfo.subgrid.start[1] + 1})`);
@@ -1313,7 +1313,7 @@ function updateDoorWhenInSubgrid(arr) {
     const newY = aiStartY - tokenInfo.subgrid.start[1] + 1 + dy;
 
     // Check if the new position is within the 3x3 grid
-    if (newX >= 0 && newX <= 2 && newY >= 0 && newY <= 2) {
+    if (newX >= 1 && newX <= 3 && newY >= 0 && newY <= 2) {
         // Update the AI position
         aiStartX = newX + tokenInfo.subgrid.start[0] - 2;
         aiStartY = newY + tokenInfo.subgrid.start[1] - 1;
