@@ -1303,7 +1303,7 @@ function updateDoorWhenInSubgrid(arr) {
 
     // Pick a random direction
     const randomIndex = Math.floor(Math.random() * 4);
-    const { dx, dy } = DIRECTIONS[randomIndex];
+    const [dx, dy] = DIRECTIONS[randomIndex];
 
     console.log(`AI position in grid (${aiStartX - tokenInfo.subgrid.start[0] + 2}, ${aiStartY - tokenInfo.subgrid.start[1] + 1})`);
     console.log(`moving direction (${dx}, ${dy})`);
