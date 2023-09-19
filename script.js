@@ -841,6 +841,8 @@ function update(time) {
             }
             moveAIWhenTrapped(startGrid);
 
+        }else if(playerTwoTrapped === 'blue'){
+            moveToNextTarget(localTargets);
         }else {
             // If currently following a path, continue moving along it
 
@@ -913,7 +915,7 @@ function update(time) {
 
                     rescueStartTime = null; // Reset the start time
                     playerOneTrapped = 'red';
-                    console.log("saved trapped player");
+                    console.log("saved trapped human player");
                 }
             // } else {
             // rescueStartTime = null; // Reset the start time
@@ -949,7 +951,7 @@ function update(time) {
 
                     rescueStartTime = null; // Reset the start time
                     playerTwoTrapped = 'blue';
-                    console.log("saved trapped player");
+                    console.log("saved trapped AI player");
                 }
             // } else {
             // rescueStartTime = null; // Reset the start time
