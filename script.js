@@ -832,7 +832,15 @@ function update(time) {
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         }else if(playerTwoTrapped === true){
-                moveAIWhenTrapped();
+
+            let whichGrid = findGridForPoint([aiStartX, aiStartY], pointsDict);
+            //console.log("which grid", whichGrid);
+            if (whichGrid) {
+                let grids = JSON.parse(whichGrid);
+                startGrid = grids[0];
+            }
+            moveAIWhenTrapped(startGrid);
+
         }else {
             // If currently following a path, continue moving along it
 
@@ -1297,7 +1305,7 @@ function updateDoorWhenInSubgrid(arr) {
     }
   }
 
-  function moveAIWhenTrapped() {
+  function moveAIWhenTrapped(trappedGridStart) {
 
     console.log("move AI when it is trapped");
 
@@ -1305,12 +1313,12 @@ function updateDoorWhenInSubgrid(arr) {
     const randomIndex = Math.floor(Math.random() * 4);
     const [dx, dy] = DIRECTIONS[randomIndex];
 
-    console.log(`AI position in grid (${aiStartX - tokenInfo.subgrid.start[0] + 2}, ${aiStartY - tokenInfo.subgrid.start[1] + 1})`);
+    console.log(`AI position in grid (${aiStartX - trappedGridStart[0] + 2}, ${aiStartY - trappedGridStart[1] + 1})`);
     console.log(`moving direction (${dx}, ${dy})`);
 
     // Calculate the new proposed position
-    const newX = aiStartX - tokenInfo.subgrid.start[0] + 2 + dx;
-    const newY = aiStartY - tokenInfo.subgrid.start[1] + 1 + dy;
+    const newX = aiStartX - trappedGridStart[0] + 2 + dx;
+    const newY = aiStartY - trappedGridStart[1] + 1 + dy;
 
     // Check if the new position is within the 3x3 grid
     if (newX >= 1 && newX <= 3 && newY >= 0 && newY <= 2) {
