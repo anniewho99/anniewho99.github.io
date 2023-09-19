@@ -1302,7 +1302,7 @@ function updateDoorWhenInSubgrid(arr) {
     console.log("move AI when it is trapped");
 
     // Pick a random direction
-    const randomIndex = Math.floor(Math.random() * directions.length);
+    const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
     const { dx, dy } = DIRECTIONS[randomIndex];
 
     // Calculate the new proposed position
