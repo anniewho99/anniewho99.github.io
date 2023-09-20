@@ -80,6 +80,10 @@ let oldGrid = [];
 
 let newTokenPlacedForAI = false;
 
+let aiExitStart = [];
+
+let aiExitEnd = [];
+
 let config = {
     type: Phaser.AUTO,
     width: 1020,
@@ -1478,9 +1482,9 @@ function handleSavingStageOne(){
     let path1 = null;
     let path2 = null;
 
-    const [endX1, endY1] = trappedDoors[0];
+    let [endX1, endY1] = trappedDoors[0];
 
-    const [endX2, endY2] = trappedDoors[1];
+    let [endX2, endY2] = trappedDoors[1];
 
     endX1 = endX1 - 1;
     endX2 = endX2 + 1;
@@ -1508,11 +1512,13 @@ function handleSavingStageOne(){
             pathIndex = 0;
             console.log("the path");
             console.log(currentPath);
+            aiExitStart = [0, 1];
         } else {
             currentPath = path2;
             pathIndex = 0;
             console.log("the path");
             console.log(currentPath);
+            aiExitStart = [4,1];
         }
     }
 
