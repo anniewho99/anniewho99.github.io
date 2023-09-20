@@ -70,6 +70,8 @@ let tokenInfo = {
 
 let trappedAIStartGrid = [];
 
+let aiDoorToLeave = null;
+
 let allTokeninOldGridGone = false;
 
 let config = {
@@ -851,6 +853,13 @@ function update(time) {
                 pathIndex = 0;
                 console.log("finishing collecting tokens");
                 console.log(currentTargetIndex);
+
+                if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
+                    localTargets[localTargets.length - 1] = [0, 1];
+                }else{
+                    localTargets[localTargets.length - 1] = [4, 1];
+                }
+
                 console.log(localTargets);
                 moveToNextTarget(localTargets);
             }else{
@@ -858,6 +867,13 @@ function update(time) {
                 pathIndex = 0;
                 console.log("no tokens to collect, let's get out of here");
                 console.log(currentTargetIndex);
+
+                if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
+                    localTargets[localTargets.length - 1] = [0, 1];
+                }else{
+                    localTargets[localTargets.length - 1] = [4, 1];
+                }
+                
                 console.log(localTargets);
 
                 allTokeninOldGridGone = true;
@@ -957,6 +973,7 @@ function update(time) {
                 // if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
                     
                     doorToAdd = doorHumanCoords.pop();
+                    aiDoorToLeave = doorToAdd.coord;
                     doorAICoords.push(doorToAdd);
 
                     console.log("new human door");
