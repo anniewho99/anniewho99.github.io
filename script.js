@@ -990,7 +990,6 @@ function update(time) {
                 doorToAdd = doorAICoords.pop();
                 doorHumanCoords.push(doorToAdd);
 
-                humanDoortoLeave = doorToAdd.coord;
 
                 console.log("new human door");
                 console.log(doorHumanCoords);
@@ -1131,6 +1130,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     doorAICoords.push(doorTrappedPlayer);
                     console.log("new AI door", doorAICoords); 
+
+                    humanDoortoLeave = doorTrappedPlayer.coord;
 
                     let index = -1;
                     for (let i = 0; i < doorHumanCoords.length; i++) {
@@ -1566,13 +1567,11 @@ function handleSavingStageTwo(){
 
         if(aiExitStart[0] === 0){
 
-            currentPath = [{ x: 0, y: 1 },
-                { x: 1, y: 1 },
+            currentPath = [{ x: 1, y: 1 },
                 { x: 0, y: 1 }];
 
         }else{
-            currentPath = [{ x: 4, y: 1 },
-                { x: 3, y: 1 },
+            currentPath = [{ x: 3, y: 1 },
                 { x: 4, y: 1 }];
         }
     }else{
