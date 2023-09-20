@@ -582,7 +582,7 @@ function onTokenHit(player, token) {
         token.destroy();
 
         if(playerName === 'AI'){
-            localTargets[token.count] = [0, 0];
+            localTargets[token.index] = [0, 0];
         }
         
         // Update player's token count
