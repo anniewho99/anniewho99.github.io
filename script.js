@@ -855,7 +855,7 @@ function update(time) {
 
             console.log("AI was saved by human");
             if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
-                currentTargetIndex = players['AI'].tokensCollected;
+                currentTargetIndex = players['AI'].tokensCollected % 3;
                 pathIndex = 0;
 
                 localTargets.sort((a, b) => {
@@ -910,6 +910,9 @@ function update(time) {
 
                 if(aiState === "COLLECTING"){
                     updateDoorWhenInSubgrid(localTargets);
+                    currentTargetIndex = currentTargetIndex - 1;
+                    pathIndex = 0;
+                    moveToNextTarget(localTargets);
                 }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
                     handleAIMovement();
                 }
