@@ -1185,6 +1185,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                         if (arraysEqual(tokenInfo.subgrid.end, endGrid)){
                             console.log("human player enters AI target grid");
                             otherPlayerinSubgrid = true;
+                            oldGrid = startGrid;
+                            newTokenPlacedForAI = true;
                         }else if( startGrid[0] - 2 < currentAIX < endGrid[0] && startGrid[1] - 2 < currentAIY < endGrid[1]){
                             console.log("human player enters the grid AI is in");
                             otherPlayerinSubgrid = true;
