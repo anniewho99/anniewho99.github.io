@@ -84,6 +84,8 @@ let aiExitStart = [];
 
 let aiExitEnd = [];
 
+let humanTrappedGrid = [];
+
 let config = {
     type: Phaser.AUTO,
     width: 1020,
@@ -893,6 +895,8 @@ function update(time) {
 
                 console.log(localTargets);
                 moveToNextTarget(localTargets);
+
+                trappedAIStartGrid = [];
             }else{
                 currentTargetIndex = 3;
                 pathIndex = 0;
@@ -909,6 +913,7 @@ function update(time) {
 
                 allTokeninOldGridGone = true;
                 moveToNextTarget(localTargets);
+                trappedAIStartGrid = [];
             }
 
             playerTwoTrapped = 'saving completed';
@@ -998,6 +1003,7 @@ function update(time) {
                 rescueStartTime = null; // Reset the start time
                 playerOneTrapped = 'red';
                 console.log("saved trapped human player");
+                humanTrappedGrid = [];
             }
             // } else {
             // rescueStartTime = null; // Reset the start time
@@ -1107,6 +1113,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorColor = 0x0000FF;
                     console.log("Human trapped");
 
+                    humanTrappedGrid = startGrid;
+
                     setTimeout(() => {
                         timeToSaveTrappedHuman = true;
                         console.log('C is set to true');
@@ -1189,7 +1197,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     allDoors.forEach(door => drawDoor(door, scene));
                 }
 
-                if (playerOneTrapped !== true && playerTwoTrapped !== true){
+                if ((arraysEqual(startGrid, trappedAIStartGrid) !== true) && (arraysEqual(humanTrappedGrid, startGrid)!== true)){
 
                     if(playerID === "Human"){
 
