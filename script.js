@@ -74,6 +74,8 @@ let aiDoorToLeave = null;
 
 let allTokeninOldGridGone = false;
 
+let timeToSaveTrappedHuman = true;
+
 let config = {
     type: Phaser.AUTO,
     width: 1020,
@@ -873,7 +875,7 @@ function update(time) {
                 }else{
                     localTargets[localTargets.length - 1] = [4, 1];
                 }
-                
+
                 console.log(localTargets);
 
                 allTokeninOldGridGone = true;
