@@ -923,6 +923,7 @@ function update(time) {
         }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID"){
 
             isPathBeingFollowed = false;
+            timeToSaveTrappedHuman = false;
             aiState = "SAVING_STAGE_ONE";
             
         }else {
