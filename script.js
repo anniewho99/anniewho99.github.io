@@ -846,6 +846,9 @@ function update(time) {
                 localTargets = getTargetsInLocalCoordinates();
                 console.log(localTargets);
                 moveToNextTarget(localTargets);
+            }else if (aiState === "SAVING_STAGE_ONE"){
+                console.log("SAVING_STAGE_ONE");
+                handleSavingStageOne();
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         }else if(playerTwoTrapped === true){
@@ -905,6 +908,11 @@ function update(time) {
             }
 
             playerTwoTrapped = 'saving completed';
+        }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID"){
+
+            isPathBeingFollowed = false;
+            aiState === "SAVING_STAGE_ONE";
+            
         }else {
             // If currently following a path, continue moving along it
 
@@ -1098,7 +1106,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     setTimeout(() => {
                         timeToSaveTrappedHuman = true;
                         console.log('C is set to true');
-                      }, 2 * 60 * 1000);  // 2 minutes in milliseconds
+                      }, 5 * 1000);  // 2 minutes in milliseconds  2 * 60 * 1000
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
 
@@ -1347,7 +1355,7 @@ function moveAIAlongPath(path, scene) {
         const nextPoint = path[pathIndex + 1];
         const currentPoint = path[pathIndex];
 
-        if(aiState === "NAVIGATING_TO_SUBGRID"){
+        if(aiState === "NAVIGATING_TO_SUBGRID" || aiState === "SAVING_STAGE_ONE"){
             aiStartX = nextPoint.x;
             aiStartY = nextPoint.y;
         }else if(aiState == "COLLECTING"){
@@ -1458,6 +1466,58 @@ function moveAIWhenTrapped(trappedGridStart) {
         console.log(`AI moved to (${aiStartX}, ${aiStartY})`);
     }
 }
+
+function handleSavingStageOne(){
+
+    console.log("current trapped doors");
+    console.log(trappedDoors);
+
+    console.log("current aiPosition");
+    console.log(aiStartX, aiStartY);
+
+    let path1 = null;
+    let path2 = null;
+
+    const [endX1, endY1] = trappedDoors[0];
+
+    const [endX2, endY2] = trappedDoors[1];
+
+    endX1 = endX1 - 1;
+    endX2 = endX2 + 1;
+
+    // Calculate the first path
+    easyStar.findPath(aiStartX, aiStartX, endX1, endY1, function(path) {
+    path1 = path;
+    checkAndSetPath();
+    });
+
+    // Calculate the second path
+    easyStar.findPath(aiStartX, aiStartX, endX2, endY2, function(path) {
+    path2 = path;
+    checkAndSetPath(); 
+    });
+
+    // Make sure to call calculate() to process the pathfinding
+    easyStar.calculate();
+
+    if (path1 && path2) {
+
+        // Determine the shorter path and set it to currentPath
+        if (path1.length < path2.length) {
+            currentPath = path1;
+            pathIndex = 0;
+            console.log("the path");
+            console.log(currentPath);
+        } else {
+            currentPath = path2;
+            pathIndex = 0;
+            console.log("the path");
+            console.log(currentPath);
+        }
+    }
+
+}
+
 
 
   
