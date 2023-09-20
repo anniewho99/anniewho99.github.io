@@ -1062,8 +1062,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
                 let startDoor = doors[0].coord;
                 let endDoor = doors[1].coord;
 
-                trappedDoors = [[startDoor[0], startDoor[1]], [endDoor[0] -1, endDoor[1]]];
-
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false && playerTwoTrapped !== true) {
 
                     // Change both doors to player2's color
@@ -1099,6 +1097,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log("new Human door", doorHumanCoords); 
 
                     console.log("next to trapped door positions");
+                    trappedDoors = [[startDoor[0], startDoor[1]], [endDoor[0] -1, endDoor[1]]];
+
                     console.log(trappedDoors);
 
                     doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
@@ -1120,6 +1120,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     console.log("AI trapped");
 
                     trappedAIStartGrid = startGrid;
+                    trappedDoors = [[startDoor[0], startDoor[1]], [endDoor[0] -1, endDoor[1]]];
+
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
                     //console.log(doorTrappedPlayer);
@@ -1150,7 +1152,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if (playerOneTrapped !== true && playerTwoTrapped !== true){
 
-                    if(playerID == "Human" && tokenInfo.subgrid.end === endGrid){
+                    if(playerID === "Human" && tokenInfo.subgrid.end === endGrid){
 
                         console.log("human player enters AI target grid");
                         otherPlayerinSubgrid = true;
