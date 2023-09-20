@@ -1492,8 +1492,8 @@ function handleSavingStageOne() {
     let [endX1, endY1] = trappedDoors[0];
     let [endX2, endY2] = trappedDoors[1];
 
-    endX1 = endX1 - 1;
-    endX2 = endX2 + 1;
+    endX1 = endX1 - 2;
+    endX2 = endX2;
 
     // Callback to handle path results
     function handlePathResults() {
