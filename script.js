@@ -1471,8 +1471,7 @@ function moveAIWhenTrapped(trappedGridStart) {
     }
 }
 
-function handleSavingStageOne(){
-
+function handleSavingStageOne() {
     console.log("current trapped doors");
     console.log(trappedDoors);
 
@@ -1483,44 +1482,44 @@ function handleSavingStageOne(){
     let path2 = null;
 
     let [endX1, endY1] = trappedDoors[0];
-
     let [endX2, endY2] = trappedDoors[1];
 
     endX1 = endX1 - 1;
     endX2 = endX2 + 1;
 
+    // Callback to handle path results
+    function handlePathResults() {
+        if (path1 && path2) {
+            let currentPath;
+            if (path1.length < path2.length) {
+                currentPath = path1;
+                aiExitStart = [0, 1];
+            } else {
+                currentPath = path2;
+                aiExitStart = [4, 1];
+            }
+            pathIndex = 0;
+            console.log("the path");
+            console.log(currentPath);
+        }
+    }
+
     // Calculate the first path
-    easystar.findPath(aiStartX, aiStartX, endX1, endY1, function(path) {
-    path1 = path;
+    easystar.findPath(aiStartX, aiStartY, endX1, endY1, function (path) {
+        path1 = path;
+        handlePathResults();
     });
 
     // Calculate the second path
-    easystar.findPath(aiStartX, aiStartX, endX2, endY2, function(path) {
-    path2 = path;
+    easystar.findPath(aiStartX, aiStartY, endX2, endY2, function (path) {
+        path2 = path;
+        handlePathResults();
     });
 
     // Make sure to call calculate() to process the pathfinding
     easystar.calculate();
-
-    if (path1 && path2) {
-
-        // Determine the shorter path and set it to currentPath
-        if (path1.length < path2.length) {
-            currentPath = path1;
-            pathIndex = 0;
-            console.log("the path");
-            console.log(currentPath);
-            aiExitStart = [0, 1];
-        } else {
-            currentPath = path2;
-            pathIndex = 0;
-            console.log("the path");
-            console.log(currentPath);
-            aiExitStart = [4,1];
-        }
-    }
-
 }
+
 
 
 
