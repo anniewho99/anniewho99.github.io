@@ -916,8 +916,10 @@ function update(time) {
                     updateDoorWhenInSubgrid(localTargets);
                     currentTargetIndex = currentTargetIndex - 1;
                     pathIndex = 0;
+                    otherPlayerinSubgrid = false;
                     moveToNextTarget(localTargets);
                 }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
+                    otherPlayerinSubgrid = false;
                     handleAIMovement();
                 }
     
