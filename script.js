@@ -911,7 +911,7 @@ function update(time) {
         }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID"){
 
             isPathBeingFollowed = false;
-            aiState === "SAVING_STAGE_ONE";
+            aiState = "SAVING_STAGE_ONE";
             
         }else {
             // If currently following a path, continue moving along it
