@@ -837,13 +837,10 @@ function update(time) {
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         }else if(playerTwoTrapped === true){
 
-            let whichGrid = findGridForPoint([aiStartX, aiStartY], pointsDict);
-            //console.log("which grid", whichGrid);
-            if (whichGrid) {
-                let grids = JSON.parse(whichGrid);
-                trappedAIStartGrid = grids[0];
-                moveAIWhenTrapped(trappedAIStartGrid);
-            }
+            console.log("AI trapped in which grid");
+            console.log(trappedAIStartGrid);
+
+            moveAIWhenTrapped(trappedAIStartGrid);
 
         }else if(playerTwoTrapped === 'blue'){
 
@@ -1091,7 +1088,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     doorColor = 0xFF0000;
                     console.log("AI trapped");
 
-
+                    trappedAIStartGrid = startGrid;
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
                     //console.log(doorTrappedPlayer);
