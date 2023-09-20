@@ -1490,7 +1490,6 @@ function handleSavingStageOne() {
     // Callback to handle path results
     function handlePathResults() {
         if (path1 && path2) {
-            let currentPath;
             if (path1.length < path2.length) {
                 currentPath = path1;
                 aiExitStart = [0, 1];
