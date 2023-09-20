@@ -848,12 +848,14 @@ function update(time) {
             console.log("AI was saved by human");
             if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
                 currentTargetIndex = players['AI'].tokensCollected + 1;
+                pathIndex = 0;
                 console.log("finishing collecting tokens");
                 console.log(currentTargetIndex);
                 console.log(localTargets);
                 moveToNextTarget(localTargets);
             }else{
                 currentTargetIndex = 3;
+                pathIndex = 0;
                 console.log("no tokens to collect, let's get out of here");
                 console.log(currentTargetIndex);
                 console.log(localTargets);
