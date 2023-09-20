@@ -1173,10 +1173,18 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if (playerOneTrapped !== true && playerTwoTrapped !== true){
 
-                    if(playerID === "Human" && tokenInfo.subgrid.end === endGrid){
+                    if(playerID === "Human"){
 
-                        console.log("human player enters AI target grid");
-                        otherPlayerinSubgrid = true;
+                        let currentAIX = Math.round(player2.x / cellWidth);
+                        let currentAIY = Math.round(player2.y / cellHeight);
+
+                        if (tokenInfo.subgrid.end === endGrid){
+                            console.log("human player enters AI target grid");
+                            otherPlayerinSubgrid = true;
+                        }else if( startGrid[0] - 2 < currentAIX < endGrid[0] && startGrid[1] - 2 < currentAIY < endGrid[1]){
+                            console.log("human player enters the grid AI is in");
+                            otherPlayerinSubgrid = true;
+                        }
                     }
 
                     doorAICoords = update_doors(doors, doorAICoords)
