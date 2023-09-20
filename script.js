@@ -1182,7 +1182,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                         let currentAIX = Math.round(player2.x / cellWidth);
                         let currentAIY = Math.round(player2.y / cellHeight);
 
-                        if (arraysEqual(tokenInfo.subgrid.end,endGrid)){
+                        if (arraysEqual(tokenInfo.subgrid.end, endGrid)){
                             console.log("human player enters AI target grid");
                             otherPlayerinSubgrid = true;
                         }else if( startGrid[0] - 2 < currentAIX < endGrid[0] && startGrid[1] - 2 < currentAIY < endGrid[1]){
