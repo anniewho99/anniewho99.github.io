@@ -842,8 +842,8 @@ function update(time) {
             if (whichGrid) {
                 let grids = JSON.parse(whichGrid);
                 trappedAIStartGrid = grids[0];
+                moveAIWhenTrapped(trappedAIStartGrid);
             }
-            moveAIWhenTrapped(trappedAIStartGrid);
 
         }else if(playerTwoTrapped === 'blue'){
 
@@ -1347,6 +1347,9 @@ function moveAIWhenTrapped(trappedGridStart) {
     // Pick a random direction
     const randomIndex = Math.floor(Math.random() * 4);
     const [dx, dy] = DIRECTIONS[randomIndex];
+
+    console.log(`AI position (${aiStartX}, ${aiStartY})`);
+    console.log(`Grid start (${trappedGridStart[0]}, ${trappedGridStart[1]})`);
 
     console.log(`AI position in grid (${aiStartX - trappedGridStart[0] + 2}, ${aiStartY - trappedGridStart[1] + 1})`);
     console.log(`moving direction (${dx}, ${dy})`);
