@@ -1549,7 +1549,7 @@ function handleSavingStageOne() {
     easystar.calculate();
 }
 
-function handleSavingStageTWO(){
+function handleSavingStageTwo(){
 
     subgridStartX = aiStartX - humanTrappedGrid[0] + 2;
     subgridStartY = aiStartY - humanTrappedGrid[1] + 1;
