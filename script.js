@@ -629,7 +629,7 @@ function generateRandomTimeframe() {
     
     //player2TrapTimeStart = Math.floor(Math.random() * 30);
     player1TrapTimeStart = 120;
-    player2TrapTimeStart = 120;
+    player2TrapTimeStart = 180;
     //player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
 }
 
