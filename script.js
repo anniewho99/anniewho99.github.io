@@ -1221,6 +1221,8 @@ function moveToNextTarget(localTargets) {
             subgridStartX = aiStartX - trappedAIStartGrid[0] + 2;
             subgridStartY = aiStartY - trappedAIStartGrid[1] + 1;
 
+            allTokeninOldGridGone = false;
+
         }else{
             subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
             subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
