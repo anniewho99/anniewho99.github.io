@@ -81,10 +81,10 @@ let config = {
     width: 1020,
     height: 520,
     backgroundColor: '#D2B48C',
-    scale: {
-        mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+    // scale: {
+    //     mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
+    //     autoCenter: Phaser.Scale.CENTER_BOTH,
+    // },
     scene: {
         preload: preload,
         create: create,
