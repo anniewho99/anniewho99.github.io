@@ -553,6 +553,7 @@ function addStarTokens(scene, playerID) {
                     let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'butterfly').setTint(color).setDepth(0);
                     star.setScale(0.09);
                     star.color = color;  
+                    star.index = count;
                     scene.tokenGroup.add(star);
                 }
                 
@@ -579,6 +580,10 @@ function onTokenHit(player, token) {
     if (players[playerName].color === token.color) {
         //console.log('Token hit detected.');
         token.destroy();
+
+        if(playerName === 'AI'){
+            localTargets[token.count] = [0, 0];
+        }
         
         // Update player's token count
         players[playerName].tokensCollected += 1;
@@ -848,11 +853,24 @@ function update(time) {
 
         }else if(playerTwoTrapped === 'blue'){
 
-
             console.log("AI was saved by human");
             if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
                 currentTargetIndex = players['AI'].tokensCollected;
                 pathIndex = 0;
+
+                localTargets.sort((a, b) => {
+                    const aIsZero = arraysEqual(a, [0,0]);
+                    const bIsZero = arraysEqual(b, [0,0]);
+                
+                    if (aIsZero && !bIsZero) {
+                        return -1;
+                    }
+                    if (!aIsZero && bIsZero) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
                 console.log("finishing collecting tokens");
                 console.log(currentTargetIndex);
 
@@ -1241,6 +1259,13 @@ function handleAIMovement() {
 function moveToNextTarget(localTargets) {
 
     if (currentTargetIndex < localTargets.length) {
+
+        while (arraysEqual(localTargets[currentTargetIndex], [0,0])) {
+            currentTargetIndex++;
+            if (currentTargetIndex >= localTargets.length) {
+                break;
+            }
+        }
 
         const nextTarget = localTargets[currentTargetIndex];
         // Calculate the path to nextTarget
