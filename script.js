@@ -74,7 +74,7 @@ let aiDoorToLeave = null;
 
 let allTokeninOldGridGone = false;
 
-let timeToSaveTrappedHuman = true;
+let timeToSaveTrappedHuman = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -930,6 +930,9 @@ function update(time) {
         if (trappedDoors != null){
             //console.log("trapped door updated");
             if(isCloseToDoor(player2, trappedDoors)) {
+
+                console.log("doors in trapped grid");
+                console.log(trappedDoors);
                 // if(rescueStartTime === null) {
                 //     console.log("start counting down");
                 //     rescueStartTime = new Date().getTime();
@@ -937,26 +940,26 @@ function update(time) {
                 // const currentTime = new Date().getTime();
                 // if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
                     
-                    doorToAdd = doorAICoords.pop();
-                    doorHumanCoords.push(doorToAdd);
+                doorToAdd = doorAICoords.pop();
+                doorHumanCoords.push(doorToAdd);
 
-                    console.log("new human door");
-                    console.log(doorHumanCoords);
+                console.log("new human door");
+                console.log(doorHumanCoords);
 
-                    console.log("new AI door");
-                    console.log(doorAICoords);
+                console.log("new AI door");
+                console.log(doorAICoords);
 
-                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
-                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+                doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
-                    this.doorSprites = [];
+                this.doorSprites = [];
 
-                    allDoors.forEach(door => drawDoor(door, this));
+                allDoors.forEach(door => drawDoor(door, this));
 
-                    rescueStartTime = null; // Reset the start time
-                    playerOneTrapped = 'red';
-                    console.log("saved trapped human player");
-                }
+                rescueStartTime = null; // Reset the start time
+                playerOneTrapped = 'red';
+                console.log("saved trapped human player");
+            }
             // } else {
             // rescueStartTime = null; // Reset the start time
             // }
@@ -973,27 +976,29 @@ function update(time) {
                 // }
                 // const currentTime = new Date().getTime();
                 // if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
-                    
-                    doorToAdd = doorHumanCoords.pop();
-                    aiDoorToLeave = doorToAdd.coord;
-                    doorAICoords.push(doorToAdd);
+                console.log("doors in trapped grid");
+                console.log(trappedDoors);
 
-                    console.log("new human door");
-                    console.log(doorHumanCoords);
+                doorToAdd = doorHumanCoords.pop();
+                aiDoorToLeave = doorToAdd.coord;
+                doorAICoords.push(doorToAdd);
 
-                    console.log("new AI door");
-                    console.log(doorAICoords);
+                console.log("new human door");
+                console.log(doorHumanCoords);
 
-                    doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
-                    doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
+                console.log("new AI door");
+                console.log(doorAICoords);
 
-                    this.doorSprites = [];
-                    allDoors.forEach(door => drawDoor(door, this));
+                doorAIadjusted = doorAICoords.map(door => adjustCoord(door.coord));
+                doorHumanadjusted = doorHumanCoords.map(door => adjustCoord(door.coord));
 
-                    rescueStartTime = null; // Reset the start time
-                    playerTwoTrapped = 'blue';
-                    console.log("saved trapped AI player");
-                }
+                this.doorSprites = [];
+                allDoors.forEach(door => drawDoor(door, this));
+
+                rescueStartTime = null; // Reset the start time
+                playerTwoTrapped = 'blue';
+                console.log("saved trapped AI player");
+            }
             // } else {
             // rescueStartTime = null; // Reset the start time
             // }
@@ -1064,6 +1069,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     // Change both doors to player2's color
                     doorColor = 0x0000FF;
                     console.log("Human trapped");
+
+                    setTimeout(() => {
+                        timeToSaveTrappedHuman = true;
+                        console.log('C is set to true');
+                      }, 2 * 60 * 1000);  // 2 minutes in milliseconds
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
 
