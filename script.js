@@ -68,6 +68,10 @@ let tokenInfo = {
     subgrid: null
   };
 
+let trappedAIStartGrid = [];
+
+let allTokeninOldGridGone = false;
+
 let config = {
     type: Phaser.AUTO,
     width: 1020,
@@ -837,12 +841,31 @@ function update(time) {
             //console.log("which grid", whichGrid);
             if (whichGrid) {
                 let grids = JSON.parse(whichGrid);
-                startGrid = grids[0];
+                trappedAIStartGrid = grids[0];
             }
-            moveAIWhenTrapped(startGrid);
+            moveAIWhenTrapped(trappedAIStartGrid);
 
         }else if(playerTwoTrapped === 'blue'){
-            moveToNextTarget(localTargets);
+
+
+            console.log("AI was saved by human");
+            if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
+                currentTargetIndex = players['AI'].tokensCollected + 1;
+                console.log("finishing collecting tokens");
+                console.log(currentTargetIndex);
+                console.log(localTargets);
+                moveToNextTarget(localTargets);
+            }else{
+                currentTargetIndex = 3;
+                console.log("no tokens to collect, let's get out of here");
+                console.log(currentTargetIndex);
+                console.log(localTargets);
+
+                allTokeninOldGridGone = true;
+                moveToNextTarget(localTargets);
+            }
+
+            playerTwoTrapped = 'saving completed';
         }else {
             // If currently following a path, continue moving along it
 
@@ -1188,11 +1211,21 @@ function handleAIMovement() {
 function moveToNextTarget(localTargets) {
 
     if (currentTargetIndex < localTargets.length) {
+
         const nextTarget = localTargets[currentTargetIndex];
         // Calculate the path to nextTarget
 
-        subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
-        subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
+        if (allTokeninOldGridGone){
+
+            console.log("all old tokens are gone, lets move out of the sub-grid");
+            subgridStartX = aiStartX - trappedAIStartGrid[0] + 2;
+            subgridStartY = aiStartY - trappedAIStartGrid[1] + 1;
+
+        }else{
+            subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
+            subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
+        }
+
         console.log("start point for subgrid");
         console.log(subgridStartX, subgridStartY);
         easystarSubgrid.findPath(subgridStartX, subgridStartY, nextTarget[0], nextTarget[1], function(path) {
@@ -1307,7 +1340,7 @@ function updateDoorWhenInSubgrid(arr) {
     }
   }
 
-  function moveAIWhenTrapped(trappedGridStart) {
+function moveAIWhenTrapped(trappedGridStart) {
 
     console.log("move AI when it is trapped");
 
