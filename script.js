@@ -82,9 +82,9 @@ let newTokenPlacedForAI = false;
 
 let aiExitStart = [];
 
-let aiExitEnd = [];
-
 let humanTrappedGrid = [];
+
+let humanDoortoLeave = [];
 
 let config = {
     type: Phaser.AUTO,
@@ -855,6 +855,9 @@ function update(time) {
             }else if (aiState === "SAVING_STAGE_ONE"){
                 console.log("SAVING_STAGE_ONE");
                 handleSavingStageOne();
+            }else if (aiState === "SAVING_STAGE_TWO"){
+                console.log("SAVING_STAGE_TWO");
+                handleSavingStageTwo();
             }
             isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
         }else if(playerTwoTrapped === true){
@@ -986,6 +989,8 @@ function update(time) {
                     
                 doorToAdd = doorAICoords.pop();
                 doorHumanCoords.push(doorToAdd);
+
+                humanDoortoLeave = doorToAdd.coord;
 
                 console.log("new human door");
                 console.log(doorHumanCoords);
@@ -1376,6 +1381,9 @@ function moveAIAlongPath(path, scene) {
             aiStartY = nextPoint.y + tokenInfo.subgrid.start[1] - 1;
             console.log("AI position when in collecting mode");
             console.log(aiStartX, aiStartY);
+        }else if(aiState === "SAVING_STAGE_TWO"){
+            aiStartX = nextPoint.x + humanTrappedGrid[0] - 2;
+            aiStartY = nextPoint.y + humanTrappedGrid[1] - 1;
         }
 
         const dx = nextPoint.x - currentPoint.x;
@@ -1416,6 +1424,17 @@ function moveAIAlongPath(path, scene) {
             aiState = "COLLECTING";
         }else if (aiState === "COLLECTING"){
             onComplete();
+        }else if (aiState === "SAVING_STAGE_ONE"){
+            aiState = "SAVING_STAGE_TWO";
+            isPathBeingFollowed = false; 
+            pathIndex = 0;
+        }else if(aiState === "SAVING_STAGE_TWO"){
+            aiState = "NAVIGATING_TO_SUBGRID";
+            isPathBeingFollowed = false; 
+            pathIndex = 0;
+
+            aiStartX =  Math.round(player2.x / cellWidth) - 1;
+            aiStartY = Math.round(player2.y / cellHeight) -  1;
         }
     }
 }
@@ -1495,6 +1514,9 @@ function handleSavingStageOne() {
     endX1 = endX1 - 2;
     endX2 = endX2;
 
+    endY1 = endY1 - 1;
+    endY2 = endY2 - 1;
+
     // Callback to handle path results
     function handlePathResults() {
         if (path1 && path2) {
@@ -1527,6 +1549,49 @@ function handleSavingStageOne() {
     easystar.calculate();
 }
 
+function handleSavingStageTWO(){
+
+    subgridStartX = aiStartX - humanTrappedGrid[0] + 2;
+    subgridStartY = aiStartY - humanTrappedGrid[1] + 1;
+
+    let aiExitEnd = [];
+
+    if (humanDoortoLeave[0] - humanTrappedGrid[0] < 2){
+        aiExitEnd = [4, 1];
+    }else{
+        aiExitEnd = [0, 1];
+    }
+
+    if (arraysEqual(aiExitEnd, aiExitStart)){
+
+        if(aiExitStart[0] === 0){
+
+            currentPath = [{ x: 0, y: 1 },
+                { x: 1, y: 1 },
+                { x: 0, y: 1 }];
+
+        }else{
+            currentPath = [{ x: 4, y: 1 },
+                { x: 3, y: 1 },
+                { x: 4, y: 1 }];
+        }
+    }else{
+
+        easystarSubgrid.findPath(subgridStartX, subgridStartY, aiExitEnd[0], aiExitEnd[1], function(path) {
+            if (path !== null) {
+                currentPath = path;
+                isPathBeingFollowed = true; // Set this flag to start following this path
+                console.log("path to exit after saving human agent");
+                console.log(currentPath);
+            } else {
+                console.error("No path found to target");
+            }
+        });
+        easystarSubgrid.calculate(); 
+
+    }
+
+}
 
 
 
