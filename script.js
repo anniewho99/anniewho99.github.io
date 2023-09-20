@@ -988,9 +988,21 @@ function update(time) {
                 // const currentTime = new Date().getTime();
                 // if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
                     
-                doorToAdd = doorAICoords.pop();
-                doorHumanCoords.push(doorToAdd);
+                doorToAddHuman = { coord: humanDoortoLeave, orientation: "V" };
+                
+                doorHumanCoords.push(doorToAddHuman);
 
+                let index = -1;
+                for (let i = 0; i < doorAICoords.length; i++) {
+                if (arraysEqual(doorAICoords[i].coord, humanDoortoLeave)) {
+                    index = i;
+                    break;
+                }
+                }
+
+                if (index > -1) {
+                    doorAICoords.splice(index, 1);
+                }
 
                 console.log("new human door");
                 console.log(doorHumanCoords);
@@ -1029,9 +1041,20 @@ function update(time) {
                 console.log("doors in trapped grid");
                 console.log(trappedDoors);
 
-                doorToAdd = doorHumanCoords.pop();
-                aiDoorToLeave = doorToAdd.coord;
-                doorAICoords.push(doorToAdd);
+                doorToAddAI = { coord: aiDoorToLeave, orientation: "V" };
+                doorAICoords.push(doorToAddAI);
+
+                let index = -1;
+                for (let i = 0; i < doorHumanCoords.length; i++) {
+                if (arraysEqual(doorHumanCoords[i].coord, aiDoorToLeave)) {
+                    index = i;
+                    break;
+                }
+                }
+
+                if (index > -1) {
+                    doorHumanCoords.splice(index, 1);
+                }
 
                 console.log("new human door");
                 console.log(doorHumanCoords);
@@ -1178,6 +1201,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
+                    aiDoorToLeave = doorTrappedPlayer.coord;
                     //console.log(doorTrappedPlayer);
                     doorHumanCoords.push(doorTrappedPlayer);
                     console.log("new Human door", doorHumanCoords); 
