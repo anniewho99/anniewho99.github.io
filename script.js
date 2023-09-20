@@ -1492,13 +1492,11 @@ function handleSavingStageOne(){
     // Calculate the first path
     easystar.findPath(aiStartX, aiStartX, endX1, endY1, function(path) {
     path1 = path;
-    checkAndSetPath();
     });
 
     // Calculate the second path
     easystar.findPath(aiStartX, aiStartX, endX2, endY2, function(path) {
     path2 = path;
-    checkAndSetPath(); 
     });
 
     // Make sure to call calculate() to process the pathfinding
