@@ -1568,11 +1568,11 @@ function handleSavingStageTwo(){
 
         if(aiExitStart[0] === 0){
 
-            currentPath = [{ x: 1, y: 1 }, { x: 0, y: 1 }];
+            currentPath = [{ x: 1, y: 1 },{ x: 2, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 1 }];
             isPathBeingFollowed = true; 
 
         }else{
-            currentPath = [{ x: 3, y: 1 }, { x: 4, y: 1 }];
+            currentPath = [{ x: 3, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }];
             isPathBeingFollowed = true; 
         }
     }else{
