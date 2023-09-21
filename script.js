@@ -507,7 +507,11 @@ function addStarTokens(scene, playerID) {
     let player = Object.values(players).find(p => p.id === playerID);
 
     // Exclude the grids that are already used
-    let availableGrids = GRIDS.filter(grid => !usedGrids.some(usedGrid => usedGrid.coordinates === grid));
+    let availableGrids = GRIDS.filter(grid => 
+        !usedGrids.some(usedGrid => arraysEqual(usedGrid.coordinates.start, grid.start)) &&
+        (humanTrappedGrid.length === 0 || !arraysEqual(grid.start, humanTrappedGrid)) &&
+        (trappedAIStartGrid.length === 0 || !arraysEqual(grid.start, trappedAIStartGrid))
+    );
 
     // Shuffle the availableGrids array to pick a random subgrid
     let shuffledGrids = availableGrids.sort(() => 0.5 - Math.random());
