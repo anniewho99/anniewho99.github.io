@@ -23,6 +23,24 @@ const players = {
     }
 };
 
+const params = new URLSearchParams(window.location.search);
+const trapHumanFirst = params.get('trapHumanFirst') === 'true';
+const trapAIFirst = params.get('trapAIFirst') === 'true';  
+
+console.log('trapHumanFirst:', trapHumanFirst);
+console.log('trapAIFirst:', trapAIFirst);
+
+if (trapHumanFirst) {
+    // Code for trapping the human first
+    player1TrapTimeStart = 20;
+    player2TrapTimeStart = 60;
+  }
+  
+  if (trapAIFirst) {
+    // Code for trapping the AI first
+    player1TrapTimeStart = 60;
+    player2TrapTimeStart = 20;
+  }
 
 let doorAICoords = [];
 let doorAIadjusted = [];
@@ -754,8 +772,8 @@ function create() {
 
     this.doorSprites = [];
 
-    // Initialize at the start of the game
-    generateRandomTimeframe();
+    // // Initialize at the start of the game
+    // generateRandomTimeframe();
 
     console.log("player 1 timeframe");
 
@@ -976,7 +994,11 @@ function update(time) {
         this.player2Ghost.setVisible(false);
     }
 
-    timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer2 Trap Start: ${player2TrapTimeStart}`);
+    // timeText.setText(`Current Time: ${currentTime}\nPlayer1 Trap Start: ${player1TrapTimeStart}\nPlayer2 Trap Start: ${player2TrapTimeStart}`);
+
+    let totalToken = players.AI.tokensCollected + players.Human.tokensCollected;
+
+    timeText.setText(`Current Time: ${currentTime}\nTotal tokens collected: ${totalToken}`);
 
     if(playerOneTrapped === true) {
         if (trappedDoors != null){
