@@ -24,11 +24,14 @@ const players = {
 };
 
 const params = new URLSearchParams(window.location.search);
-const trapHumanFirst = params.get('trapHumanFirst') === 'true';
-const trapAIFirst = params.get('trapAIFirst') === 'true';  
+const trapHumanFirst = params.get('tHFirst') === 'true';
+const trapAIFirst = params.get('tAFirst') === 'true';  
 
 console.log('trapHumanFirst:', trapHumanFirst);
 console.log('trapAIFirst:', trapAIFirst);
+
+let player1TrapTimeStart;
+let player2TrapTimeStart;
 
 if (trapHumanFirst) {
     // Code for trapping the human first
@@ -51,8 +54,6 @@ let usedGrids = [];
 let isDoorRotating = false;
 let doorSwitch = false;
 
-let player1TrapTimeStart;
-let player2TrapTimeStart;
 let currentTime = 0; // Start time in seconds
 let gameDuration = 60; // Game lasts for 60 seconds
 
