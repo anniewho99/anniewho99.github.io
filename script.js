@@ -107,7 +107,7 @@ let humanDoortoLeave = [];
 
 let config = {
     type: Phaser.AUTO,
-    width: 1020,
+    width: 1050,
     height: 520,
     backgroundColor: '#D2B48C',
     // scale: {
