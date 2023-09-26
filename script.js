@@ -105,6 +105,12 @@ let humanTrappedGrid = [];
 
 let humanDoortoLeave = [];
 
+let localAIx = null;
+
+let localAIy = null;
+
+let subgridAI = null;
+
 let config = {
     type: Phaser.AUTO,
     width: 1050,
@@ -830,6 +836,9 @@ function update(time) {
                 console.log("local targets");
                 localTargets = getTargetsInLocalCoordinates();
                 console.log(localTargets);
+                subgridAI = tokenInfo.subgrid.start;
+                localAIx = aiStartX - subgridAI[0] + 2;
+                localAIy = aiStartY - subgridAI[1] + 1;
                 moveToNextTarget(localTargets);
             }else if (aiState === "SAVING_STAGE_ONE"){
                 console.log("SAVING_STAGE_ONE");
@@ -1329,26 +1338,27 @@ function moveToNextTarget(localTargets) {
         if (allTokeninOldGridGone){
 
             console.log("all old tokens are gone, lets move out of the sub-grid");
-            subgridStartX = aiStartX - trappedAIStartGrid[0] + 2;
-            subgridStartY = aiStartY - trappedAIStartGrid[1] + 1;
+            localAIx = aiStartX - trappedAIStartGrid[0] + 2;
+            localAIy = aiStartY - trappedAIStartGrid[1] + 1;
 
             allTokeninOldGridGone = false;
-
-        }else{
-            subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
-            subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
         }
 
-        if(newTokenPlacedForAI){
-            subgridStartX = aiStartX - oldGrid[0] + 2;
-            subgridStartY = aiStartY - oldGrid[1] + 1;
-            newTokenPlacedForAI = false;
-        }
+        // }else{
+        //     subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
+        //     subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
+        // }
+
+        // if(newTokenPlacedForAI){
+        //     subgridStartX = aiStartX - oldGrid[0] + 2;
+        //     subgridStartY = aiStartY - oldGrid[1] + 1;
+        //     newTokenPlacedForAI = false;
+        // }
 
 
         console.log("start point for subgrid");
-        console.log(subgridStartX, subgridStartY);
-        easystarSubgrid.findPath(subgridStartX, subgridStartY, nextTarget[0], nextTarget[1], function(path) {
+        console.log(localAIx, localAIy);
+        easystarSubgrid.findPath(localAIx, localAIy, nextTarget[0], nextTarget[1], function(path) {
             if (path !== null) {
                 currentPath = path;
                 isPathBeingFollowed = true; // Set this flag to start following this path
@@ -1371,6 +1381,9 @@ function moveToNextTarget(localTargets) {
         aiStartY = Math.round(player2.y / cellHeight) -  1;
         console.log("current AI position");
         console.log(aiStartX , aiStartY);
+        localAIx = null;
+        localAIy = null;
+        subgridAI = null;
 
     }
 }
@@ -1386,13 +1399,15 @@ function moveAIAlongPath(path, scene) {
             aiStartY = nextPoint.y;
         }else if(aiState == "COLLECTING"){
 
-            aiStartX = nextPoint.x + tokenInfo.subgrid.start[0] - 2;
-            aiStartY = nextPoint.y + tokenInfo.subgrid.start[1] - 1;
+            localAIx = nextPoint.x;
+            localAIy = nextPoint.y;
             console.log("AI position when in collecting mode");
-            console.log(aiStartX, aiStartY);
+            console.log(localAIx, localAIy);
         }else if(aiState === "SAVING_STAGE_TWO"){
-            aiStartX = nextPoint.x + humanTrappedGrid[0] - 2;
-            aiStartY = nextPoint.y + humanTrappedGrid[1] - 1;
+            localAIx = nextPoint.x;
+            localAIy = nextPoint.y;
+            console.log("AI position when in collecting mode");
+            console.log(localAIx, localAIy);
         }
 
         const dx = nextPoint.x - currentPoint.x;
@@ -1444,6 +1459,10 @@ function moveAIAlongPath(path, scene) {
 
             aiStartX =  Math.round(player2.x / cellWidth) - 1;
             aiStartY = Math.round(player2.y / cellHeight) -  1;
+
+            localAIx = null;
+            localAIy = null;
+            subgridAI = null;
         }
     }
 }
@@ -1560,8 +1579,8 @@ function handleSavingStageOne() {
 
 function handleSavingStageTwo(){
 
-    subgridStartX = aiStartX - humanTrappedGrid[0] + 2;
-    subgridStartY = aiStartY - humanTrappedGrid[1] + 1;
+    localAIx = aiStartX - humanTrappedGrid[0] + 2;
+    localAIy = aiStartY - humanTrappedGrid[1] + 1;
 
     let aiExitEnd = [];
 
@@ -1584,7 +1603,7 @@ function handleSavingStageTwo(){
         }
     }else{
 
-        easystarSubgrid.findPath(subgridStartX, subgridStartY, aiExitEnd[0], aiExitEnd[1], function(path) {
+        easystarSubgrid.findPath(localAIx, localAIy, aiExitEnd[0], aiExitEnd[1], function(path) {
             if (path !== null) {
                 currentPath = path;
                 isPathBeingFollowed = true; // Set this flag to start following this path
