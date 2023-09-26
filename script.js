@@ -908,7 +908,7 @@ function update(time) {
             }
 
             playerTwoTrapped = 'saving completed';
-        }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID"){
+        }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID" && playerOneTrapped === true){
 
             isPathBeingFollowed = false;
             timeToSaveTrappedHuman = false;
