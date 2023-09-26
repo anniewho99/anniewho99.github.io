@@ -141,25 +141,6 @@ const DIRECTIONS = [
     [1, 0]    // right
 ];
 
-// const initialGrid = [
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-//   ];
-
   const initialGrid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -833,31 +814,6 @@ function create() {
 
     this.physics.add.overlap(player1, this.tokenGroup, onTokenHit.bind(this), null, this);
     this.physics.add.overlap(player2, this.tokenGroup, onTokenHit.bind(this), null, this);
-
-    // const aspectRatio = this.sys.game.config.width / this.sys.game.config.height;
-    // let windowWidth = window.innerWidth;
-    // let windowHeight = window.innerHeight;
-
-    // let scaleW = windowWidth / this.sys.game.config.width;
-    // let scaleH = windowHeight / this.sys.game.config.height;
-
-    // if (this.sys.game.config.height * scaleH < 400) {
-    //     scaleH = 400 / this.sys.game.config.height;
-    // }
-
-    // // Recalculate scaleW based on new scaleH to maintain aspect ratio
-    // scaleW = scaleH * aspectRatio;
-
-    // // Reduce the scale to 80% to fit the screen better
-    // scaleW *= 0.8;
-    // scaleH *= 0.8;
-
-    // // Set the scaling factor in Phaser
-    // this.scale.displaySize.setAspectRatio(aspectRatio);
-    // this.scale.displaySize.resize(windowWidth * 0.8, windowWidth * 0.8 / aspectRatio);  // reduced to 80%
-    // this.scale.setZoom(scaleH);
-
-
 
 }
 
