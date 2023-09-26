@@ -601,9 +601,9 @@ function onTokenHit(player, token) {
         //console.log('Token hit detected.');
         token.destroy();
 
-        if(playerName === 'AI'){
-            localTargets[token.index] = [0, 0];
-        }
+        // if(playerName === 'AI'){
+        //     localTargets[token.index] = [0, 0];
+        // }
         
         // Update player's token count
         players[playerName].tokensCollected += 1;
@@ -859,7 +859,8 @@ function update(time) {
 
             console.log("AI was saved by human");
             if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
-                currentTargetIndex = players['AI'].tokensCollected % 3;
+                // currentTargetIndex = players['AI'].tokensCollected % 3;
+                currentTargetIndex = 0;
                 pathIndex = 0;
 
                 localTargets.sort((a, b) => {
@@ -930,6 +931,8 @@ function update(time) {
                 }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
                     otherPlayerinSubgrid = false;
                     handleAIMovement();
+                }else if(aiState === "NAVIGATING_TO_SUBGRID"){
+
                 }
     
             }
@@ -1227,7 +1230,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                         let currentAIX = Math.round(player2.x / cellWidth);
                         let currentAIY = Math.round(player2.y / cellHeight);
 
-                        if (arraysEqual(tokenInfo.subgrid.end, endGrid)){
+                        if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
                             console.log("human player enters AI target grid");
                             otherPlayerinSubgrid = true;
                             oldGrid = startGrid;
@@ -1325,27 +1328,14 @@ function moveToNextTarget(localTargets) {
 
     if (currentTargetIndex < localTargets.length) {
 
-        while (arraysEqual(localTargets[currentTargetIndex], [0,0])) {
-            currentTargetIndex++;
-            if (currentTargetIndex >= localTargets.length) {
-                break;
-            }
-        }
+        // while (arraysEqual(localTargets[currentTargetIndex], [0,0])) {
+        //     currentTargetIndex++;
+        //     if (currentTargetIndex >= localTargets.length) {
+        //         break;
+        //     }
+        // }
 
         const nextTarget = localTargets[currentTargetIndex];
-        // Calculate the path to nextTarget
-
-        // }else{
-        //     subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
-        //     subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
-        // }
-
-        // if(newTokenPlacedForAI){
-        //     subgridStartX = aiStartX - oldGrid[0] + 2;
-        //     subgridStartY = aiStartY - oldGrid[1] + 1;
-        //     newTokenPlacedForAI = false;
-        // }
-
 
         console.log("start point for subgrid");
         console.log(localAIx, localAIy);
