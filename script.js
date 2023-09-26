@@ -1501,28 +1501,28 @@ function moveAIWhenTrapped(trappedGridStart) {
     const randomIndex = Math.floor(Math.random() * 4);
     const [dx, dy] = DIRECTIONS[randomIndex];
 
-    console.log(`AI position (${aiStartX}, ${aiStartY})`);
+    console.log(`AI position (${localAIx}, ${localAIy})`);
     console.log(`Grid start (${trappedGridStart[0]}, ${trappedGridStart[1]})`);
 
-    console.log(`AI position in grid (${aiStartX - trappedGridStart[0] + 2}, ${aiStartY - trappedGridStart[1] + 1})`);
+    console.log(`AI position in grid (${localAIx}, ${localAIy})`);
     console.log(`moving direction (${dx}, ${dy})`);
 
     // Calculate the new proposed position
-    const newX = aiStartX - trappedGridStart[0] + 2 + dx;
-    const newY = aiStartY - trappedGridStart[1] + 1 + dy;
+    const newX = localAIx + dx;
+    const newY = localAIy + dy;
 
     // Check if the new position is within the 3x3 grid
     if (newX >= 1 && newX <= 3 && newY >= 0 && newY <= 2) {
         // Update the AI position
-        aiStartX = aiStartX + dx;
-        aiStartY = aiStartY + dy;
+        localAIx = localAIx + dx;
+        localAIy = localAIy + dy;
 
         // Assuming aiSprite is your AI's Phaser sprite and cellSize is the size of each grid cell
         player2.x = player2.x + dx * cellWidth;
         player2.y = player2.y + dy * cellHeight;
 
         // Debugging output
-        console.log(`AI moved to (${aiStartX}, ${aiStartY})`);
+        console.log(`AI moved to (${localAIy}, ${localAIy})`);
     }
 }
 
