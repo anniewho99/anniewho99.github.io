@@ -1335,15 +1335,6 @@ function moveToNextTarget(localTargets) {
         const nextTarget = localTargets[currentTargetIndex];
         // Calculate the path to nextTarget
 
-        if (allTokeninOldGridGone){
-
-            console.log("all old tokens are gone, lets move out of the sub-grid");
-            localAIx = aiStartX - trappedAIStartGrid[0] + 2;
-            localAIy = aiStartY - trappedAIStartGrid[1] + 1;
-
-            allTokeninOldGridGone = false;
-        }
-
         // }else{
         //     subgridStartX = aiStartX - tokenInfo.subgrid.start[0] + 2;
         //     subgridStartY = aiStartY - tokenInfo.subgrid.start[1] + 1;
