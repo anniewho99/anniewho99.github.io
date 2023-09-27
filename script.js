@@ -30,21 +30,28 @@ const trapAIFirst = params.get('tAFirst') === 'true';
 console.log('trapHumanFirst:', trapHumanFirst);
 console.log('trapAIFirst:', trapAIFirst);
 
+let trapTimeForEachRound = {};
+
 let player1TrapTimeStart;
 let player2TrapTimeStart;
 
 if (trapHumanFirst) {
-    // Code for trapping the human first
-    player1TrapTimeStart = 20;
-    player2TrapTimeStart = 60;
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 200 },
+        1: { human: 20, AI: 200 },
+        2: { human: 200, AI: 20 },
+        3: { human: 20, AI: 60 },
+      };
   }
   
   if (trapAIFirst) {
-    // Code for trapping the AI first
-    player1TrapTimeStart = 60;
-    player2TrapTimeStart = 20;
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 200 },
+        1: { human: 20, AI: 200 },
+        2: { human: 200, AI: 20 },
+        3: { human: 60, AI: 20 },
+      };
   }
-
 let doorAICoords = [];
 let doorAIadjusted = [];
 let doorHumanCoords = [];
@@ -110,6 +117,8 @@ let localAIx = null;
 let localAIy = null;
 
 let subgridAI = null;
+
+let runUpdateLogic = null;
 
 let config = {
     type: Phaser.AUTO,
@@ -644,12 +653,116 @@ function generateRandomTimeframe() {
 }
 
 // Increment current time and check for game end
-function updateGameTime() {
-  currentTime++;
-  if (currentTime >= gameDuration) {
-    // End the game
-  }
-}
+function updateGameTime(scene) {
+    currentTime++;
+    if (currentTime >= gameDuration && !isTimeoutScheduled) {
+  
+      if (currentRound === 4) {
+          endGame(scene);
+      }
+  
+      isTimeoutScheduled = true;
+      scene.overlay.setVisible(true);
+  
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText.setVisible(true);
+      scene.instructionText.setVisible(true);
+      runUpdateLogic = false;
+  
+      setTimeout(() => {
+  
+          player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
+          player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+  
+          doorAICoords = [];
+          doorAIadjusted = [];
+          doorHumanCoords = [];
+          doorHumanadjusted = [];
+          allDoors = [];
+          usedGrids = [];
+          isDoorRotating = false;
+          doorSwitch = false;
+  
+          playerOneTrapped = false;
+          playerTwoTrapped = false;
+  
+          trappedDoors = null;
+  
+          pathIndex = 0;
+  
+          currentTargetIndex = 0;
+  
+          currentPath = null; 
+  
+          localTargets = [];
+  
+          otherPlayerinSubgrid = false;
+  
+          tokenInfo = {
+              locations: [],
+              subgrid: null
+          };
+  
+          trappedAIStartGrid = [];
+  
+          aiDoorToLeave = null;
+  
+          allTokeninOldGridGone = false;
+  
+          timeToSaveTrappedHuman = false;
+  
+          oldGrid = [];
+  
+          newTokenPlacedForAI = false;
+  
+          aiExitStart = [];
+  
+          humanTrappedGrid = [];
+  
+          humanDoortoLeave = [];
+          
+          scene.overlay.setVisible(false);
+          scene.messageText.setVisible(false);
+          scene.instructionText.setVisible(false);
+          runUpdateLogic = true;
+          currentTime = 0;
+  
+          player1.x = cellWidth/2;
+          player1.y = cellHeight/2;
+  
+          player2.x = grid_width - cellWidth / 2;
+          player2.y = scene.sys.game.config.height - cellHeight / 2;
+  
+          aiStartX =  12;
+          aiStartY = 12;
+
+          localAIx = null;
+          localAIy = null;
+          subgridAI = null;
+  
+          players.AI.tokensCollected = 0;
+          players.Human.tokensCollected = 0;
+  
+          scene.doorSprites = [];
+          calculateDoors();
+          allDoors.forEach(door => drawDoor(door, scene));
+  
+          scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
+      
+          // // Add new tokens for each player
+          addStarTokens(scene, players['Human'].id);
+          addStarTokens(scene, players['AI'].id);
+  
+          isPathBeingFollowed = false;
+  
+          aiState = "NAVIGATING_TO_SUBGRID";
+  
+          isTimeoutScheduled = false;
+  
+          currentRound++;
+      }, 3000); 
+    }
+  }  
   
 function isCloseToDoor(player, nexToDoorPos) {
     let doorStart = nexToDoorPos[0];
@@ -742,88 +855,34 @@ function preload() {
 
 
 function create() {
-    // Create grid graphics
-    let graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
-    // Draw vertical lines
-    for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(i * cellWidth, 0);
-        graphics.lineTo(i * cellWidth, gridSize * cellHeight);
-    }
 
-    // Draw horizontal lines
-    for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(0, i * cellHeight);
-        graphics.lineTo(gridSize * cellWidth, i * cellHeight);
-    }
+    // Create an overlay and welcome message
+    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);;
+    this.overlay.setAlpha(1); // You can adjust the alpha for desired transparency
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
 
-    graphics.strokePath();
+    // Add the instruction message
+    this.instructionText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2 + 40, 'Please use the arrow key to move your player at the top-left corner', { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001); // Adjusted the Y-coordinate to place the text below the welcome message
 
-    this.doorSprites = [];
+    runUpdateLogic = false;
 
-    // // Initialize at the start of the game
-    // generateRandomTimeframe();
+    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
+    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
 
-    console.log("player 1 timeframe");
-
-    console.log(player1TrapTimeStart);
-
-    console.log("player 2 timeframe");
-
-    console.log(player2TrapTimeStart);
-
-    // Call this function every second
-    setInterval(updateGameTime, 1000);
-
-    calculateDoors();
-
-    createSubGrids.call(this);
-    //allDoors.forEach(drawDoor.bind(this));
-    allDoors.forEach(door => drawDoor(door, this));
-
-    player1 = this.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-    player1.setCollideWorldBounds(true); 
-    player1.name = 'Human'; 
-    player1.data = players['Human']; 
-
-
-    player2 = this.physics.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    player2.setCollideWorldBounds(true); 
-    player2.name = 'AI'; 
-    player2.data = players['AI']; 
-
-    //player ghost for when in the same cell  
-    this.player1Ghost = this.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-    this.player2Ghost = this.add.sprite(grid_width - cellWidth / 2, this.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    this.player1Ghost.setVisible(false);
-    this.player2Ghost.setVisible(false);
-
-    easystar = new EasyStar.js();
-    easystar.setGrid(initialGrid);
-    easystar.setAcceptableTiles([0]); 
-
-    easystarSubgrid = new EasyStar.js();
-    easystarSubgrid.setGrid(subGrid);
-    easystarSubgrid.setAcceptableTiles([0]);
-
-    //star token groups
-    this.tokenGroup = this.physics.add.group();
-
-    addStarTokens(this, players['Human'].id);
-    addStarTokens(this, players['AI'].id);
-
-    this.physics.world.debugGraphic = this.add.graphics().setAlpha(0);
-
-    timeText = this.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
-
-    // Keyboard controls
-    this.input.keyboard.on('keyup', handleKeyDown.bind(this));
-
-    this.physics.add.overlap(player1, this.tokenGroup, onTokenHit.bind(this), null, this);
-    this.physics.add.overlap(player2, this.tokenGroup, onTokenHit.bind(this), null, this);
-
+    // Set up game elements after a short delay
+    setTimeout(() => {
+        this.overlay.setVisible(false);
+        this.messageText.setVisible(false);
+        this.instructionText.setVisible(false);
+        runUpdateLogic = true;
+        currentRound++;
+        setupGameElements(this); // Call this function to set up your game elements.
+    }, 3000); 
 }
 
 function update(time) {
+
+    if (!runUpdateLogic) return;
 
     if (time - lastAIUpdate > AIUpdateInterval) {
         if (!isPathBeingFollowed) {
@@ -847,7 +906,7 @@ function update(time) {
                 console.log("SAVING_STAGE_TWO");
                 handleSavingStageTwo();
             }
-            isPathBeingFollowed = true; // Assume that handleAIMovement sets a new path
+            isPathBeingFollowed = true;
         }else if(playerTwoTrapped === true){
 
             console.log("AI trapped in which grid");
@@ -1600,7 +1659,97 @@ function handleSavingStageTwo(){
 
 }
 
+function setupGameElements(scene){
 
+    // Create grid graphics
+    let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    // Draw vertical lines
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(i * cellWidth, 0);
+        graphics.lineTo(i * cellWidth, gridSize * cellHeight);
+    }
+
+    // Draw horizontal lines
+    for (let i = 0; i <= gridSize; i++) {
+        graphics.moveTo(0, i * cellHeight);
+        graphics.lineTo(gridSize * cellWidth, i * cellHeight);
+    }
+
+    graphics.strokePath();
+
+    scene.doorSprites = [];
+
+    console.log("player 1 timeframe");
+
+    console.log(player1TrapTimeStart);
+
+    console.log("player 2 timeframe");
+
+    console.log(player2TrapTimeStart);
+
+    // Call this function every second
+    setInterval(() => {
+        updateGameTime(scene);
+    }, 1000);
+
+    calculateDoors();
+    createSubGrids.call(scene);
+    //allDoors.forEach(drawDoor.bind(this));
+    allDoors.forEach(door => drawDoor(door, scene));
+
+    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    player1.setCollideWorldBounds(true); 
+    player1.name = 'Human'; 
+    player1.data = players['Human']; 
+
+
+    player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+    player2.setCollideWorldBounds(true); 
+    player2.name = 'AI'; 
+    player2.data = players['AI']; 
+
+    //player ghost for when in the same cell  
+    scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+    scene.player1Ghost.setVisible(false);
+    scene.player2Ghost.setVisible(false);
+
+    easystar = new EasyStar.js();
+    easystar.setGrid(initialGrid);
+    easystar.setAcceptableTiles([0]); 
+
+    easystarSubgrid = new EasyStar.js();
+    easystarSubgrid.setGrid(subGrid);
+    easystarSubgrid.setAcceptableTiles([0]);
+
+    //star token groups
+    scene.tokenGroup = scene.physics.add.group();
+
+    addStarTokens(scene, players['Human'].id);
+    addStarTokens(scene, players['AI'].id);
+
+    scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
+
+    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+
+    // Keyboard controls
+    scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
+
+    scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+    scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+}
+
+function endGame(scene) {
+    console.log("Game Over");
+    // Add your game over logic here
+    // For example, display a game over screen, reset game state, or navigate to another screen/page
+    scene.overlay.setVisible(true);
+    scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
+                   'End of game, thank you for playing', 
+                   { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+    // Optionally, stop the game loop
+    scene.game.loop.stop();
+}
 
   
   
