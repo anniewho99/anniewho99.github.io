@@ -62,7 +62,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 60; // Game lasts for 60 seconds
+let gameDuration = 120; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -661,7 +661,7 @@ function updateGameTime(scene) {
     currentTime++;
     if (currentTime >= gameDuration && !isTimeoutScheduled) {
   
-      if (currentRound === 4) {
+      if (currentRound > 3) {
           endGame(scene);
       }
   
