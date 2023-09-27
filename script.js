@@ -660,10 +660,12 @@ function generateRandomTimeframe() {
 function updateGameTime(scene) {
     currentTime++;
     if (currentTime >= gameDuration && !isTimeoutScheduled) {
+
+        currentRound++;
   
-      if (currentRound > 3) {
-          endGame(scene);
-      }
+        if (currentRound > 3) {
+            endGame(scene);
+        }
   
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
@@ -762,8 +764,6 @@ function updateGameTime(scene) {
           aiState = "NAVIGATING_TO_SUBGRID";
   
           isTimeoutScheduled = false;
-  
-          currentRound++;
       }, 3000); 
     }
   }  
@@ -808,8 +808,6 @@ function findEndCoordinates(chosenGrid, aiDoors) {
     }
 
     //console.log(endX, endY);
-
-  
     return [ endX, endY ];
   }
 
@@ -879,7 +877,6 @@ function create() {
         this.messageText.setVisible(false);
         this.instructionText.setVisible(false);
         runUpdateLogic = true;
-        currentRound++;
         setupGameElements(this); // Call this function to set up your game elements.
     }, 3000); 
 }
