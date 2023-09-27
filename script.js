@@ -47,8 +47,8 @@ if (trapHumanFirst) {
   if (trapAIFirst) {
     trapTimeForEachRound = {
         0: { human: 200, AI: 200 },
-        1: { human: 20, AI: 200 },
-        2: { human: 200, AI: 20 },
+        1: { human: 200, AI: 20 },
+        2: { human: 20, AI: 200 },
         3: { human: 60, AI: 20 },
       };
   }
