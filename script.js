@@ -664,21 +664,29 @@ function updateGameTime(scene) {
         currentRound++;
   
         if (currentRound > 4) {
-            onsole.log("Game Over");
+            console.log("Game Over");
             isTimeoutScheduled = true;
             scene.overlay.setVisible(true);
+            if(scene.messageText) scene.messageText.destroy(); 
             scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
                         'End of game, thank you for playing', 
                         { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
             scene.messageText.setVisible(true);            
             scene.game.loop.stop();
+            return;
         }
   
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
-  
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+      if(scene.messageText) scene.messageText.destroy();
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '28px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
+      scene.instructionText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 30, 
+                                               "Please use the arrow key to move your player at the top-left corner", 
+                                               { fontSize: '20px', fill: '#FFF' })
+                                      .setOrigin(0.5, 0.5)
+                                      .setDepth(1001)
+                                      .setVisible(true);
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
   
@@ -868,24 +876,36 @@ function create() {
     // Create an overlay and welcome message
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);;
     this.overlay.setAlpha(1); // You can adjust the alpha for desired transparency
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Thank you for participating in this study.`, { fontSize: '28px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
 
-    // Add the instruction message
-    this.instructionText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2 + 40, 'Please use the arrow key to move your player at the top-left corner', { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001); // Adjusted the Y-coordinate to place the text below the welcome message
+    // Delay time in milliseconds for each message.
+    let delay = 3000; // 3 seconds
 
-    runUpdateLogic = false;
-
-    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
-    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
-
-    // Set up game elements after a short delay
+    // After delay, hide the welcome message and show the first instruction
     setTimeout(() => {
-        this.overlay.setVisible(false);
-        this.messageText.setVisible(false);
-        this.instructionText.setVisible(false);
-        runUpdateLogic = true;
-        setupGameElements(this); // Call this function to set up your game elements.
-    }, 3000); 
+
+        this.messageText.setText('Here you are going to play a simple game with another player.');
+
+        setTimeout(() => {
+
+            this.messageText.setText('There are 4 rounds and each is 2 minutes long.');
+
+            setTimeout(() => {
+                this.messageText.setText(`Welcome to Round ${currentRound}!`);
+            
+                setTimeout(() => {
+                    this.messageText.setText('Please use the arrow key to move your player at the top-left corner');
+
+                    setTimeout(() => {
+                        this.overlay.setVisible(false);
+                        this.messageText.setVisible(false);
+                        runUpdateLogic = true;
+                        setupGameElements(this);
+                    }, delay);
+                }, delay);
+            }, delay);
+        }, delay);
+    }, delay);
 }
 
 function update(time) {
