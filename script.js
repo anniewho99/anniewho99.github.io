@@ -122,6 +122,8 @@ let runUpdateLogic = null;
 
 let currentRound = 1;
 
+let isTimeoutScheduled = false;
+
 let config = {
     type: Phaser.AUTO,
     width: 1050,
