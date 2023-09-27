@@ -876,7 +876,7 @@ function create() {
     // Create an overlay and welcome message
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);;
     this.overlay.setAlpha(1); // You can adjust the alpha for desired transparency
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Thank you for participating in this study.`, { fontSize: '28px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Thank you for participating in this study.`, { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
 
     // Delay time in milliseconds for each message.
     let delay = 3000; // 3 seconds
