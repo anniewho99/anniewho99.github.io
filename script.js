@@ -663,8 +663,15 @@ function updateGameTime(scene) {
 
         currentRound++;
   
-        if (currentRound > 3) {
-            endGame(scene);
+        if (currentRound > 4) {
+            onsole.log("Game Over");
+            isTimeoutScheduled = true;
+            scene.overlay.setVisible(true);
+            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
+                        'End of game, thank you for playing', 
+                        { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+            scene.messageText.setVisible(true);            
+            scene.game.loop.stop();
         }
   
       isTimeoutScheduled = true;
@@ -1739,19 +1746,6 @@ function setupGameElements(scene){
     scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
     scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
 }
-
-function endGame(scene) {
-    console.log("Game Over");
-    // Add your game over logic here
-    // For example, display a game over screen, reset game state, or navigate to another screen/page
-    scene.overlay.setVisible(true);
-    scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
-                   'End of game, thank you for playing', 
-                   { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
-    // Optionally, stop the game loop
-    scene.game.loop.stop();
-}
-
   
   
 
