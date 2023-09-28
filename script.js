@@ -921,7 +921,10 @@ function update(time) {
     if (time - lastAIUpdate > AIUpdateInterval) {
         // If currently following a path, continue moving along it
         if(isPathBeingFollowed){
-            moveAIAlongPath(currentPath, this);
+
+            if(currentPath !== null){
+                moveAIAlongPath(currentPath, this);
+            }
         }
         lastAIUpdate = time;
     }
