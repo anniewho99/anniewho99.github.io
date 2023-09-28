@@ -62,7 +62,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 120; 
+let gameDuration = 60; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -662,6 +662,10 @@ function updateGameTime(scene) {
     if (currentTime >= gameDuration && !isTimeoutScheduled) {
 
         currentRound++;
+
+        if(currentRound > 1){
+            gameDuration = 120;
+        }
   
         if (currentRound > 4) {
             console.log("Game Over");
