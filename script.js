@@ -1242,8 +1242,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     if(playerID === "Human"){
 
-                        let currentAIX = Math.round(player2.x / cellWidth);
-                        let currentAIY = Math.round(player2.y / cellHeight);
+                        let currentAIX = Math.round(player2.x / cellWidth) - 1;
+                        let currentAIY = Math.round(player2.y / cellHeight) - 1;
 
                         if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
                             console.log("human player enters AI target grid");
