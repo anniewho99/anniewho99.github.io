@@ -126,6 +126,8 @@ let isTimeoutScheduled = false;
 
 let autoProceedTimeout;
 
+let nextRoundButton;
+
 let config = {
     type: Phaser.AUTO,
     width: 1050,
@@ -700,7 +702,7 @@ function updateGameTime(scene) {
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
 
-      let nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Press here to continue', { fontSize: '20px', fill: '#FFF' })
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Press here to continue', { fontSize: '20px', fill: '#FFF' })
           .setOrigin(0.5, 0.5)
           .setDepth(1001)
           .setInteractive();
@@ -915,7 +917,7 @@ function create() {
 
         setTimeout(() => {
 
-            this.messageText.setText('There are 4 rounds and each is 2 minutes long.');
+            this.messageText.setText('There are 4 short rounds of game.');
 
             setTimeout(() => {
                 this.messageText.setText(`Welcome to Round ${currentRound}!`);
