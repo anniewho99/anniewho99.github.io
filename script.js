@@ -1322,6 +1322,7 @@ function handleAIMovement() {
             pathIndex = 0; // Reset the index for the new path
             console.log("the path");
             console.log(currentPath);
+            isPathBeingFollowed = true;
         }
     });
     easystar.calculate();
@@ -1544,6 +1545,7 @@ function handleSavingStageOne() {
             pathIndex = 0;
             console.log("the path");
             console.log(currentPath);
+            isPathBeingFollowed = true;
         }
     }
 
@@ -1708,7 +1710,6 @@ function handleAIStateandDecision(){
             console.log("SAVING_STAGE_TWO");
             handleSavingStageTwo();
         }
-        isPathBeingFollowed = true;
     }else if(playerTwoTrapped === true){
 
         console.log("AI trapped in which grid");
