@@ -923,7 +923,17 @@ function update(time) {
         if(isPathBeingFollowed){
 
             if(currentPath !== null){
-                moveAIAlongPath(currentPath, this);
+
+                if(playerTwoTrapped === true){
+
+                    console.log("AI trapped in which grid");
+                    console.log(trappedAIStartGrid);
+            
+                    moveAIWhenTrapped(trappedAIStartGrid);
+            
+                }else{
+                    moveAIAlongPath(currentPath, this);
+                }
             }
         }
         lastAIUpdate = time;
@@ -1235,7 +1245,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                         let currentAIX = Math.round(player2.x / cellWidth);
                         let currentAIY = Math.round(player2.y / cellHeight);
 
-                        if (arraysEqual(tokenInfo.subgrid.end, endGrid) && (aiState === "NAVIGATING_TO_SUBGRID" || aiState === "COLLECTING")){
+                        if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
                             console.log("human player enters AI target grid");
                             otherPlayerinSubgrid = true;
                             oldGrid = startGrid;
@@ -1710,13 +1720,6 @@ function handleAIStateandDecision(){
             console.log("SAVING_STAGE_TWO");
             handleSavingStageTwo();
         }
-    }else if(playerTwoTrapped === true){
-
-        console.log("AI trapped in which grid");
-        console.log(trappedAIStartGrid);
-
-        moveAIWhenTrapped(trappedAIStartGrid);
-
     }else if(playerTwoTrapped === 'blue'){
 
         console.log("AI was saved by human");
