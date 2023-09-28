@@ -791,7 +791,7 @@ function proceedToNextRound(scene) {
     players.AI.tokensCollected = 0;
     players.Human.tokensCollected = 0;
   
-    cene.doorSprites = [];
+    scene.doorSprites = [];
     calculateDoors();
     allDoors.forEach(door => drawDoor(door, scene));
   
