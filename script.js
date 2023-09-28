@@ -916,122 +916,33 @@ function update(time) {
 
     if (!runUpdateLogic) return;
 
+    handleAIStateandDecision();
+
     if (time - lastAIUpdate > AIUpdateInterval) {
-        if (!isPathBeingFollowed) {
-            // If not currently following a path, calculate a new one
-            if (aiState === "NAVIGATING_TO_SUBGRID"){
-                console.log("NAVIGATING_TO_SUBGRID");
-                handleAIMovement();
-            }else if(aiState === "COLLECTING"){
-                console.log("COLLECTING");
-                console.log("local targets");
-                localTargets = getTargetsInLocalCoordinates();
-                console.log(localTargets);
-                subgridAI = tokenInfo.subgrid.start;
-                localAIx = aiStartX - subgridAI[0] + 2;
-                localAIy = aiStartY - subgridAI[1] + 1;
-                moveToNextTarget(localTargets);
-            }else if (aiState === "SAVING_STAGE_ONE"){
-                console.log("SAVING_STAGE_ONE");
-                handleSavingStageOne();
-            }else if (aiState === "SAVING_STAGE_TWO"){
-                console.log("SAVING_STAGE_TWO");
-                handleSavingStageTwo();
-            }
-            isPathBeingFollowed = true;
-        }else if(playerTwoTrapped === true){
-
-            console.log("AI trapped in which grid");
-            console.log(trappedAIStartGrid);
-
-            moveAIWhenTrapped(trappedAIStartGrid);
-
-        }else if(playerTwoTrapped === 'blue'){
-
-            console.log("AI was saved by human");
-            if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
-                // currentTargetIndex = players['AI'].tokensCollected % 3;
-                currentTargetIndex = 0;
-                pathIndex = 0;
-
-                localTargets.sort((a, b) => {
-                    const aIsZero = arraysEqual(a, [0,0]);
-                    const bIsZero = arraysEqual(b, [0,0]);
-                
-                    if (aIsZero && !bIsZero) {
-                        return -1;
-                    }
-                    if (!aIsZero && bIsZero) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                console.log("finishing collecting tokens");
-                console.log(currentTargetIndex);
-
-                if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
-                    localTargets[localTargets.length - 1] = [0, 1];
-                }else{
-                    localTargets[localTargets.length - 1] = [4, 1];
-                }
-
-                console.log(localTargets);
-                moveToNextTarget(localTargets);
-
-                trappedAIStartGrid = [];
-            }else{
-                currentTargetIndex = 3;
-                pathIndex = 0;
-                console.log("no tokens to collect, let's get out of here");
-                console.log(currentTargetIndex);
-
-                if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
-                    localTargets[localTargets.length - 1] = [0, 1];
-                }else{
-                    localTargets[localTargets.length - 1] = [4, 1];
-                }
-
-                console.log(localTargets);
-
-                allTokeninOldGridGone = true;
-                moveToNextTarget(localTargets);
-                trappedAIStartGrid = [];
-            }
-
-            playerTwoTrapped = 'saving completed';
-        }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID" && playerOneTrapped === true){
-
-            isPathBeingFollowed = false;
-            timeToSaveTrappedHuman = false;
-            aiState = "SAVING_STAGE_ONE";
-            
-        }else {
-            // If currently following a path, continue moving along it
-
-            if (otherPlayerinSubgrid === true) {
-
-                console.log("recalculate AI path");
-
-                if(aiState === "COLLECTING"){
-                    updateDoorWhenInSubgrid(localTargets);
-                    currentTargetIndex = currentTargetIndex - 1;
-                    pathIndex = 0;
-                    otherPlayerinSubgrid = false;
-                    moveToNextTarget(localTargets);
-                }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
-                    otherPlayerinSubgrid = false;
-                    handleAIMovement();
-                }else if(aiState === "NAVIGATING_TO_SUBGRID"){
-
-                }
-    
-            }
+        // If currently following a path, continue moving along it
+        if(isPathBeingFollowed){
             moveAIAlongPath(currentPath, this);
         }
-        lastAIUpdate = time; // Update the timestamp whether you're calculating a new path or following an old one
+        lastAIUpdate = time;
     }
     
+    if (otherPlayerinSubgrid === true) {
+
+        console.log("recalculate AI path");
+
+        if(aiState === "COLLECTING"){
+            updateDoorWhenInSubgrid(localTargets);
+            currentTargetIndex = currentTargetIndex - 1;
+            pathIndex = 0;
+            otherPlayerinSubgrid = false;
+            moveToNextTarget(localTargets);
+        }else if(aiState === "NAVIGATING_TO_SUBGRID"){ 
+            otherPlayerinSubgrid = false;
+            handleAIMovement();
+        }
+
+    }
+
     if (isPlayerinSameCell(player1, player2)) {
         console.log("Players are in the same cell");
 
@@ -1769,6 +1680,100 @@ function setupGameElements(scene){
 
     scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
     scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+}
+
+function handleAIStateandDecision(){
+
+    if (!isPathBeingFollowed) {
+        // If not currently following a path, calculate a new one
+        if (aiState === "NAVIGATING_TO_SUBGRID"){
+            console.log("NAVIGATING_TO_SUBGRID");
+            handleAIMovement();
+        }else if(aiState === "COLLECTING"){
+            console.log("COLLECTING");
+            console.log("local targets");
+            localTargets = getTargetsInLocalCoordinates();
+            console.log(localTargets);
+            subgridAI = tokenInfo.subgrid.start;
+            localAIx = aiStartX - subgridAI[0] + 2;
+            localAIy = aiStartY - subgridAI[1] + 1;
+            moveToNextTarget(localTargets);
+        }else if (aiState === "SAVING_STAGE_ONE"){
+            console.log("SAVING_STAGE_ONE");
+            handleSavingStageOne();
+        }else if (aiState === "SAVING_STAGE_TWO"){
+            console.log("SAVING_STAGE_TWO");
+            handleSavingStageTwo();
+        }
+        isPathBeingFollowed = true;
+    }else if(playerTwoTrapped === true){
+
+        console.log("AI trapped in which grid");
+        console.log(trappedAIStartGrid);
+
+        moveAIWhenTrapped(trappedAIStartGrid);
+
+    }else if(playerTwoTrapped === 'blue'){
+
+        console.log("AI was saved by human");
+        if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
+            // currentTargetIndex = players['AI'].tokensCollected % 3;
+            currentTargetIndex = 0;
+            pathIndex = 0;
+
+            localTargets.sort((a, b) => {
+                const aIsZero = arraysEqual(a, [0,0]);
+                const bIsZero = arraysEqual(b, [0,0]);
+            
+                if (aIsZero && !bIsZero) {
+                    return -1;
+                }
+                if (!aIsZero && bIsZero) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            console.log("finishing collecting tokens");
+            console.log(currentTargetIndex);
+
+            if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
+                localTargets[localTargets.length - 1] = [0, 1];
+            }else{
+                localTargets[localTargets.length - 1] = [4, 1];
+            }
+
+            console.log(localTargets);
+            moveToNextTarget(localTargets);
+
+            trappedAIStartGrid = [];
+        }else{
+            currentTargetIndex = 3;
+            pathIndex = 0;
+            console.log("no tokens to collect, let's get out of here");
+            console.log(currentTargetIndex);
+
+            if (aiDoorToLeave[0] - trappedAIStartGrid[0] < 2){
+                localTargets[localTargets.length - 1] = [0, 1];
+            }else{
+                localTargets[localTargets.length - 1] = [4, 1];
+            }
+
+            console.log(localTargets);
+
+            allTokeninOldGridGone = true;
+            moveToNextTarget(localTargets);
+            trappedAIStartGrid = [];
+        }
+
+        playerTwoTrapped = 'saving completed';
+    }else if (timeToSaveTrappedHuman && aiState === "NAVIGATING_TO_SUBGRID" && playerOneTrapped === true){
+
+        isPathBeingFollowed = false;
+        timeToSaveTrappedHuman = false;
+        aiState = "SAVING_STAGE_ONE";
+        
+    }
 }
   
   
