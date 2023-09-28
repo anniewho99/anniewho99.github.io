@@ -124,6 +124,8 @@ let currentRound = 1;
 
 let isTimeoutScheduled = false;
 
+let autoProceedTimeout;
+
 let config = {
     type: Phaser.AUTO,
     width: 1050,
@@ -673,10 +675,14 @@ function updateGameTime(scene) {
             scene.overlay.setVisible(true);
             if(scene.messageText) scene.messageText.destroy(); 
             scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
-                        'End of game, thank you for playing', 
-                        { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
-            scene.messageText.setVisible(true);            
-            scene.game.loop.stop();
+                'End of game, thank you for playing', 
+                { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+            scene.messageText.setVisible(true);
+        
+            // Delay the stopping of the game loop to allow UI to render
+            setTimeout(() => {
+                scene.game.loop.stop();
+            }, 100); // adjust delay as needed
             return;
         }
   
@@ -693,100 +699,117 @@ function updateGameTime(scene) {
                                       .setVisible(true);
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
-  
-      setTimeout(() => {
-  
-          player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
-          player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
-  
-          doorAICoords = [];
-          doorAIadjusted = [];
-          doorHumanCoords = [];
-          doorHumanadjusted = [];
-          allDoors = [];
-          usedGrids = [];
-          isDoorRotating = false;
-          doorSwitch = false;
-  
-          playerOneTrapped = false;
-          playerTwoTrapped = false;
-  
-          trappedDoors = null;
-  
-          pathIndex = 0;
-  
-          currentTargetIndex = 0;
-  
-          currentPath = null; 
-  
-          localTargets = [];
-  
-          otherPlayerinSubgrid = false;
-  
-          tokenInfo = {
-              locations: [],
-              subgrid: null
-          };
-  
-          trappedAIStartGrid = [];
-  
-          aiDoorToLeave = null;
-  
-          allTokeninOldGridGone = false;
-  
-          timeToSaveTrappedHuman = false;
-  
-          oldGrid = [];
-  
-          newTokenPlacedForAI = false;
-  
-          aiExitStart = [];
-  
-          humanTrappedGrid = [];
-  
-          humanDoortoLeave = [];
-          
-          scene.overlay.setVisible(false);
-          scene.messageText.setVisible(false);
-          scene.instructionText.setVisible(false);
-          runUpdateLogic = true;
-          currentTime = 0;
-  
-          player1.x = cellWidth/2;
-          player1.y = cellHeight/2;
-  
-          player2.x = grid_width - cellWidth / 2;
-          player2.y = scene.sys.game.config.height - cellHeight / 2;
-  
-          aiStartX =  12;
-          aiStartY = 12;
 
-          localAIx = null;
-          localAIy = null;
-          subgridAI = null;
-  
-          players.AI.tokensCollected = 0;
-          players.Human.tokensCollected = 0;
-  
-          scene.doorSprites = [];
-          calculateDoors();
-          allDoors.forEach(door => drawDoor(door, scene));
-  
-          scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
+      let nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Press here to continue', { fontSize: '20px', fill: '#FFF' })
+          .setOrigin(0.5, 0.5)
+          .setDepth(1001)
+          .setInteractive();
       
-          // // Add new tokens for each player
-          addStarTokens(scene, players['Human'].id);
-          addStarTokens(scene, players['AI'].id);
-  
-          isPathBeingFollowed = false;
-  
-          aiState = "NAVIGATING_TO_SUBGRID";
-  
-          isTimeoutScheduled = false;
-      }, 3000); 
+      nextRoundButton.on('pointerdown', () => {
+          proceedToNextRound(scene);
+      });
+      
+      autoProceedTimeout = setTimeout(() => {
+          proceedToNextRound(scene);
+      }, 60000); // 60 seconds
     }
   }  
+
+function proceedToNextRound(scene) {
+
+    clearTimeout(autoProceedTimeout); // clear the timeout to avoid executing it after user interaction
+    
+    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
+    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
   
+    doorAICoords = [];
+    doorAIadjusted = [];
+    doorHumanCoords = [];
+    doorHumanadjusted = [];
+    allDoors = [];
+    usedGrids = [];
+    isDoorRotating = false;
+    doorSwitch = false;
+  
+    playerOneTrapped = false;
+    playerTwoTrapped = false;
+  
+    trappedDoors = null;
+  
+    pathIndex = 0;
+  
+    currentTargetIndex = 0;
+  
+    currentPath = null; 
+  
+    localTargets = [];
+  
+    otherPlayerinSubgrid = false;
+  
+    tokenInfo = {
+        locations: [],
+        subgrid: null
+    };
+  
+    trappedAIStartGrid = [];
+  
+    aiDoorToLeave = null;
+  
+    allTokeninOldGridGone = false;
+  
+    timeToSaveTrappedHuman = false;
+  
+    oldGrid = [];
+  
+    newTokenPlacedForAI = false;
+  
+    aiExitStart = [];
+  
+    humanTrappedGrid = [];
+  
+    humanDoortoLeave = [];
+          
+    scene.overlay.setVisible(false);
+    scene.messageText.setVisible(false);
+    scene.instructionText.setVisible(false);
+    runUpdateLogic = true;
+    currentTime = 0;
+  
+    player1.x = cellWidth/2;
+    player1.y = cellHeight/2;
+  
+    player2.x = grid_width - cellWidth / 2;
+    player2.y = scene.sys.game.config.height - cellHeight / 2;
+  
+    aiStartX =  12;
+    aiStartY = 12;
+
+    localAIx = null;
+    localAIy = null;
+    subgridAI = null;
+  
+    players.AI.tokensCollected = 0;
+    players.Human.tokensCollected = 0;
+  
+    cene.doorSprites = [];
+    calculateDoors();
+    allDoors.forEach(door => drawDoor(door, scene));
+  
+    scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
+      
+    // // Add new tokens for each player
+    addStarTokens(scene, players['Human'].id);
+    addStarTokens(scene, players['AI'].id);
+  
+    isPathBeingFollowed = false;
+  
+    aiState = "NAVIGATING_TO_SUBGRID";
+  
+    isTimeoutScheduled = false;
+
+    if(nextRoundButton) nextRoundButton.destroy(); 
+}
+
 function isCloseToDoor(player, nexToDoorPos) {
     let doorStart = nexToDoorPos[0];
     let doorEnd = nexToDoorPos[1];
