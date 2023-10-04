@@ -889,8 +889,6 @@ function getTargetsInLocalCoordinates() {
     return localTargets;
   }
   
-
-
 let game = new Phaser.Game(config);
 
 let player1, player2;
@@ -907,39 +905,48 @@ function preload() {
 
 function create() {
 
+    let messages = [
+        'Thank you for participating in this study.',
+        'Here you are going to play a simple game with another player.',
+        'There are 4 short rounds of game.',
+        `Welcome to Round ${currentRound}!`,
+        'Please use the arrow key to move your player at the top-left corner'
+    ];
+    let currentMessageIndex = 0;
+    
+    function displayNextMessage(scene) {
+        // If there's another message to show
+        if (currentMessageIndex < messages.length) {
+            scene.messageText.setText(messages[currentMessageIndex]);
+            currentMessageIndex++;
+        } else {
+            // All messages have been shown, proceed with the game setup
+            scene.overlay.setVisible(false);
+            scene.messageText.setVisible(false);
+            runUpdateLogic = true;
+            setupGameElements(scene);
+    
+            // Remove the event listener to avoid further unnecessary executions
+            scene.input.keyboard.off('keydown', keyboardCallback);
+        }
+    }
+    
     // Create an overlay and welcome message
-    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);;
-    this.overlay.setAlpha(1); // You can adjust the alpha for desired transparency
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, `Thank you for participating in this study.`, { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
-
-    // Delay time in milliseconds for each message.
-    let delay = 3000; // 3 seconds
-
-    // After delay, hide the welcome message and show the first instruction
-    setTimeout(() => {
-
-        this.messageText.setText('Here you are going to play a simple game with another player.');
-
-        setTimeout(() => {
-
-            this.messageText.setText('There are 4 short rounds of game.');
-
-            setTimeout(() => {
-                this.messageText.setText(`Welcome to Round ${currentRound}!`);
-            
-                setTimeout(() => {
-                    this.messageText.setText('Please use the arrow key to move your player at the top-left corner');
-
-                    setTimeout(() => {
-                        this.overlay.setVisible(false);
-                        this.messageText.setVisible(false);
-                        runUpdateLogic = true;
-                        setupGameElements(this);
-                    }, delay);
-                }, delay);
-            }, delay);
-        }, delay);
-    }, delay);
+    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);
+    this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+    
+    runUpdateLogic = false;
+    
+    // Initial display
+    displayNextMessage(this);
+    
+    // Add an event listener for keyboard input
+    let keyboardCallback = (event) => {
+        displayNextMessage(this);
+    };
+    this.input.keyboard.on('keydown', keyboardCallback);
+    
 }
 
 function update(time) {
