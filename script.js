@@ -707,7 +707,7 @@ function updateGameTime(scene) {
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
 
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Press here to continue', { fontSize: '20px', fill: '#FFF' })
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Click here to continue', { fontSize: '20px', fill: '#FFF' })
           .setOrigin(0.5, 0.5)
           .setDepth(1001)
           .setInteractive();
@@ -907,10 +907,10 @@ function create() {
 
     let messages = [
         'Thank you for participating in this study. \nPress any key to continue',
-        'Here you are going to play a simple game with a robot player. \n The primary task of the game \n is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
-        'There are 5 short rounds of game.\n Each lasts around 90 seconds',
+        'Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
+        'There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
         `Welcome to Round ${currentRound}! \n Press any key to continue`,
-        'Please use the arrow keys to move your player at the top-left corner. \n Have fun! \n Press any key to start the round'
+        'Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the game'
     ];
     let currentMessageIndex = 0;
     
