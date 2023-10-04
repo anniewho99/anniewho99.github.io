@@ -72,7 +72,10 @@ let rescueStartTime = null;
 let trappedDoors = null;
 
 let lastAIUpdate = 0;
-const AIUpdateInterval = 500;
+// const AIUpdateInterval = 500;
+
+const SLOW_UPDATE_INTERVAL = 800;
+const NORMAL_UPDATE_INTERVAL = 500;
 let aiStartX = 12;
 let aiStartY = 12;
 
@@ -943,6 +946,8 @@ function update(time) {
 
     handleAIStateandDecision();
 
+    AIUpdateInterval = handleAIInterval();
+
     if (time - lastAIUpdate > AIUpdateInterval) {
         // If currently following a path, continue moving along it
         if(isPathBeingFollowed){
@@ -1807,7 +1812,26 @@ function handleAIStateandDecision(){
         
     }
 }
-  
+
+function calculateDirection(point1, point2) {
+    const dx = point2.x - point1.x;
+    const dy = point2.y - point1.y;
+    return [dx, dy];
+}
+
+function handleAIInterval(){
+    let currentDirection = calculateDirection(path[pathIndex - 1], path[pathIndex]);
+    let upcomingDirection = calculateDirection(path[pathIndex], path[pathIndex + 1]);
+    
+    if (!arraysEqual(currentDirection, upcomingDirection)) {
+      AIUpdateInterval = SLOW_UPDATE_INTERVAL; // Adjust interval if direction changed
+    } else {
+      AIUpdateInterval = NORMAL_UPDATE_INTERVAL;
+    }
+
+    return AIUpdateInterval;
+    
+}
   
 
 
