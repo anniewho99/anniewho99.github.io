@@ -906,11 +906,11 @@ function preload() {
 function create() {
 
     let messages = [
-        'Thank you for participating in this study.',
-        'Here you are going to play a simple game with another player.',
-        'There are 4 short rounds of game.',
-        `Welcome to Round ${currentRound}!`,
-        'Please use the arrow key to move your player at the top-left corner'
+        'Thank you for participating in this study. \nPress any key to continue',
+        'Here you are going to play a simple game with a robot player. \n The primary task of the game \n is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
+        'There are 5 short rounds of game.\n Each lasts around 90 seconds',
+        `Welcome to Round ${currentRound}! \n Press any key to continue`,
+        'Please use the arrow keys to move your player at the top-left corner. \n Have fun! \n Press any key to start the round'
     ];
     let currentMessageIndex = 0;
     
