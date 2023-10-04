@@ -1820,6 +1820,11 @@ function calculateDirection(point1, point2) {
 }
 
 function handleAIInterval(){
+
+    if (pathIndex - 1 == -1){
+        AIUpdateInterval = SLOW_UPDATE_INTERVAL; 
+        return AIUpdateInterval;
+    }
     let currentDirection = calculateDirection(path[pathIndex - 1], path[pathIndex]);
     let upcomingDirection = calculateDirection(path[pathIndex], path[pathIndex + 1]);
     
