@@ -62,7 +62,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 60; 
+let gameDuration = 10; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -402,7 +402,6 @@ function update_doors(A, B) {
 }
 
 
-
 function findGridForPoint(point, pointsDict) {
     for (let key in pointsDict) {
         let points = pointsDict[key];
@@ -673,23 +672,15 @@ function updateGameTime(scene) {
         currentRound++;
 
         if(currentRound > 1){
-            gameDuration = 120;
+            gameDuration = 10;
         }
   
         if (currentRound > 4) {
             console.log("Game Over");
             isTimeoutScheduled = true;
-            scene.overlay.setVisible(true);
-            if(scene.messageText) scene.messageText.destroy(); 
-            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, 
-                'End of game, thank you for playing', 
-                { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
-            scene.messageText.setVisible(true);
         
-            // Delay the stopping of the game loop to allow UI to render
-            setTimeout(() => {
-                scene.game.loop.stop();
-            }, 100); // adjust delay as needed
+            // End the game and show post-game content
+            endGame(scene);
             return;
         }
   
@@ -817,6 +808,14 @@ function proceedToNextRound(scene) {
     if(nextRoundButton) nextRoundButton.destroy(); 
 }
 
+function endGame(scene) {
+    // Hide Phaser canvas
+    scene.game.canvas.style.display = 'none';
+
+    // Display the post-game content
+    document.getElementById('postGameContent').style.display = 'block';
+}
+
 function isCloseToDoor(player, nexToDoorPos) {
     let doorStart = nexToDoorPos[0];
     let doorEnd = nexToDoorPos[1];
@@ -906,11 +905,11 @@ function preload() {
 function create() {
 
     let messages = [
-        'Thank you for participating in this study. \nPress any key to continue',
-        'Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
-        'There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
-        `Welcome to Round ${currentRound}! \n Press any key to continue`,
-        'Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the game'
+        ' Thank you for participating in this study. \nPress any key to continue',
+        ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
+        ' There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
+        ` Welcome to Round ${currentRound}! \n Press any key to continue`,
+        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the game'
     ];
     let currentMessageIndex = 0;
     
