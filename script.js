@@ -133,6 +133,8 @@ let autoProceedTimeout;
 
 let nextRoundButton;
 
+let startTimer = false;
+
 let config = {
     type: Phaser.AUTO,
     width: 1050,
@@ -908,8 +910,8 @@ function create() {
         ' Thank you for participating in this study. \nPress any key to continue',
         ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
         ' There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
-        ` Welcome to Round ${currentRound}! \n Press any key to continue`,
-        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the game'
+        ' We will first start with a demo! \n Press any key to continue',
+        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the demo'
     ];
     let currentMessageIndex = 0;
     
@@ -1820,7 +1822,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(785, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '14px', fill: '#000' });
+    scene.messageText = scene.add.text(700, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '16px', fill: '#000' });
     let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     LKey.on('down', function() {
         console.log('L key pressed!');
@@ -1831,7 +1833,7 @@ function initializeDemo(scene) {
 let instructions = [
     " You can only go through red doors when entering a subgrid. \n Now try to go through a red door\n Press L when you finish the action",
     " You can only collect red flowers. \n When you finish collecting all red flowers in a subgrid, \n a new group of flowers will appear in another subgrid. \n Press L to continue",
-    " Now we will add the robot player to the game. \n It will only collect blue butterflies. \n Press L to start the game. \n Have fun!"
+    " Now we will add the robot player to the game. \n It will only collect blue butterflies. \n Press L to start Round 1. \n Have fun!"
 ];
 let currentInstructionIndex = 0;
 
@@ -1842,27 +1844,6 @@ function displayNextInstruction(scene) {
 
     if (currentInstructionIndex < instructions.length) {
         scene.messageText.setText(instructions[currentInstructionIndex]);
-
-        if (currentInstructionIndex === 2) {
-            // Add robot sprite and tokens-related stuff
-            // Example:
-            player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-            player2.setCollideWorldBounds(true); 
-            player2.name = 'AI'; 
-            player2.data = players['AI'];
-
-            addStarTokens(scene, players['AI'].id);
-            scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
-
-            easystar = new EasyStar.js();
-            easystar.setGrid(initialGrid);
-            easystar.setAcceptableTiles([0]); 
-
-            easystarSubgrid = new EasyStar.js();
-            easystarSubgrid.setGrid(subGrid);
-            easystarSubgrid.setAcceptableTiles([0]);
-            runUpdateLogic = true;
-        }
     } 
     else {
         // All instructions shown, remove L key listener and proceed with game setup
@@ -1880,16 +1861,43 @@ function completeSetup(scene) {
         updateGameTime(scene);
     }, 1000);
 
-    //player ghost for when in the same cell  
+
+    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
+    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+
+    player1.x = cellWidth/2;
+    player1.y = cellHeight/2;
+  
+    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+
+    player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+    player2.setCollideWorldBounds(true); 
+    player2.name = 'AI'; 
+    player2.data = players['AI'];
+
+    easystar = new EasyStar.js();
+    easystar.setGrid(initialGrid);
+    easystar.setAcceptableTiles([0]); 
+
+    easystarSubgrid = new EasyStar.js();
+    easystarSubgrid.setGrid(subGrid);
+    easystarSubgrid.setAcceptableTiles([0]);
+
     scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
     scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
     scene.player1Ghost.setVisible(false);
     scene.player2Ghost.setVisible(false);
 
-    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
-    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
-  
-    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+    players.Human.tokensCollected = 0;
+
+    scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
+      
+    // // Add new tokens for each player
+    addStarTokens(scene, players['Human'].id);
+    addStarTokens(scene, players['AI'].id);
+
+    runUpdateLogic = true;
+
 }
 
 
