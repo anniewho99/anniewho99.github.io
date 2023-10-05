@@ -924,13 +924,6 @@ function create() {
             scene.messageText.setVisible(false);
             // runUpdateLogic = true;
             setupGameElements(scene);
-
-            this.LKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-            this.LKey.on('down', function() {
-                console.log('L key pressed!');
-                displayNextInstruction(this);
-            }.bind(this)); 
-    
             // Remove the event listener to avoid further unnecessary executions
             scene.input.keyboard.off('keydown', keyboardCallback);
         }
