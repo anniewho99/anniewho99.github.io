@@ -924,6 +924,9 @@ function create() {
             scene.messageText.setVisible(false);
             // runUpdateLogic = true;
             setupGameElements(scene);
+
+            this.LKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+            this.LKey.on('down', function() {console.log('L key pressed!'); displayNextInstruction(this);}, this);  
     
             // Remove the event listener to avoid further unnecessary executions
             scene.input.keyboard.off('keydown', keyboardCallback);
@@ -1284,8 +1287,15 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     if(playerID === "Human"){
 
-                        let currentAIX = Math.round(player2.x / cellWidth) - 1;
-                        let currentAIY = Math.round(player2.y / cellHeight) - 1;
+                        let currentAIX;
+                        let currentAIY;
+                        if (runUpdateLogic === false){
+                            currentAIX = -1;
+                            currentAIY = -1;
+                        }else{
+                            currentAIX = Math.round(player2.x / cellWidth) - 1;
+                            currentAIY = Math.round(player2.y / cellHeight) - 1;
+                        }
 
                         if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
                             console.log("human player enters AI target grid");
@@ -1852,11 +1862,6 @@ function handleAIInterval(){
 
 function setupGameElements(scene) {
     initializeDemo(scene);
-
-    let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-    LKey.on('up', function() {
-        displayNextInstruction(scene);
-    });
 }
 
 function initializeDemo(scene) {
@@ -1900,12 +1905,10 @@ function initializeDemo(scene) {
     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
     scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
-    
-    scene.messageText.setPosition(100, 10); 
 
-    scene.messageText.setStyle({ fontSize: '10px', fill: '#FFF' });
-    
-    scene.messageText.setText(" In this game, you can see four subgrid on the grid. \nPress L to continue");
+    scene.messageText.destroy(); 
+
+    scene.messageText = scene.add.text(100, 10, ' In this game, you can see four subgrid on the grid. \nPress L to continue', { fontSize: '10px', fill: '#000' });
 }
 
 
