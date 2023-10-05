@@ -1281,30 +1281,26 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if ((arraysEqual(startGrid, trappedAIStartGrid) !== true) && (arraysEqual(humanTrappedGrid, startGrid)!== true)){
 
-                    if(playerID === "Human"){
+                    if(runUpdateLogic){
+                        if(playerID === "Human"){
 
-                        let currentAIX;
-                        let currentAIY;
-                        if (runUpdateLogic === false){
-                            currentAIX = -1;
-                            currentAIY = -1;
-                        }else{
-                            currentAIX = Math.round(player2.x / cellWidth) - 1;
-                            currentAIY = Math.round(player2.y / cellHeight) - 1;
+                            let  currentAIX = Math.round(player2.x / cellWidth) - 1;
+                            let currentAIY = Math.round(player2.y / cellHeight) - 1;
+    
+                            if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
+                                console.log("human player enters AI target grid");
+                                otherPlayerinSubgrid = true;
+                                oldGrid = startGrid;
+                                newTokenPlacedForAI = true;
+                            }else if ((startGrid[0] - 2 < currentAIX && currentAIX < endGrid[0]) &&
+                            (startGrid[1] - 2 < currentAIY && currentAIY < endGrid[1])) {
+                                console.log("human player enters the grid AI is in");
+                                otherPlayerinSubgrid = true;
+                                newTokenPlacedForAI = true;
+                                oldGrid = startGrid;
+                            }
                         }
 
-                        if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
-                            console.log("human player enters AI target grid");
-                            otherPlayerinSubgrid = true;
-                            oldGrid = startGrid;
-                            newTokenPlacedForAI = true;
-                        }else if ((startGrid[0] - 2 < currentAIX && currentAIX < endGrid[0]) &&
-                        (startGrid[1] - 2 < currentAIY && currentAIY < endGrid[1])) {
-                            console.log("human player enters the grid AI is in");
-                            otherPlayerinSubgrid = true;
-                            newTokenPlacedForAI = true;
-                            oldGrid = startGrid;
-                        }
                     }
 
                     doorAICoords = update_doors(doors, doorAICoords)
