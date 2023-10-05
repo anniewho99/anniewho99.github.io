@@ -1820,7 +1820,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(100, 10, ' In this game, you can see four subgrid on the grid. \nPress L to continue', { fontSize: '10px', fill: '#000' });
+    scene.messageText = scene.add.text(100, 10, 'In this game, you can see four subgrid on the grid. \nPress L to continue', { fontSize: '16px', fill: '#000' });
     let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     LKey.on('down', function() {
         console.log('L key pressed!');
@@ -1828,15 +1828,15 @@ function initializeDemo(scene) {
     });
 }
 
+let instructions = [
+    " You can only go through red doors when entering a subgrid. \n Now try to go through a red door\n Press L when you finish the action",
+    " You can only collect red flowers. \n When you finish collecting all red flowers in a subgrid, \n a new group of flowers will appear in another subgrid. \n Press L to continue",
+    " Now we will add the robot player to the game. \n It will only collect blue butterflies. \n Press L to start the game. \n Have fun!"
+];
+let currentInstructionIndex = 0;
+
 
 function displayNextInstruction(scene) {
-
-    let instructions = [
-        " You can only go through red doors when entering a subgrid. \n Now try to go through a red door\n Press L when you finish the action",
-        " You can only collect red flowers. \n When you finish collecting all red flowers in a subgrid, \n a new group of flowers will appear in another subgrid. \n Press L to continue",
-        " Now we will add the robot player to the game. \n It will only collect blue butterflies. \n Press L to start the game. \n Have fun!"
-    ];
-    let currentInstructionIndex = 0;
 
     currentInstructionIndex++;
 
