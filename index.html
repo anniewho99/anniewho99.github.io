@@ -26,10 +26,11 @@
     <h1>Thank you for participating!</h1>
     <h2>Feedback</h2>
 
-    <label for="helpfulness">Rating of the perceived helpfulness of the other agent:</label><br>
-    <input type="range" id="helpfulness" name="helpfulness" min="0" max="10"><br>
-    <span>Not helpful at all</span><span style="float:right;">Very helpful</span><br><br>
-
+    <label for="helpfulnessRating">Rating of the perceived helpfulness of the other agent:</label>
+        <div class="slider-container">
+            <label>Not helpful at all</label>
+            <input type="range" id="helpfulnessRating" name="helpfulnessRating" min="1" max="5">
+            <label>Very helpful</label>
     <label for="strategy">What was your strategy in the game?</label><br>
     <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
