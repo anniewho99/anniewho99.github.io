@@ -922,7 +922,7 @@ function create() {
             // All messages have been shown, proceed with the game setup
             scene.overlay.setVisible(false);
             scene.messageText.setVisible(false);
-            runUpdateLogic = true;
+            // runUpdateLogic = true;
             setupGameElements(scene);
     
             // Remove the event listener to avoid further unnecessary executions
@@ -1659,85 +1659,85 @@ function handleSavingStageTwo(){
 
 }
 
-function setupGameElements(scene){
+// function setupGameElements(scene){
 
-    // Create grid graphics
-    let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
-    // Draw vertical lines
-    for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(i * cellWidth, 0);
-        graphics.lineTo(i * cellWidth, gridSize * cellHeight);
-    }
+//     // Create grid graphics
+//     let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+//     // Draw vertical lines
+//     for (let i = 0; i <= gridSize; i++) {
+//         graphics.moveTo(i * cellWidth, 0);
+//         graphics.lineTo(i * cellWidth, gridSize * cellHeight);
+//     }
 
-    // Draw horizontal lines
-    for (let i = 0; i <= gridSize; i++) {
-        graphics.moveTo(0, i * cellHeight);
-        graphics.lineTo(gridSize * cellWidth, i * cellHeight);
-    }
+//     // Draw horizontal lines
+//     for (let i = 0; i <= gridSize; i++) {
+//         graphics.moveTo(0, i * cellHeight);
+//         graphics.lineTo(gridSize * cellWidth, i * cellHeight);
+//     }
 
-    graphics.strokePath();
+//     graphics.strokePath();
 
-    scene.doorSprites = [];
+//     scene.doorSprites = [];
 
-    console.log("player 1 timeframe");
+//     // console.log("player 1 timeframe");
 
-    console.log(player1TrapTimeStart);
+//     // console.log(player1TrapTimeStart);
 
-    console.log("player 2 timeframe");
+//     // console.log("player 2 timeframe");
 
-    console.log(player2TrapTimeStart);
+//     // console.log(player2TrapTimeStart);
 
-    // Call this function every second
-    setInterval(() => {
-        updateGameTime(scene);
-    }, 1000);
+//     // Call this function every second
+//     setInterval(() => {
+//         updateGameTime(scene);
+//     }, 1000);
 
-    calculateDoors();
-    createSubGrids.call(scene);
-    //allDoors.forEach(drawDoor.bind(this));
-    allDoors.forEach(door => drawDoor(door, scene));
+//     calculateDoors();
+//     createSubGrids.call(scene);
+//     //allDoors.forEach(drawDoor.bind(this));
+//     allDoors.forEach(door => drawDoor(door, scene));
 
-    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-    player1.setCollideWorldBounds(true); 
-    player1.name = 'Human'; 
-    player1.data = players['Human']; 
+//     player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+//     player1.setCollideWorldBounds(true); 
+//     player1.name = 'Human'; 
+//     player1.data = players['Human']; 
 
 
-    player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    player2.setCollideWorldBounds(true); 
-    player2.name = 'AI'; 
-    player2.data = players['AI']; 
+//     player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+//     player2.setCollideWorldBounds(true); 
+//     player2.name = 'AI'; 
+//     player2.data = players['AI']; 
 
-    //player ghost for when in the same cell  
-    scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-    scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    scene.player1Ghost.setVisible(false);
-    scene.player2Ghost.setVisible(false);
+//     //player ghost for when in the same cell  
+//     scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+//     scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+//     scene.player1Ghost.setVisible(false);
+//     scene.player2Ghost.setVisible(false);
 
-    easystar = new EasyStar.js();
-    easystar.setGrid(initialGrid);
-    easystar.setAcceptableTiles([0]); 
+//     easystar = new EasyStar.js();
+//     easystar.setGrid(initialGrid);
+//     easystar.setAcceptableTiles([0]); 
 
-    easystarSubgrid = new EasyStar.js();
-    easystarSubgrid.setGrid(subGrid);
-    easystarSubgrid.setAcceptableTiles([0]);
+//     easystarSubgrid = new EasyStar.js();
+//     easystarSubgrid.setGrid(subGrid);
+//     easystarSubgrid.setAcceptableTiles([0]);
 
-    //star token groups
-    scene.tokenGroup = scene.physics.add.group();
+//     //star token groups
+//     scene.tokenGroup = scene.physics.add.group();
 
-    addStarTokens(scene, players['Human'].id);
-    addStarTokens(scene, players['AI'].id);
+//     addStarTokens(scene, players['Human'].id);
+//     addStarTokens(scene, players['AI'].id);
 
-    scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
+//     scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
 
-    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+//     timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
 
-    // Keyboard controls
-    scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
+//     // Keyboard controls
+//     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
-    scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
-    scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
-}
+//     scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+//     scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+// }
 
 function handleAIStateandDecision(){
 
@@ -1849,6 +1849,128 @@ function handleAIInterval(){
     return AIUpdateInterval;
     
 }
+
+function setupGameElements(scene) {
+    initializeDemo(scene);
+
+    let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+    LKey.on('up', function() {
+        displayNextInstruction(scene);
+    });
+}
+
+function initializeDemo(scene) {
+    // Your initial setup: showing only player 1's sprite and the first instruction.
+    // Create grid graphics
+    let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+     // Draw vertical lines
+    for (let i = 0; i <= gridSize; i++) {
+         graphics.moveTo(i * cellWidth, 0);
+         graphics.lineTo(i * cellWidth, gridSize * cellHeight);
+    }
+ 
+     // Draw horizontal lines
+    for (let i = 0; i <= gridSize; i++) {
+         graphics.moveTo(0, i * cellHeight);
+         graphics.lineTo(gridSize * cellWidth, i * cellHeight);
+    }
+ 
+    graphics.strokePath();
+ 
+    scene.doorSprites = [];
+
+    calculateDoors();
+    createSubGrids.call(scene);
+    //allDoors.forEach(drawDoor.bind(this));
+    allDoors.forEach(door => drawDoor(door, scene));
+
+    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    player1.setCollideWorldBounds(true); 
+    player1.name = 'Human'; 
+    player1.data = players['Human']; 
+
+    //star token groups
+    scene.tokenGroup = scene.physics.add.group();
+
+    addStarTokens(scene, players['Human'].id);
+
+    scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
+
+    // Keyboard controls
+    scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
+
+    scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+    
+    scene.messageText.setPosition(100, 10); 
+
+    scene.messageText.setStyle({ fontSize: '10px', fill: '#FFF' });
+    
+    scene.messageText.setText(" In this game, you can see four subgrid on the grid. \nPress L to continue");
+}
+
+
+function displayNextInstruction(scene) {
+
+    let instructions = [
+        " You can only go through red doors when entering a subgrid. \n Now try to go through a red door\n Press L when you finish the action",
+        " You can only collect red flowers. \n When you finish collecting all red flowers in a subgrid, \n a new group of flowers will appear in another subgrid. \n Press L to continue",
+        " Now we will add the robot player to the game. \n It will only collect blue butterflies. \n Press L to start the game. \n Have fun!"
+    ];
+    let currentInstructionIndex = 0;
+
+    currentInstructionIndex++;
+
+    if (currentInstructionIndex < instructions.length) {
+        scene.messageText.setText(instructions[currentInstructionIndex]);
+
+        if (currentInstructionIndex === 2) {
+            // Add robot sprite and tokens-related stuff
+            // Example:
+            player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+            player2.setCollideWorldBounds(true); 
+            player2.name = 'AI'; 
+            player2.data = players['AI'];
+
+            addStarTokens(scene, players['AI'].id);
+            scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+            runUpdateLogic = true;
+        }
+    } 
+    else {
+        // All instructions shown, remove L key listener and proceed with game setup
+        scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.L);
+        completeSetup(scene);
+    }
+}
+
+function completeSetup(scene) {
+    // Complete the game setup by including everything else you didn't show during the demo.
+    // This includes setting up collisions, tokens, keyboard controls, etc.
+    // Essentially, everything else from your original `setupGameElements` function.
+
+    setInterval(() => {
+        updateGameTime(scene);
+    }, 1000);
+
+    //player ghost for when in the same cell  
+    scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+    scene.player1Ghost.setVisible(false);
+    scene.player2Ghost.setVisible(false);
+
+    easystar = new EasyStar.js();
+    easystar.setGrid(initialGrid);
+    easystar.setAcceptableTiles([0]); 
+
+    easystarSubgrid = new EasyStar.js();
+    easystarSubgrid.setGrid(subGrid);
+    easystarSubgrid.setAcceptableTiles([0]);
+
+    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
+    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
   
+    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+}
+
 
 
