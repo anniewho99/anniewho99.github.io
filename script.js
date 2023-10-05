@@ -1820,7 +1820,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(100, 10, 'In this game, you can see four subgrid on the grid. \nPress L to continue', { fontSize: '16px', fill: '#000' });
+    scene.messageText = scene.add.text(785, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '14px', fill: '#000' });
     let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     LKey.on('down', function() {
         console.log('L key pressed!');
@@ -1853,6 +1853,14 @@ function displayNextInstruction(scene) {
 
             addStarTokens(scene, players['AI'].id);
             scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+
+            easystar = new EasyStar.js();
+            easystar.setGrid(initialGrid);
+            easystar.setAcceptableTiles([0]); 
+
+            easystarSubgrid = new EasyStar.js();
+            easystarSubgrid.setGrid(subGrid);
+            easystarSubgrid.setAcceptableTiles([0]);
             runUpdateLogic = true;
         }
     } 
@@ -1877,14 +1885,6 @@ function completeSetup(scene) {
     scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
     scene.player1Ghost.setVisible(false);
     scene.player2Ghost.setVisible(false);
-
-    easystar = new EasyStar.js();
-    easystar.setGrid(initialGrid);
-    easystar.setAcceptableTiles([0]); 
-
-    easystarSubgrid = new EasyStar.js();
-    easystarSubgrid.setGrid(subGrid);
-    easystarSubgrid.setAcceptableTiles([0]);
 
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
