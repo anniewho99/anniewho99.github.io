@@ -1822,7 +1822,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(700, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '16px', fill: '#000' });
+    scene.messageText = scene.add.text(550, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '16px', fill: '#000' });
     let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     LKey.on('down', function() {
         console.log('L key pressed!');
@@ -1856,6 +1856,7 @@ function completeSetup(scene) {
     // Complete the game setup by including everything else you didn't show during the demo.
     // This includes setting up collisions, tokens, keyboard controls, etc.
     // Essentially, everything else from your original `setupGameElements` function.
+    scene.messageText.destroy(); 
 
     setInterval(() => {
         updateGameTime(scene);
