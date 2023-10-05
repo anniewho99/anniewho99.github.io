@@ -926,7 +926,10 @@ function create() {
             setupGameElements(scene);
 
             this.LKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-            this.LKey.on('down', function() {console.log('L key pressed!'); displayNextInstruction(this);}, this);  
+            this.LKey.on('down', function() {
+                console.log('L key pressed!');
+                displayNextInstruction(this);
+            }.bind(this)); 
     
             // Remove the event listener to avoid further unnecessary executions
             scene.input.keyboard.off('keydown', keyboardCallback);
