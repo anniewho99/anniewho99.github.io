@@ -905,7 +905,7 @@ function preload() {
 function create() {
 
     let messages = [
-        ' Thank you for participating in this study. \nPress any key to continue',
+        ' Thank you for participating in this study. \n Press any key to continue',
         ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
         ' There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
         ' We will first start with a demo! \n Press any key to continue',
@@ -1820,7 +1820,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(780, 10, 'In this game, you can see four \nsubgrid on the grid. Press L to continue', { fontSize: '14px', fill: '#000' });
+    scene.messageText = scene.add.text(780, 10, 'In this game, you can see four \nsubgrid on the grid. \n Press L to continue', { fontSize: '14px', fill: '#000' });
     let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     LKey.on('down', function() {
         console.log('L key pressed!');
