@@ -904,6 +904,30 @@ function preload() {
 
 function create() {
 
+    runUpdateLogic = false;
+    // Initially pause the game
+    this.scene.pause();
+
+   function consentCallback() {
+        // Check if the checkbox is checked
+        if (document.getElementById('consentcheckbox').checked) {
+            // Hide the consent form
+            document.getElementById('consentDiv').style.display = 'none';
+
+            // Resume the game
+            this.scene.resume();
+
+            // Remove the event listener now that it's no longer needed
+            document.getElementById('consentProceed').removeEventListener('click', consentCallback);
+        } else {
+            alert("You must agree to the terms to proceed.");
+        }
+    }
+
+    // Setup event listener for the consent button
+    document.getElementById('consentProceed').addEventListener('click', consentCallback.bind(this));
+
+
     let messages = [
         ' Thank you for participating in this study. \n Press any key to continue',
         ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
@@ -933,8 +957,6 @@ function create() {
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
-    
-    runUpdateLogic = false;
     
     // Initial display
     displayNextMessage(this);
