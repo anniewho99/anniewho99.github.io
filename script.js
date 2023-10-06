@@ -37,19 +37,21 @@ let player2TrapTimeStart;
 
 if (trapHumanFirst) {
     trapTimeForEachRound = {
-        0: { human: 200, AI: 200 },
-        1: { human: 20, AI: 200 },
-        2: { human: 200, AI: 20 },
-        3: { human: 20, AI: 60 },
+        0: { human: 20, AI: 200 },
+        1: { human: 200, AI: 20 },
+        2: { human: 20, AI: 200 },
+        3: { human: 200, AI: 20 },
+        4: { human: 20, AI: 200 },
       };
   }
   
   if (trapAIFirst) {
     trapTimeForEachRound = {
-        0: { human: 200, AI: 200 },
-        1: { human: 200, AI: 20 },
-        2: { human: 20, AI: 200 },
-        3: { human: 60, AI: 20 },
+        0: { human: 200, AI: 20 },
+        1: { human: 20, AI: 200 },
+        2: { human: 200, AI: 20 },
+        3: { human: 20, AI: 200 },
+        4: { human: 200, AI: 20 },
       };
   }
 let doorAICoords = [];
@@ -62,7 +64,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 10; 
+let gameDuration = 90; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -673,11 +675,7 @@ function updateGameTime(scene) {
 
         currentRound++;
 
-        if(currentRound > 1){
-            gameDuration = 10;
-        }
-  
-        if (currentRound > 4) {
+        if (currentRound > 5) {
             console.log("Game Over");
             isTimeoutScheduled = true;
         
