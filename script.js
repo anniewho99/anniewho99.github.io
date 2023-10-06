@@ -1897,6 +1897,8 @@ function completeSetup(scene) {
     addStarTokens(scene, players['Human'].id);
     addStarTokens(scene, players['AI'].id);
 
+    scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+
     runUpdateLogic = true;
 
 }
