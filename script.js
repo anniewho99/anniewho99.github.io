@@ -1,4 +1,6 @@
 //const cellSize = 40;
+import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
+    blockRandomization,finalizeBlockRandomization,firebaseUserId } from "./firebasepsych1.0.js";
 
 const cellHeight = 40; 
 const cellWidth = 60; 
@@ -30,30 +32,36 @@ const trapAIFirst = params.get('tAFirst') === 'true';
 console.log('trapHumanFirst:', trapHumanFirst);
 console.log('trapAIFirst:', trapAIFirst);
 
-let trapTimeForEachRound = {};
+let trapTimeForEachRound = {
+            0: { human: 20, AI: 200 },
+            1: { human: 200, AI: 20 },
+            2: { human: 20, AI: 200 },
+            3: { human: 200, AI: 20 },
+            4: { human: 20, AI: 200 },
+          };
 
 let player1TrapTimeStart;
 let player2TrapTimeStart;
 
-if (trapHumanFirst) {
-    trapTimeForEachRound = {
-        0: { human: 20, AI: 200 },
-        1: { human: 200, AI: 20 },
-        2: { human: 20, AI: 200 },
-        3: { human: 200, AI: 20 },
-        4: { human: 20, AI: 200 },
-      };
-  }
+// if (trapHumanFirst) {
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200 },
+//         1: { human: 200, AI: 20 },
+//         2: { human: 20, AI: 200 },
+//         3: { human: 200, AI: 20 },
+//         4: { human: 20, AI: 200 },
+//       };
+//   }
   
-  if (trapAIFirst) {
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20 },
-        1: { human: 20, AI: 200 },
-        2: { human: 200, AI: 20 },
-        3: { human: 20, AI: 200 },
-        4: { human: 200, AI: 20 },
-      };
-  }
+//   if (trapAIFirst) {
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 20 },
+//         1: { human: 20, AI: 200 },
+//         2: { human: 200, AI: 20 },
+//         3: { human: 20, AI: 200 },
+//         4: { human: 200, AI: 20 },
+//       };
+//   }
 let doorAICoords = [];
 let doorAIadjusted = [];
 let doorHumanCoords = [];
@@ -135,17 +143,25 @@ let autoProceedTimeout;
 
 let nextRoundButton;
 
+let nextRoundRectangle;
+
 let startTimer = false;
+
+let timeText;
+
+let easystar;
+
+let easystarSubgrid;
 
 let config = {
     type: Phaser.AUTO,
     width: 1050,
     height: 520,
     backgroundColor: '#D2B48C',
-    // scale: {
-    //     mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
-    //     autoCenter: Phaser.Scale.CENTER_BOTH,
-    // },
+    scale: {
+        mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
     scene: {
         preload: preload,
         create: create,
@@ -687,35 +703,36 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '28px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '28px', fill: '#8B4513' }).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
       scene.instructionText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 30, 
                                                "Please use the arrow key to move your player at the top-left corner", 
-                                               { fontSize: '20px', fill: '#FFF' })
+                                               { fontSize: '20px', fill: '#8B4513' })
                                       .setOrigin(0.5, 0.5)
                                       .setDepth(1001)
                                       .setVisible(true);
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
 
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Click here to continue', { fontSize: '20px', fill: '#FFF' })
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Proceed', { fontSize: '20px', fill: '#FFF' })
           .setOrigin(0.5, 0.5)
-          .setDepth(1001)
+          .setDepth(1002)
           .setInteractive();
-      
+      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setDepth(1001);
+
       nextRoundButton.on('pointerdown', () => {
           proceedToNextRound(scene);
       });
       
-      autoProceedTimeout = setTimeout(() => {
-          proceedToNextRound(scene);
-      }, 60000); // 60 seconds
+    //   autoProceedTimeout = setTimeout(() => {
+    //       proceedToNextRound(scene);
+    //   }, 60000); // 60 seconds
     }
   }  
 
 function proceedToNextRound(scene) {
 
-    clearTimeout(autoProceedTimeout); // clear the timeout to avoid executing it after user interaction
+    // clearTimeout(autoProceedTimeout); // clear the timeout to avoid executing it after user interaction
     
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
@@ -806,6 +823,8 @@ function proceedToNextRound(scene) {
     isTimeoutScheduled = false;
 
     if(nextRoundButton) nextRoundButton.destroy(); 
+
+    if(nextRoundRectangle) nextRoundRectangle.destroy();
 }
 
 function endGame(scene) {
@@ -929,10 +948,10 @@ function create() {
 
 
     let messages = [
-        ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar. \n Press any key to continue',
-        ' There are 5 short rounds of game.\n Each lasts around 90 seconds. \n Press any key to continue',
-        ' We will first start with a demo! \n Press any key to continue',
-        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun! Press any key to start the demo'
+        ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar.',
+        ' There are 5 short rounds of game.\n Each lasts around 90 seconds.',
+        ' We will first start with a demo!',
+        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun!'
     ];
     let currentMessageIndex = 0;
     
@@ -941,30 +960,41 @@ function create() {
         if (currentMessageIndex < messages.length) {
             scene.messageText.setText(messages[currentMessageIndex]);
             currentMessageIndex++;
+
+            // Show the button when a message is displayed
+            scene.proceedButton.setVisible(true);
+            scene.proceedButtonText.setVisible(true);
         } else {
-            // All messages have been shown, proceed with the game setup
-            scene.overlay.setVisible(false);
             scene.messageText.setVisible(false);
             // runUpdateLogic = true;
+            scene.overlay.setVisible(false);
             setupGameElements(scene);
-            // Remove the event listener to avoid further unnecessary executions
-            scene.input.keyboard.off('keydown', keyboardCallback);
+            scene.proceedButton.setVisible(false);
+            scene.proceedButtonText.setVisible(false);
         }
     }
     
     // Create an overlay and welcome message
-    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x8B4513).setOrigin(0, 0).setDepth(1000);
+    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1001);
+    // this.overlay.setVisible(false);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '24px', fill: '#8B4513'}).setOrigin(0.5, 0.5).setDepth(1001);
+
+     // Create a button using graphics
+     this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+     // Button label
+     this.proceedButtonText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 'Proceed', { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1002);
+     // Initially hide the button
+     this.proceedButton.setVisible(false);
+     this.proceedButtonText.setVisible(false);
+     
+     // Button interaction
+     this.proceedButton.on('pointerup', () => {
+         displayNextMessage(this);
+     });
     
     // Initial display
     displayNextMessage(this);
-    
-    // Add an event listener for keyboard input
-    let keyboardCallback = (event) => {
-        displayNextMessage(this);
-    };
-    this.input.keyboard.on('keydown', keyboardCallback);
     
 }
 
@@ -1060,7 +1090,7 @@ function update(time) {
                 // const currentTime = new Date().getTime();
                 // if(currentTime - rescueStartTime >= 5000) { // 5000 milliseconds = 5 seconds
                     
-                doorToAddHuman = { coord: humanDoortoLeave, orientation: "V" };
+                let doorToAddHuman = { coord: humanDoortoLeave, orientation: "V" };
                 
                 doorHumanCoords.push(doorToAddHuman);
 
@@ -1113,7 +1143,7 @@ function update(time) {
                 console.log("doors in trapped grid");
                 console.log(trappedDoors);
 
-                doorToAddAI = { coord: aiDoorToLeave, orientation: "V" };
+                let doorToAddAI = { coord: aiDoorToLeave, orientation: "V" };
                 doorAICoords.push(doorToAddAI);
 
                 let index = -1;
@@ -1159,6 +1189,20 @@ function handleMovement(player, dx, dy, playerID, scene) {
     let currentGridY = Math.round(player.y / cellHeight);
     let nextGridX = Math.round(potentialX / cellWidth);
     let nextGridY = Math.round(potentialY / cellHeight);
+
+    let doorColor;
+
+    let doorColorOther;
+
+    let movement;
+
+    let door_coord;
+
+    let startGrid;
+
+    let endGrid;
+
+    let doorTrappedPlayer;
 
     if (playerID == "Human"){
         doorColor = 0xFF0000;
