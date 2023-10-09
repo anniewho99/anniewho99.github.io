@@ -4,13 +4,15 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 
 const cellHeight = 40; 
 const cellWidth = 60; 
-const gridSize = 13;
+const gridHeight = 13;
+
+const gridWidth = 15;
 
 const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
-const grid_width = 780;
+const grid_width = 900;
 
 const players = {
     'Human': {
@@ -32,36 +34,42 @@ const trapAIFirst = params.get('tAFirst') === 'true';
 console.log('trapHumanFirst:', trapHumanFirst);
 console.log('trapAIFirst:', trapAIFirst);
 
-let trapTimeForEachRound = {
-            0: { human: 20, AI: 200 },
-            1: { human: 200, AI: 20 },
-            2: { human: 20, AI: 200 },
-            3: { human: 200, AI: 20 },
-            4: { human: 20, AI: 200 },
-          };
+const studyId  = 'test';
+// Show the user id that is provided by the Firebase Psych library.
+console.log( "Firebase UserId=" + firebaseUserId );
+
+const maxCompletionTimeMinutes = 60;
+
+let trapTimeForEachRound;
+
+// Example 1: Assign a random condition for Viewpoint
+const TRAPSEQUENCE = 'WHOISIT'; // a string we use to represent the condition name
+let numConditions = 2; // Number of conditions for this variable
+let numDraws = 1; // Number of  assignments (mutually exclusive) we want to sample for this participants
+let assignedCondition = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
+  maxCompletionTimeMinutes, numDraws); // the await keyword is mandatory
+
+if (assignedCondition === 1){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200 },
+        1: { human: 200, AI: 20 },
+        2: { human: 20, AI: 200 },
+        3: { human: 200, AI: 20 },
+        4: { human: 20, AI: 200 },
+      };
+}else{
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20 },
+        1: { human: 20, AI: 200 },
+        2: { human: 200, AI: 20 },
+        3: { human: 20, AI: 200 },
+        4: { human: 200, AI: 20 },
+      };
+
+}
 
 let player1TrapTimeStart;
 let player2TrapTimeStart;
-
-// if (trapHumanFirst) {
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200 },
-//         1: { human: 200, AI: 20 },
-//         2: { human: 20, AI: 200 },
-//         3: { human: 200, AI: 20 },
-//         4: { human: 20, AI: 200 },
-//       };
-//   }
-  
-//   if (trapAIFirst) {
-//     trapTimeForEachRound = {
-//         0: { human: 200, AI: 20 },
-//         1: { human: 20, AI: 200 },
-//         2: { human: 200, AI: 20 },
-//         3: { human: 20, AI: 200 },
-//         4: { human: 200, AI: 20 },
-//       };
-//   }
 let doorAICoords = [];
 let doorAIadjusted = [];
 let doorHumanCoords = [];
@@ -88,7 +96,7 @@ let AIUpdateInterval = 500;
 
 const SLOW_UPDATE_INTERVAL = 800;
 const NORMAL_UPDATE_INTERVAL = 500;
-let aiStartX = 12;
+let aiStartX = 14;
 let aiStartY = 12;
 
 let pathIndex = 0;
@@ -153,9 +161,13 @@ let easystar;
 
 let easystarSubgrid;
 
+let proceedButton;
+
+let startOfGamePlay;
+
 let config = {
     type: Phaser.AUTO,
-    width: 1050,
+    width: 1170,
     height: 520,
     backgroundColor: '#D2B48C',
     scale: {
@@ -178,8 +190,8 @@ let config = {
 const GRIDS = [
     {start: [3, 3], end: [5, 5]},
     {start: [3, 9], end: [5, 11]},
-    {start: [9, 3], end: [11, 5]},
-    {start: [9, 9], end: [11, 11]}
+    {start: [11, 3], end: [13, 5]},
+    {start: [11, 9], end: [13, 11]}
 ];  
 
 const DIRECTIONS = [
@@ -190,19 +202,19 @@ const DIRECTIONS = [
 ];
 
   const initialGrid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
 const subGrid = [
@@ -292,8 +304,8 @@ function isMoveForbidden(currX, currY, nextX, nextY) {
 
 function adjustCoord(coord) {
     return [
-        coord[0] === 6 ? 5 : (coord[0] === 12 ? 11 : coord[0]),
-        coord[1] === 6 ? 5 : (coord[1] === 12 ? 11 : coord[1])
+        coord[0] === 6 ? 5 : (coord[0] === 14 ? 13 : coord[0]),
+        coord[1] === 6 ? 5 : (coord[1] === 14 ? 13 : coord[1])
     ];
 }
 
@@ -493,13 +505,13 @@ function crossesDoor(start, end, playerID) {
     if (startExists) {
         //console.log("Entering the start door they own");
         startExists[0] = startExists[0] === 5 ? 6 : startExists[0];
-        startExists[0] = startExists[0] === 11 ? 12 : startExists[0];
+        startExists[0] = startExists[0] === 13 ? 14 : startExists[0];
         //let door = { coord: startExists, orientation: "V" };
         return startExists;
     } else if (endExists) {
         //console.log("Entering the end door they own");
         endExists[0] = endExists[0] === 5 ? 6 : endExists[0];
-        endExists[0] = endExists[0] === 11 ? 12 : endExists[0];
+        endExists[0] = endExists[0] === 13 ? 14 : endExists[0];
         //let door = { coord: endExists, orientation: "V" };
         return endExists;
     } else {
@@ -673,17 +685,6 @@ function cellToPixel(cellX) {
     return cellX * cellWidth + cellWidth / 2;
   }
 
-function generateRandomTimeframe() {
-    // Generate random start and end time for trapping, between 0 and 60 seconds
-    // player1TrapTimeStart = Math.floor(Math.random() * 30);
-    //player1TrapTimeEnd = player1TrapTimeStart + 5; // 5 seconds trap window
-    
-    //player2TrapTimeStart = Math.floor(Math.random() * 30);
-    player1TrapTimeStart = 120;
-    player2TrapTimeStart = 180;
-    //player2TrapTimeEnd = player2TrapTimeStart + 5; // 5 seconds trap window
-}
-
 // Increment current time and check for game end
 function updateGameTime(scene) {
     currentTime++;
@@ -696,6 +697,8 @@ function updateGameTime(scene) {
             isTimeoutScheduled = true;
         
             // End the game and show post-game content
+
+            runUpdateLogic = false;
             endGame(scene);
             return;
         }
@@ -714,11 +717,11 @@ function updateGameTime(scene) {
       scene.instructionText.setVisible(true);
       runUpdateLogic = false;
 
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 'Proceed', { fontSize: '20px', fill: '#FFF' })
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 'Proceed', { fontSize: '20px', fill: '#FFF' })
           .setOrigin(0.5, 0.5)
           .setDepth(1002)
           .setInteractive();
-      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 60, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setDepth(1001);
+      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setDepth(1001);
 
       nextRoundButton.on('pointerdown', () => {
           proceedToNextRound(scene);
@@ -796,7 +799,7 @@ function proceedToNextRound(scene) {
     player2.x = grid_width - cellWidth / 2;
     player2.y = scene.sys.game.config.height - cellHeight / 2;
   
-    aiStartX =  12;
+    aiStartX =  14;
     aiStartY = 12;
 
     localAIx = null;
@@ -830,9 +833,34 @@ function proceedToNextRound(scene) {
 function endGame(scene) {
     // Hide Phaser canvas
     scene.game.canvas.style.display = 'none';
+    scene.scene.pause();
 
     // Display the post-game content
     document.getElementById('postGameContent').style.display = 'block';
+
+    const postGameForm = document.getElementById('feedbackForm');
+
+    postGameForm.addEventListener('submit', function(event) {
+        // Prevent the form from submitting in the traditional manner
+        event.preventDefault();
+
+        // Gather data from the form
+        const data = {
+            helpfulnessRating: document.getElementById('helpfulnessRating').value,
+            strategy: document.getElementById('strategy').value,
+            gameType: document.querySelector('input[name="gameType"]:checked').value,
+            explain: document.getElementById('explain').value,
+            robotStuck: document.getElementById('robotStuck').value,
+            helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
+            whyHelped: document.getElementById('whyHelped').value,
+            whyNotHelped: document.getElementById('whyNotHelped').value,
+            suggestions: document.getElementById('suggestions').value,
+        };
+
+        let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
+        let valuenow = data;
+        writeRealtimeDatabase(pathnow, valuenow);
+    });
 }
 
 function isCloseToDoor(player, nexToDoorPos) {
@@ -969,11 +997,15 @@ function create() {
             // runUpdateLogic = true;
             scene.overlay.setVisible(false);
             setupGameElements(scene);
-            scene.proceedButton.setVisible(false);
-            scene.proceedButtonText.setVisible(false);
+            scene.proceedButton.destroy();
+            scene.proceedButtonText.destroy();
         }
     }
     
+    let pathnow = studyId+'/participantData/'+firebaseUserId+'/assignedCondition';
+    let valuenow = assignedCondition;
+    writeRealtimeDatabase( pathnow , valuenow );
+
     // Create an overlay and welcome message
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
@@ -1397,6 +1429,47 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     player.x = potentialX;
     player.y = potentialY;
+
+    if(runUpdateLogic && currentRound < 6){
+        let timestamp = Date.now() - startOfGamePlay;
+
+        let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + timestamp + '/Player 1 X';
+        let valuenow = Math.round(player1.x / cellWidth);
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 1 Y';
+        valuenow = Math.round(player1.y / cellHeight);
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 2 X';
+        valuenow = Math.round(player2.x / cellWidth);
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 2 Y';
+        valuenow = Math.round(player2.y / cellHeight);
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI State';
+        valuenow = aiState;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player One Trapped State';
+        valuenow = playerOneTrapped;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player Two Trapped State';
+        valuenow = playerTwoTrapped;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player One Collected Token';
+        valuenow = players.Human.tokensCollected;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player Two Collected Token';
+        valuenow = players.AI.tokensCollected;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+    }
 
 }
 
@@ -1846,15 +1919,15 @@ function initializeDemo(scene) {
     // Create grid graphics
     let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
      // Draw vertical lines
-    for (let i = 0; i <= gridSize; i++) {
+    for (let i = 0; i <= gridWidth; i++) {
          graphics.moveTo(i * cellWidth, 0);
-         graphics.lineTo(i * cellWidth, gridSize * cellHeight);
+         graphics.lineTo(i * cellWidth, gridWidth * cellHeight);
     }
  
      // Draw horizontal lines
-    for (let i = 0; i <= gridSize; i++) {
+    for (let i = 0; i <= gridHeight; i++) {
          graphics.moveTo(0, i * cellHeight);
-         graphics.lineTo(gridSize * cellWidth, i * cellHeight);
+         graphics.lineTo(gridWidth * cellWidth, i * cellHeight);
     }
  
     graphics.strokePath();
@@ -1885,18 +1958,20 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(780, 10, 'In this game, you can see four \nsubgrid on the grid. \n Press L to continue', { fontSize: '14px', fill: '#000' });
-    let LKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-    LKey.on('down', function() {
-        console.log('L key pressed!');
+    scene.messageText = scene.add.text(900, 10, ' In this game, you can see four \n subgrid on the grid. \n Press L to continue', { fontSize: '14px', fill: '#000' });
+    proceedButton = scene.add.rectangle(1020, 150, 90, 20, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    scene.proceedText = scene.add.text(983, 140, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
+
+    proceedButton.on('pointerdown', function() {
+        console.log('Proceed button clicked!');
         displayNextInstruction(scene);
     });
 }
 
 let instructions = [
-    " You can only go through red \n doors when entering a subgrid. \n Now try to go through \n a red door\n Press L to continue",
-    " You can only collect red flowers. \n When you finish collecting all\n red flowers in a subgrid, \n a new group of flowers will\n appear in another subgrid. \n Press L to continue",
-    " Now we will add the \n robot player to the game. \n It will only collect \n blue butterflies. \n Press L to start Round 1. \n Have fun!"
+    " You can only go through red \n doors when entering a subgrid. \n Now try to go through \n a red door",
+    " You can only collect red flowers. \n When you finish collecting all\n red flowers in a subgrid, \n a new group of flowers will\n appear in another subgrid.",
+    " Now we will add the \n robot player to the game. \n It will only collect \n blue butterflies. \n Have fun!"
 ];
 let currentInstructionIndex = 0;
 
@@ -1910,7 +1985,7 @@ function displayNextInstruction(scene) {
     } 
     else {
         // All instructions shown, remove L key listener and proceed with game setup
-        scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.L);
+        proceedButton.destroy();
         completeSetup(scene);
     }
 }
@@ -1920,6 +1995,8 @@ function completeSetup(scene) {
     // This includes setting up collisions, tokens, keyboard controls, etc.
     // Essentially, everything else from your original `setupGameElements` function.
     scene.messageText.destroy(); 
+
+    scene.proceedText.destroy();
 
     setInterval(() => {
         updateGameTime(scene);
@@ -1932,7 +2009,7 @@ function completeSetup(scene) {
     player1.x = cellWidth/2;
     player1.y = cellHeight/2;
   
-    timeText = scene.add.text(790, 10, '', { fontSize: '16px', fill: '#000' });
+    timeText = scene.add.text(910, 10, '', { fontSize: '16px', fill: '#000' });
 
     player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
     player2.setCollideWorldBounds(true); 
@@ -1961,6 +2038,8 @@ function completeSetup(scene) {
     addStarTokens(scene, players['AI'].id);
 
     scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+
+    startOfGamePlay = Date.now();
 
     runUpdateLogic = true;
 

@@ -98,43 +98,46 @@
         <h1>Thank you for participating!</h1>
         <h2>Feedback</h2>
 
-        <label for="helpfulnessRating">Rating of the perceived helpfulness of the other agent:</label>
-        <div class="slider-container">
-            <label>Not helpful at all</label>
-            <input type="range" id="helpfulnessRating" name="helpfulnessRating" min="1" max="5">
-            <label>Very helpful</label>
-        </div>
-        <br>
-        <label for="strategy">What was your strategy in the game?</label>
-        <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
+        <form id="feedbackForm">
 
-        <label>Do you see this primarily as a:</label><br>
-        <input type="radio" id="competitive" name="gameType" value="competitive">
-        <label for="competitive">Competitive game</label><br>
-        <input type="radio" id="collaborative" name="gameType" value="collaborative">
-        <label for="collaborative">Collaborative game</label><br>
-        <input type="radio" id="neither" name="gameType" value="neither">
-        <label for="neither">Neither</label>
-        <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea><br><br>
+            <label for="helpfulnessRating">Rating of the perceived helpfulness of the other agent:</label>
+            <div class="slider-container">
+                <label>Not helpful at all</label>
+                <input type="range" id="helpfulnessRating" name="helpfulnessRating" min="1" max="5">
+                <label>Very helpful</label>
+            </div>
+            <br>
+            <label for="strategy">What was your strategy in the game?</label>
+            <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
-        <label>Did you notice the robot getting stuck?</label><br>
-        <select id="robotStuck" name="robotStuck">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select><br><br>
+            <label>Do you see this primarily as a:</label><br>
+            <input type="radio" id="competitive" name="gameType" value="competitive">
+            <label for="competitive">Competitive game</label><br>
+            <input type="radio" id="collaborative" name="gameType" value="collaborative">
+            <label for="collaborative">Collaborative game</label><br>
+            <input type="radio" id="neither" name="gameType" value="neither">
+            <label for="neither">Neither</label>
+            <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea><br><br>
 
-        <label>Did you help the robot?</label><br>
-        <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
-        <label for="helpedYes">Yes</label>
-        <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
-        <input type="radio" id="helpedNo" name="helpedRobot" value="no">
-        <label for="helpedNo">No</label>
-        <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br><br>
+            <label>Did you notice the robot getting stuck?</label><br>
+            <select id="robotStuck" name="robotStuck">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br><br>
 
-        <label for="suggestions">Any suggestions to improve the experiment:</label><br>
-        <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
+            <label>Did you help the robot?</label><br>
+            <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
+            <label for="helpedYes">Yes</label>
+            <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
+            <input type="radio" id="helpedNo" name="helpedRobot" value="no">
+            <label for="helpedNo">No</label>
+            <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br><br>
 
-        <input type="submit" value="Submit">
+            <label for="suggestions">Any suggestions to improve the experiment:</label><br>
+            <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
     </div>
 
 </body>
