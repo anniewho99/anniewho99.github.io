@@ -845,21 +845,35 @@ function endGame(scene) {
         event.preventDefault();
 
         // Gather data from the form
-        const data = {
-            helpfulnessRating: document.getElementById('helpfulnessRating').value,
-            strategy: document.getElementById('strategy').value,
-            gameType: document.querySelector('input[name="gameType"]:checked').value,
-            explain: document.getElementById('explain').value,
-            robotStuck: document.getElementById('robotStuck').value,
-            helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
-            whyHelped: document.getElementById('whyHelped').value,
-            whyNotHelped: document.getElementById('whyNotHelped').value,
-            suggestions: document.getElementById('suggestions').value,
-        };
+        if (
+            document.getElementById('helpfulnessRating').value &&
+            document.getElementById('strategy').value &&
+            (document.querySelector('input[name="gameType"]:checked') ||
+            document.getElementById('explain').value) &&
+            document.getElementById('robotStuck').value &&
+            document.querySelector('input[name="helpedRobot"]:checked') &&
+            (document.getElementById('whyHelped').value || document.getElementById('whyNotHelped').value) &&
+            document.getElementById('suggestions').value
+        ){
+            const data = {
+                helpfulnessRating: document.getElementById('helpfulnessRating').value,
+                strategy: document.getElementById('strategy').value,
+                gameType: document.querySelector('input[name="gameType"]:checked').value,
+                explain: document.getElementById('explain').value,
+                robotStuck: document.getElementById('robotStuck').value,
+                helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
+                whyHelped: document.getElementById('whyHelped').value,
+                whyNotHelped: document.getElementById('whyNotHelped').value,
+                suggestions: document.getElementById('suggestions').value,
+            };
+            let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
+            let valuenow = data;
+            writeRealtimeDatabase(pathnow, valuenow);
 
-        let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
-        let valuenow = data;
-        writeRealtimeDatabase(pathnow, valuenow);
+        }else {
+            alert("Please fill out all the fields before submitting!");
+        }
+
     });
 }
 
