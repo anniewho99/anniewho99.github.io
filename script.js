@@ -1308,7 +1308,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     setTimeout(() => {
                         timeToSaveTrappedHuman = true;
                         console.log('C is set to true');
-                      }, 5 * 1000);  // 2 minutes in milliseconds  2 * 60 * 1000
+                      }, 5 * 1000); 
 
                     doorTrappedPlayer = { coord: door_coord, orientation: "V" };
 
@@ -1519,6 +1519,12 @@ function handleAIMovement() {
 
    
     const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+
+    if(aiStartX === endX && aiStartY === endY){
+        isPathBeingFollowed = false;
+        aiState = "COLLECTING";
+    }
+
     easystar.findPath(aiStartX, aiStartY, endX, endY, function(path) {
         if (path === null) {
             console.log("Path was not found.");
@@ -1540,12 +1546,9 @@ function moveToNextTarget(localTargets) {
 
     if (currentTargetIndex < localTargets.length) {
 
-        // while (arraysEqual(localTargets[currentTargetIndex], [0,0])) {
-        //     currentTargetIndex++;
-        //     if (currentTargetIndex >= localTargets.length) {
-        //         break;
-        //     }
-        // }
+        if (localAIx === nextTarget[0] && localAIy === nextTarget[1]) {
+            currentTargetIndex++;
+        }
 
         const nextTarget = localTargets[currentTargetIndex];
 
