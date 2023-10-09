@@ -990,10 +990,9 @@ function create() {
 
 
     let messages = [
-        ' Here you are going to play a simple game with a robot player. \n The primary task of the game is to collect tokens \n that has the same color as your avatar.',
-        ' There are 5 short rounds of game.\n Each lasts around 90 seconds.',
-        ' We will first start with a demo!',
-        ' Please use the arrow keys to move your player at the top-left corner. \n Have fun!'
+        ' You are going to play a simple game with a robot player \n The primary goal of the game is to collect tokens: \n flowers and butterflies. \n You will collect flowers \n while the robot will collect butterflies.',
+        ' There are 5 short rounds of the game.\n Each round lasts around 90 seconds.',
+        ' Let’s start with a demo'
     ];
     let currentMessageIndex = 0;
     
@@ -1975,7 +1974,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(900, 10, ' In this game, you can see four \n subgrid on the grid. \n Press L to continue', { fontSize: '14px', fill: '#000' });
+    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player \n at the top-left corner.', { fontSize: '14px', fill: '#000' });
     proceedButton = scene.add.rectangle(1020, 150, 90, 20, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
     scene.proceedText = scene.add.text(983, 140, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
 
@@ -1986,9 +1985,10 @@ function initializeDemo(scene) {
 }
 
 let instructions = [
-    " You can only go through red \n doors when entering a subgrid. \n Now try to go through \n a red door",
-    " You can only collect red flowers. \n When you finish collecting all\n red flowers in a subgrid, \n a new group of flowers will\n appear in another subgrid.",
-    " Now we will add the \n robot player to the game. \n It will only collect \n blue butterflies. \n Have fun!"
+    " There are four areas on the grid where\n flowers and butterflies will appear.\n To get to these areas, you have to \n go through the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
+    " The tokens you can collect are\n the red flowers. \n When you finish collecting all\n red flowers in an area, a new\n group of red flowers will\n appear in another area. ",
+    " Now we will add a blue robot \n player to the game.\n The blue robot will only\n collect the blue butterflies.",
+    " Also, the blue robot can only\n move through blue doors.\n You, as the red player, \n can only move through red doors.\n Let’s start the first round of\n this game.\n Have fun!"
 ];
 let currentInstructionIndex = 0;
 
