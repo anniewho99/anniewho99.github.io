@@ -1549,6 +1549,16 @@ function moveToNextTarget(localTargets) {
             currentTargetIndex++;
         }
 
+        if(currentTargetIndex === 3 && playerTwoTrapped != 'blue' ){
+            const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+
+            if (endX - tokenInfo.subgrid.start[0] >= 2){
+                localTargets[localTargets.length - 1] = [4, 1];
+            }else{
+                localTargets[localTargets.length - 1] = [0, 1];
+            }
+        }
+
         const nextTarget = localTargets[currentTargetIndex];
 
         console.log("start point for subgrid");
