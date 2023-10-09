@@ -1546,7 +1546,7 @@ function moveToNextTarget(localTargets) {
 
     if (currentTargetIndex < localTargets.length) {
 
-        if (localAIx === nextTarget[0] && localAIy === nextTarget[1]) {
+        if (localAIx === localTargets[currentTargetIndex][0] && localAIy === localTargets[currentTargetIndex][1]) {
             currentTargetIndex++;
         }
 
