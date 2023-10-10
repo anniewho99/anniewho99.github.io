@@ -165,6 +165,10 @@ let proceedButton;
 
 let startOfGamePlay;
 
+let isClickable = true;
+
+let instructionShown = false;
+
 let config = {
     type: Phaser.AUTO,
     width: 1220,
@@ -653,6 +657,15 @@ function onTokenHit(player, token) {
     if (players[playerName].color === token.color) {
         //console.log('Token hit detected.');
         token.destroy();
+
+        if(isClickable === false && players['Human'].tokensCollected === 2){
+            isClickable = true;
+            if (isClickable) {
+                proceedButton.setFillStyle(0xADD8E6);
+            } else {
+                proceedButton.setFillStyle(0xCCCCCC);
+            }
+        }
 
         // if(playerName === 'AI'){
         //     localTargets[token.index] = [0, 0];
@@ -1277,6 +1290,16 @@ function handleMovement(player, dx, dy, playerID, scene) {
             //console.log(door_coord);
 
             if (playerEntersSubgrid(currentGridX, currentGridY, nextGridX, nextGridY)) {
+
+                if(isClickable === false && instructionShown === false){
+                    isClickable = true;
+                    instructionShown = true;
+                    if (isClickable) {
+                        proceedButton.setFillStyle(0xADD8E6);
+                    } else {
+                        proceedButton.setFillStyle(0xCCCCCC);
+                    }
+                }
                 let whichGrid = findGridForPoint([nextGridX, nextGridY], pointsDict);
                 //console.log("which grid", whichGrid);
                 if (whichGrid) {
@@ -1983,14 +2006,18 @@ function initializeDemo(scene) {
     scene.proceedText = scene.add.text(983, 160, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
-        console.log('Proceed button clicked!');
-        displayNextInstruction(scene);
+        if (isClickable) {
+            console.log('Proceed button clicked!');
+            displayNextInstruction(scene);
+        } else {
+            console.log('Condition not met yet!');
+        }
     });
 }
 
 let instructions = [
     " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
-    " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.",
+    " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
     " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.\n Let’s start the first round.\n Have fun!"
 ];
@@ -1998,6 +2025,20 @@ let currentInstructionIndex = 0;
 
 
 function displayNextInstruction(scene) {
+
+    if(currentInstructionIndex === 0 && isClickable === true){
+        isClickable = false;
+    }
+
+    if(currentInstructionIndex === 1 && isClickable === true){
+        isClickable = false;
+    }
+
+    if (isClickable) {
+        proceedButton.setFillStyle(0xADD8E6);
+    } else {
+        proceedButton.setFillStyle(0xCCCCCC);
+    }
 
     if (currentInstructionIndex < instructions.length) {
         scene.messageText.setText(instructions[currentInstructionIndex]);
