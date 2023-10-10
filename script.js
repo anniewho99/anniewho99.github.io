@@ -1543,7 +1543,7 @@ function moveToNextTarget(localTargets) {
             currentTargetIndex++;
         }
 
-        if(currentTargetIndex === 3 && playerTwoTrapped != 'blue' ){
+        if(currentTargetIndex === 2 && playerTwoTrapped != 'blue' ){
             const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
 
             if (endX - tokenInfo.subgrid.start[0] > 1){
