@@ -167,7 +167,7 @@ let startOfGamePlay;
 
 let config = {
     type: Phaser.AUTO,
-    width: 1170,
+    width: 1220,
     height: 520,
     backgroundColor: '#D2B48C',
     scale: {
@@ -706,15 +706,9 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Welcome to Round ${currentRound}!`, { fontSize: '28px', fill: '#8B4513' }).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound}. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#8B4513' }).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
-      scene.instructionText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 30, 
-                                               "Please use the arrow key to move your player at the top-left corner", 
-                                               { fontSize: '20px', fill: '#8B4513' })
-                                      .setOrigin(0.5, 0.5)
-                                      .setDepth(1001)
-                                      .setVisible(true);
-      scene.instructionText.setVisible(true);
+
       runUpdateLogic = false;
 
       nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 'Proceed', { fontSize: '20px', fill: '#FFF' })
@@ -789,7 +783,7 @@ function proceedToNextRound(scene) {
           
     scene.overlay.setVisible(false);
     scene.messageText.setVisible(false);
-    scene.instructionText.setVisible(false);
+
     runUpdateLogic = true;
     currentTime = 0;
   
@@ -990,7 +984,7 @@ function create() {
 
 
     let messages = [
-        ' You are going to play a simple game with a robot player \n The primary goal of the game is to collect tokens: \n flowers and butterflies. \n You will collect flowers \n while the robot will collect butterflies.',
+        ' You are going to play a simple game with a robot player \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
         ' There are 5 short rounds of the game.\n Each round lasts around 90 seconds.',
         ' Let’s start with a demo'
     ];
@@ -1023,7 +1017,7 @@ function create() {
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
     // this.overlay.setVisible(false);
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '24px', fill: '#8B4513'}).setOrigin(0.5, 0.5).setDepth(1001);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '20px', fill: '#8B4513'}).setOrigin(0.5, 0.5).setDepth(1001);
 
      // Create a button using graphics
      this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
@@ -1119,7 +1113,7 @@ function update(time) {
 
     let totalToken = players.AI.tokensCollected + players.Human.tokensCollected;
 
-    timeText.setText(`Current Time: ${currentTime}\nTotal tokens collected: ${totalToken}`);
+    timeText.setText(`Time elapsed: ${currentTime}\nTotal tokens collected: ${totalToken}`);
 
     if(playerOneTrapped === true) {
         if (trappedDoors != null){
@@ -1984,9 +1978,9 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player \n at the top-left corner.', { fontSize: '14px', fill: '#000' });
-    proceedButton = scene.add.rectangle(1020, 150, 90, 20, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
-    scene.proceedText = scene.add.text(983, 140, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
+    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', { fontSize: '16px', fill: '#8B4513' });
+    proceedButton = scene.add.rectangle(1020, 170, 90, 20, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    scene.proceedText = scene.add.text(983, 160, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
         console.log('Proceed button clicked!');
@@ -1995,20 +1989,19 @@ function initializeDemo(scene) {
 }
 
 let instructions = [
-    " There are four areas on the grid where\n flowers and butterflies will appear.\n To get to these areas, you have to \n go through the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
-    " The tokens you can collect are\n the red flowers. \n When you finish collecting all\n red flowers in an area, a new\n group of red flowers will\n appear in another area. ",
-    " Now we will add a blue robot \n player to the game.\n The blue robot will only\n collect the blue butterflies.",
-    " Also, the blue robot can only\n move through blue doors.\n You, as the red player, \n can only move through red doors.\n Let’s start the first round of\n this game.\n Have fun!"
+    " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
+    " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.",
+    " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
+    " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.\n Let’s start the first round.\n Have fun!"
 ];
 let currentInstructionIndex = 0;
 
 
 function displayNextInstruction(scene) {
 
-    currentInstructionIndex++;
-
     if (currentInstructionIndex < instructions.length) {
         scene.messageText.setText(instructions[currentInstructionIndex]);
+        currentInstructionIndex++;
     } 
     else {
         // All instructions shown, remove L key listener and proceed with game setup
