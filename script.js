@@ -1394,14 +1394,12 @@ function handleMovement(player, dx, dy, playerID, scene) {
                             if (arraysEqual(tokenInfo.subgrid.end, endGrid) && aiState === "NAVIGATING_TO_SUBGRID"){
                                 console.log("human player enters AI target grid");
                                 otherPlayerinSubgrid = true;
-                                oldGrid = startGrid;
                                 newTokenPlacedForAI = true;
                             }else if ((startGrid[0] - 2 < currentAIX && currentAIX < endGrid[0]) &&
                             (startGrid[1] - 2 < currentAIY && currentAIY < endGrid[1])) {
                                 console.log("human player enters the grid AI is in");
                                 otherPlayerinSubgrid = true;
                                 newTokenPlacedForAI = true;
-                                oldGrid = startGrid;
                             }
                         }
 
@@ -1543,10 +1541,10 @@ function moveToNextTarget(localTargets) {
             currentTargetIndex++;
         }
 
-        if(currentTargetIndex === 2 && playerTwoTrapped != 'blue' ){
-            const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+        if(currentTargetIndex === 3 && playerTwoTrapped != 'blue' ){
+            const [endX, endY] = findEndCoordinates(oldGrid, doorAIadjusted);
 
-            if (endX - tokenInfo.subgrid.start[0] > 1){
+            if (endX - subgridAI[0] > 1){
                 localTargets[localTargets.length - 1] = [4, 1];
             }else{
                 localTargets[localTargets.length - 1] = [0, 1];
@@ -1583,6 +1581,7 @@ function moveToNextTarget(localTargets) {
         localAIx = null;
         localAIy = null;
         subgridAI = null;
+        oldGrid = null;
 
     }
 }
@@ -1832,6 +1831,7 @@ function handleAIStateandDecision(){
             localTargets = getTargetsInLocalCoordinates();
             console.log(localTargets);
             subgridAI = tokenInfo.subgrid.start;
+            oldGrid = tokenInfo.subgrid;
             localAIx = aiStartX - subgridAI[0] + 2;
             localAIy = aiStartY - subgridAI[1] + 1;
             moveToNextTarget(localTargets);
