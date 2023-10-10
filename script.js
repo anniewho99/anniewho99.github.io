@@ -1546,7 +1546,7 @@ function moveToNextTarget(localTargets) {
         if(currentTargetIndex === 3 && playerTwoTrapped != 'blue' ){
             const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
 
-            if (endX - tokenInfo.subgrid.start[0] >= 2){
+            if (endX - tokenInfo.subgrid.start[0] > 1){
                 localTargets[localTargets.length - 1] = [4, 1];
             }else{
                 localTargets[localTargets.length - 1] = [0, 1];
