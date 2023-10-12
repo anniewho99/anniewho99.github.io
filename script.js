@@ -119,6 +119,12 @@ let tokenInfo = {
     subgrid: null
   };
 
+let tokenInfoHuman = {
+    locations: [],
+    subgrid: null
+  };
+
+
 let trappedAIStartGrid = [];
 
 let aiDoorToLeave = null;
@@ -596,6 +602,14 @@ function addStarTokens(scene, playerID) {
         console.log("update tokenInfo");
         console.log(tokenInfo.subgrid);
     }
+
+    if (playerID === 0){
+
+        tokenInfoHuman.locations = [];
+        tokenInfoHuman.subgrid = chosenGrid;
+        console.log("update tokenInfo for human");
+        console.log(tokenInfoHuman.subgrid);
+    }
     
     if (usedGrids.length > 0) {
         //console.log("resetting used grids");
@@ -640,6 +654,12 @@ function addStarTokens(scene, playerID) {
 
                     tokenInfo.locations.push({x, y});
                     console.log(tokenInfo.locations);
+                }
+
+                if (playerID === 0){
+
+                    tokenInfoHuman.locations.push({x, y});
+                    console.log(tokenInfoHuman.locations);
                 }
 
                 addedCoordinates.push([x, y]);
@@ -758,6 +778,10 @@ function proceedToNextRound(scene) {
     
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+
+    let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/Trap Timing';
+    let valuenow = trapTimeForEachRound[currentRound - 1];
+    writeRealtimeDatabase( pathnow , valuenow );
   
     doorAICoords = [];
     doorAIadjusted = [];
@@ -1510,6 +1534,25 @@ function handleMovement(player, dx, dy, playerID, scene) {
         valuenow = players.AI.tokensCollected;
         writeRealtimeDatabase( pathnow , valuenow );
 
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Elapsed time in current round';
+        valuenow = currentTime;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI doors';
+        valuenow = doorAIadjusted;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Human doors';
+        valuenow = doorHumanadjusted;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Human tokens';
+        valuenow = tokenInfoHuman.locations;
+        writeRealtimeDatabase( pathnow , valuenow );
+
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI tokens';
+        valuenow = tokenInfo.locations;
+        writeRealtimeDatabase( pathnow , valuenow );
     }
 
 }
@@ -2130,6 +2173,18 @@ function completeSetup(scene) {
 
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+
+    let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/Trap Timing';
+    let valuenow = trapTimeForEachRound[currentRound - 1];
+    writeRealtimeDatabase( pathnow , valuenow );
+
+    pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Grid dimension';
+    valuenow = [gridWidth, gridHeight];
+    writeRealtimeDatabase( pathnow , valuenow );
+
+    pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Subgrids';
+    valuenow = GRIDS;
+    writeRealtimeDatabase( pathnow , valuenow );
 
     player1.x = cellWidth/2;
     player1.y = cellHeight/2;
