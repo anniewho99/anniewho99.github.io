@@ -747,7 +747,7 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound}. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#000' }).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 5. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#000' }).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
 
       runUpdateLogic = false;
@@ -1004,6 +1004,57 @@ function getTargetsInLocalCoordinates() {
   
     return localTargets;
   }
+// full screen stuff
+
+/* Get the documentElement (<html>) to display the page in fullscreen */
+var elem = document.documentElement;
+
+/* View in fullscreen */
+/**
+ * Turn on Fullscreen
+ */
+function openFullscreen() {
+    document.body.style.overflow = "hidden";
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {/* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+    }
+}
+
+/* Close fullscreen */
+/**
+ * Turn off Fullscreen
+ */
+function closeFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+    }
+    document.body.style.overflow = "visible";
+}
+
+function exitHandler() {
+    if (currentRound <= 5){
+        if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+            alert("It is preferre to complete this study in fullscreen mode. Please press F11 to continue in fullscreen mode.");
+        }
+    }
+}
+
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
   
 let game = new Phaser.Game(config);
 
@@ -1033,6 +1084,8 @@ function create() {
 
             // Resume the game
             this.scene.resume();
+
+            openFullscreen();
 
             // Remove the event listener now that it's no longer needed
             document.getElementById('consentProceed').removeEventListener('click', consentCallback);
