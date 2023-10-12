@@ -46,8 +46,10 @@ let trapTimeForEachRound;
 const TRAPSEQUENCE = 'WHOISIT'; // a string we use to represent the condition name
 let numConditions = 2; // Number of conditions for this variable
 let numDraws = 1; // Number of  assignments (mutually exclusive) we want to sample for this participants
-let assignedCondition = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
+let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
   maxCompletionTimeMinutes, numDraws); // the await keyword is mandatory
+
+let assignedCondition = assignedConditionTemp[0];
 
 if (assignedCondition === 1){
     trapTimeForEachRound = {
@@ -661,11 +663,22 @@ function onTokenHit(player, token) {
         if(isClickable === false && players['Human'].tokensCollected === 2){
             isClickable = true;
             if (isClickable) {
-                proceedButton.setFillStyle(0xADD8E6);
+                proceedButton.setFillStyle(0x007BFF);
             } else {
                 proceedButton.setFillStyle(0xCCCCCC);
             }
         }
+
+        if(isClickable === false && players['AI'].tokensCollected === 2){
+            isClickable = true;
+            runUpdateLogic = false;
+            if (isClickable) {
+                proceedButton.setFillStyle(0x007BFF);
+            } else {
+                proceedButton.setFillStyle(0xCCCCCC);
+            }
+        }
+
 
         // if(playerName === 'AI'){
         //     localTargets[token.index] = [0, 0];
@@ -708,7 +721,6 @@ function updateGameTime(scene) {
         if (currentRound > 5) {
             console.log("Game Over");
             isTimeoutScheduled = true;
-        
             // End the game and show post-game content
 
             runUpdateLogic = false;
@@ -876,6 +888,7 @@ function endGame(scene) {
             let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
             let valuenow = data;
             writeRealtimeDatabase(pathnow, valuenow);
+            finalizeBlockRandomization(studyId, TRAPSEQUENCE);
 
         }else {
             alert("Please fill out all the fields before submitting!");
@@ -1030,10 +1043,10 @@ function create() {
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
     // this.overlay.setVisible(false);
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '20px', fill: '#8B4513'}).setOrigin(0.5, 0.5).setDepth(1001);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '20px', fill: '#000'}).setOrigin(0.5, 0.5).setDepth(1001);
 
      // Create a button using graphics
-     this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+     this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
      // Button label
      this.proceedButtonText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 'Proceed', { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1002);
      // Initially hide the button
@@ -1295,7 +1308,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
                     isClickable = true;
                     instructionShown = true;
                     if (isClickable) {
-                        proceedButton.setFillStyle(0xADD8E6);
+                        proceedButton.setFillStyle(0x007BFF);
                     } else {
                         proceedButton.setFillStyle(0xCCCCCC);
                     }
@@ -1987,22 +2000,15 @@ function initializeDemo(scene) {
     player1.name = 'Human'; 
     player1.data = players['Human']; 
 
-    //star token groups
-    scene.tokenGroup = scene.physics.add.group();
-
-    addStarTokens(scene, players['Human'].id);
-
     scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
 
     // Keyboard controls
     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
-    scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
-
     scene.messageText.destroy(); 
 
-    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', { fontSize: '16px', fill: '#8B4513' });
-    proceedButton = scene.add.rectangle(1020, 170, 90, 20, 0xADD8E6).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', { fontSize: '16px', fill: '#000' }).setDepth(1001);
+    proceedButton = scene.add.rectangle(1020, 170, 90, 20, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
     scene.proceedText = scene.add.text(983, 160, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
@@ -2019,7 +2025,8 @@ let instructions = [
     " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
     " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
-    " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.\n Let’s start the first round.\n Have fun!"
+    " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.",
+    " Let’s start the first round. Have fun!"
 ];
 let currentInstructionIndex = 0;
 
@@ -2032,12 +2039,67 @@ function displayNextInstruction(scene) {
 
     if(currentInstructionIndex === 1 && isClickable === true){
         isClickable = false;
+
+        //star token groups
+        scene.tokenGroup = scene.physics.add.group();
+
+        addStarTokens(scene, players['Human'].id);
+
+        scene.physics.add.overlap(player1, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+
+    }
+
+    if(currentInstructionIndex === 2 && isClickable === true){
+        isClickable = false;
+
+        timeText = scene.add.text(910, 10, '', { fontSize: '16px', fill: '#000' });
+
+        runUpdateLogic = true;
+
+        timeText.setVisible(false);
+
+        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+        player2.setCollideWorldBounds(true); 
+        player2.name = 'AI'; 
+        player2.data = players['AI'];
+
+        easystar = new EasyStar.js();
+        easystar.setGrid(initialGrid);
+        easystar.setAcceptableTiles([0]); 
+
+        easystarSubgrid = new EasyStar.js();
+        easystarSubgrid.setGrid(subGrid);
+        easystarSubgrid.setAcceptableTiles([0]);
+
+        scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+        scene.player1Ghost.setVisible(false);
+        scene.player2Ghost.setVisible(false);
+
+        addStarTokens(scene, players['AI'].id);
+
+        scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);  
+
     }
 
     if (isClickable) {
-        proceedButton.setFillStyle(0xADD8E6);
+        proceedButton.setFillStyle(0x007BFF);
     } else {
         proceedButton.setFillStyle(0xCCCCCC);
+    }
+
+    if(currentInstructionIndex === 4){
+        scene.overlay.setVisible(true);
+        scene.messageText.setFontSize('22px');
+        scene.messageText.x = scene.sys.game.config.width / 2 - 240;
+        scene.messageText.y = scene.sys.game.config.height / 2;
+
+        proceedButton.x = scene.sys.game.config.width / 2;
+        proceedButton.y = scene.sys.game.config.height * 0.65;
+
+        scene.proceedText.x = scene.sys.game.config.width / 2 - 40;
+        scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10;
+
     }
 
     if (currentInstructionIndex < instructions.length) {
@@ -2052,16 +2114,18 @@ function displayNextInstruction(scene) {
 }
 
 function completeSetup(scene) {
-    // Complete the game setup by including everything else you didn't show during the demo.
-    // This includes setting up collisions, tokens, keyboard controls, etc.
-    // Essentially, everything else from your original `setupGameElements` function.
+
     scene.messageText.destroy(); 
 
     scene.proceedText.destroy();
 
+    scene.overlay.setVisible(false);
+
     setInterval(() => {
         updateGameTime(scene);
     }, 1000);
+
+    timeText.setVisible(true);
 
 
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
@@ -2069,27 +2133,33 @@ function completeSetup(scene) {
 
     player1.x = cellWidth/2;
     player1.y = cellHeight/2;
+
+    player2.x = grid_width - cellWidth / 2;
+    player2.y = scene.sys.game.config.height - cellHeight / 2;
   
-    timeText = scene.add.text(910, 10, '', { fontSize: '16px', fill: '#000' });
+    aiStartX =  14;
+    aiStartY = 12;
 
-    player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    player2.setCollideWorldBounds(true); 
-    player2.name = 'AI'; 
-    player2.data = players['AI'];
+    localAIx = null;
+    localAIy = null;
+    subgridAI = null;
 
-    easystar = new EasyStar.js();
-    easystar.setGrid(initialGrid);
-    easystar.setAcceptableTiles([0]); 
-
-    easystarSubgrid = new EasyStar.js();
-    easystarSubgrid.setGrid(subGrid);
-    easystarSubgrid.setAcceptableTiles([0]);
-
-    scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-    scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
-    scene.player1Ghost.setVisible(false);
-    scene.player2Ghost.setVisible(false);
-
+    pathIndex = 0;
+  
+    currentTargetIndex = 0;
+  
+    currentPath = null; 
+  
+    localTargets = [];
+  
+    otherPlayerinSubgrid = false;
+  
+    tokenInfo = {
+        locations: [],
+        subgrid: null
+    };
+  
+    players.AI.tokensCollected = 0;
     players.Human.tokensCollected = 0;
 
     scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
@@ -2098,7 +2168,9 @@ function completeSetup(scene) {
     addStarTokens(scene, players['Human'].id);
     addStarTokens(scene, players['AI'].id);
 
-    scene.physics.add.overlap(player2, scene.tokenGroup, onTokenHit.bind(scene), null, scene);
+    isPathBeingFollowed = false;
+  
+    aiState = "NAVIGATING_TO_SUBGRID";
 
     startOfGamePlay = Date.now();
 
