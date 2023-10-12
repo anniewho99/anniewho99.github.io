@@ -32,10 +32,12 @@
         }
 
         #postGameContent {
-            display: none;
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
+            display: none; /* initially hidden */
+            background-color: #fff; /* white background */
+            padding: 20px; /* padding around content */
+            border-radius: 8px; /* rounded corners */
+            max-width: 600px; /* maximum width */
+            margin: auto; /* centered horizontally */
         }
 
         .grayscreen {
@@ -60,14 +62,12 @@
             font-weight: bold; /* Making text bold */
         }
 
-        h1 {
-            font-size: 24px;
+        h1, h2 {
             margin-bottom: 10px;
         }
 
-        h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
+        p {
+            margin-bottom: 20px;
         }
 
         form {
@@ -76,8 +76,11 @@
 
         label {
             font-size: 14px;
-            margin-bottom: 5px;
             display: block;
+        }
+
+        .red-asterisk {
+            color: red;
         }
 
         input[type=submit] {
@@ -87,6 +90,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            display: inline-block;
+            margin-top: 15px;
         }
 
         input[type=submit]:hover {
@@ -97,31 +102,42 @@
             width: 100%;
             padding: 8px;
             margin-top: 5px;
-            margin-bottom: 20px;
-            resize: vertical;
+            margin-bottom: 15px; /* Reduced bottom margin */
             box-sizing: border-box;
+            resize: vertical;
         }
 
-        .slider-container {
+        .radio-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
+            flex-wrap: wrap; /* Allows items to wrap to next line */
         }
 
-        input[type=range] {
-            flex-grow: 2;
-            margin: 0 10px;
+        .radio-container label {
+            margin-right: 15px;
         }
 
-        .red-asterisk {
-            color: red;
+        /* Aligns radio buttons */
+        .radio-container input[type=radio] {
+            margin-left: 5px;
         }
 
-        .radio-container {
-            margin-bottom: 20px;
+        /* Adjustments for radio buttons not inside .radio-container */
+        input[type=radio] + label {
+            margin-right: 30px;
         }
 
+        input[type=radio]:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
+
+        small {
+            display: block;
+            margin-bottom: 15px; /* Adjusted bottom margin */
+            margin-left: 25px; /* Left indent */
+        }
     </style>
 </head>
 
@@ -172,12 +188,18 @@
             <p>Please note that all questions marked with an asterisk (*) are required.</p>
 
             <label for="helpfulnessRating">Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></label>
-            <div class="slider-container">
+            <div class="radio-container">
                 <label>Not helpful at all</label>
-                <input type="range" id="helpfulnessRating" name="helpfulnessRating" min="1" max="5">
+                <label><input type="radio" name="helpfulnessRating" value="1"> 1</label>
+                <label><input type="radio" name="helpfulnessRating" value="2"> 2</label>
+                <label><input type="radio" name="helpfulnessRating" value="3"> 3</label>
+                <label><input type="radio" name="helpfulnessRating" value="4"> 4</label>
+                <label><input type="radio" name="helpfulnessRating" value="5"> 5</label>
+                <label><input type="radio" name="helpfulnessRating" value="6"> 6</label>
+                <label><input type="radio" name="helpfulnessRating" value="7"> 7</label>
                 <label>Very helpful</label>
             </div>
-            <br>
+
             <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
@@ -195,10 +217,11 @@
             <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea><br><br>
 
             <label>Did you notice the robot getting stuck? <span style="color: red;">*</span></label><br>
-            <select id="robotStuck" name="robotStuck">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select><br><br>
+            <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
+            <label for="robotStuckYes">Yes</label><br>
+            <input type="radio" id="robotStuckNo" name="robotStuck" value="no">
+            <label for="robotStuckNo">No</label><br><br>
+
 
             <label>Did you help the robot? <span style="color: red;">*</span></label><br>
             <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
@@ -208,7 +231,7 @@
             <label for="helpedNo">No</label>
             <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br><br>
 
-            <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: <span style="color: red;">*</span></label><br>
+            <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: </label><br>
             <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
 
             <input type="submit" value="Submit">

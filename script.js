@@ -883,12 +883,11 @@ function endGame(scene) {
         // Prevent the form from submitting in the traditional manner
         event.preventDefault();
 
-        let isHelpfulnessRatingFilled = document.getElementById('helpfulnessRating').value !== '';
+        let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
         let isStrategyFilled = document.getElementById('strategy').value !== '';
         let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') || document.getElementById('explain').value !== '';
-        let isRobotStuckSelected = document.getElementById('robotStuck').value !== '';
+        let isRobotStuckSelected = document.querySelector('input[name="robotStuck"]:checked') !== null;
         let isHelpedRobotSelected = document.querySelector('input[name="helpedRobot"]:checked');
-        let isSuggestionsFilled = document.getElementById('suggestions').value !== '';
 
         // Checking the 'helpedRobot' field and the appropriate textarea
         let helpedRobotValue = isHelpedRobotSelected ? isHelpedRobotSelected.value : '';
@@ -907,8 +906,7 @@ function endGame(scene) {
             isGameTypeSelected &&
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
-            isWhyHelpedFilledCorrectly &&
-            isSuggestionsFilled
+            isWhyHelpedFilledCorrectly
         ){
             const data = {
                 helpfulnessRating: document.getElementById('helpfulnessRating').value,
