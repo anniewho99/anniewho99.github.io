@@ -27,18 +27,14 @@ const players = {
     }
 };
 
-const params = new URLSearchParams(window.location.search);
-const trapHumanFirst = params.get('tHFirst') === 'true';
-const trapAIFirst = params.get('tAFirst') === 'true';  
-
-console.log('trapHumanFirst:', trapHumanFirst);
-console.log('trapAIFirst:', trapAIFirst);
-
 const studyId  = 'test';
 // Show the user id that is provided by the Firebase Psych library.
 console.log( "Firebase UserId=" + firebaseUserId );
 
 const maxCompletionTimeMinutes = 60;
+
+const params = new URLSearchParams(window.location.search);
+const showQuestionnaireOnly = params.get('questionnaireOnly');
 
 let trapTimeForEachRound;
 
@@ -1048,6 +1044,10 @@ function create() {
     // Setup event listener for the consent button
     document.getElementById('consentProceed').addEventListener('click', consentCallback.bind(this));
 
+    if (showQuestionnaireOnly === 'true') {
+        // Show only the questionnaire
+        endGame(this);
+    }
 
     let messages = [
         ' You are going to play a simple game with a robot player \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
