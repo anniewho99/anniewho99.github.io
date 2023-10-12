@@ -100,32 +100,38 @@
 
         <form id="feedbackForm">
 
-            <label for="helpfulnessRating">Rating of the perceived helpfulness of the other agent:</label>
+            <p>Please note that all questions marked with an asterisk (*) are required.</p>
+
+            <label for="helpfulnessRating">Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></label>
             <div class="slider-container">
                 <label>Not helpful at all</label>
                 <input type="range" id="helpfulnessRating" name="helpfulnessRating" min="1" max="5">
                 <label>Very helpful</label>
             </div>
             <br>
-            <label for="strategy">What was your strategy in the game?</label>
+            <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
-            <label>Do you see this primarily as a:</label><br>
+            <label>Do you see this primarily as a: <span style="color: red;">*</span></label><br>
             <input type="radio" id="competitive" name="gameType" value="competitive">
             <label for="competitive">Competitive game</label><br>
+            <small> - Players compete against each other to collect more tokens than their opponent.</small><br>
+
             <input type="radio" id="collaborative" name="gameType" value="collaborative">
             <label for="collaborative">Collaborative game</label><br>
+            <small> -  Players work together to collect as many tokens as they can.</small><br>
+
             <input type="radio" id="neither" name="gameType" value="neither">
             <label for="neither">Neither</label>
             <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea><br><br>
 
-            <label>Did you notice the robot getting stuck?</label><br>
+            <label>Did you notice the robot getting stuck? <span style="color: red;">*</span></label><br>
             <select id="robotStuck" name="robotStuck">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </select><br><br>
 
-            <label>Did you help the robot?</label><br>
+            <label>Did you help the robot? <span style="color: red;">*</span></label><br>
             <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
             <label for="helpedYes">Yes</label>
             <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
@@ -133,7 +139,7 @@
             <label for="helpedNo">No</label>
             <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br><br>
 
-            <label for="suggestions">Any suggestions to improve the experiment:</label><br>
+            <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: <span style="color: red;">*</span></label><br>
             <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
 
             <input type="submit" value="Submit">

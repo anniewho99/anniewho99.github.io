@@ -887,16 +887,32 @@ function endGame(scene) {
         // Prevent the form from submitting in the traditional manner
         event.preventDefault();
 
+        let isHelpfulnessRatingFilled = document.getElementById('helpfulnessRating').value !== '';
+        let isStrategyFilled = document.getElementById('strategy').value !== '';
+        let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') || document.getElementById('explain').value !== '';
+        let isRobotStuckSelected = document.getElementById('robotStuck').value !== '';
+        let isHelpedRobotSelected = document.querySelector('input[name="helpedRobot"]:checked');
+        let isSuggestionsFilled = document.getElementById('suggestions').value !== '';
+
+        // Checking the 'helpedRobot' field and the appropriate textarea
+        let helpedRobotValue = isHelpedRobotSelected ? isHelpedRobotSelected.value : '';
+        let isWhyHelpedFilledCorrectly = false;
+
+        if (helpedRobotValue === 'yes') {
+            isWhyHelpedFilledCorrectly = document.getElementById('whyHelped').value !== '';
+        } else if (helpedRobotValue === 'no') {
+            isWhyHelpedFilledCorrectly = document.getElementById('whyNotHelped').value !== '';
+        }
+
         // Gather data from the form
         if (
-            document.getElementById('helpfulnessRating').value &&
-            document.getElementById('strategy').value &&
-            (document.querySelector('input[name="gameType"]:checked') ||
-            document.getElementById('explain').value) &&
-            document.getElementById('robotStuck').value &&
-            document.querySelector('input[name="helpedRobot"]:checked') &&
-            (document.getElementById('whyHelped').value || document.getElementById('whyNotHelped').value) &&
-            document.getElementById('suggestions').value
+            isHelpfulnessRatingFilled &&
+            isStrategyFilled &&
+            isGameTypeSelected &&
+            isRobotStuckSelected &&
+            isHelpedRobotSelected &&
+            isWhyHelpedFilledCorrectly &&
+            isSuggestionsFilled
         ){
             const data = {
                 helpfulnessRating: document.getElementById('helpfulnessRating').value,
