@@ -12,6 +12,7 @@
     <style>
         body {
             background-color: white;
+            overflow-y: auto;
         }
 
         #consentDiv {
@@ -203,33 +204,54 @@
             <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
-            <label>Do you see this primarily as a: <span style="color: red;">*</span></label><br>
-            <input type="radio" id="competitive" name="gameType" value="competitive">
-            <label for="competitive">Competitive game</label><br>
-            <small> - Players compete against each other to collect more tokens than their opponent.</small><br>
+            <fieldset>
+                <legend>Do you see this primarily as a: <span style="color: red;">*</span></legend>
 
-            <input type="radio" id="collaborative" name="gameType" value="collaborative">
-            <label for="collaborative">Collaborative game</label><br>
-            <small> -  Players work together to collect as many tokens as they can.</small><br>
+                <div class="radio-option">
+                    <input type="radio" id="competitive" name="gameType" value="competitive">
+                    <label for="competitive">Competitive game</label><br>
+                    <small> - Players compete against each other to collect more tokens than their opponent.</small>
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" id="collaborative" name="gameType" value="collaborative">
+                    <label for="collaborative">Collaborative game</label><br>
+                    <small> - Players work together to collect as many tokens as they can.</small>
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" id="neither" name="gameType" value="neither">
+                    <label for="neither">Neither</label>
+                    <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea>
+                </div>
+            </fieldset>
+            
 
-            <input type="radio" id="neither" name="gameType" value="neither">
-            <label for="neither">Neither</label>
-            <textarea id="explain" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea><br><br>
+            <fieldset>
+                <legend>Did you notice the robot getting stuck? <span style="color: red;">*</span></legend>
+                <div class="radio-option">
+                    <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
+                    <label for="robotStuckYes">Yes</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="robotStuckNo" name="robotStuck" value="no">
+                    <label for="robotStuckNo">No</label>
+                </div>
+            </fieldset>
 
-            <label>Did you notice the robot getting stuck? <span style="color: red;">*</span></label><br>
-            <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
-            <label for="robotStuckYes">Yes</label><br>
-            <input type="radio" id="robotStuckNo" name="robotStuck" value="no">
-            <label for="robotStuckNo">No</label><br><br>
-
-
-            <label>Did you help the robot? <span style="color: red;">*</span></label><br>
-            <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
-            <label for="helpedYes">Yes</label>
-            <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
-            <input type="radio" id="helpedNo" name="helpedRobot" value="no">
-            <label for="helpedNo">No</label>
-            <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br><br>
+            <fieldset>
+                <legend>Did you help the robot? <span style="color: red;">*</span></legend>
+                <div class="radio-option">
+                    <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
+                    <label for="helpedYes">Yes</label>
+                    <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="helpedNo" name="helpedRobot" value="no">
+                    <label for="helpedNo">No</label>
+                    <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br>
+                </div>
+            </fieldset>
 
             <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: </label><br>
             <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
