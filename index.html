@@ -59,6 +59,69 @@
             color: #e44d26;  /* Making the note in a red-orange color for visibility */
             font-weight: bold; /* Making text bold */
         }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        input[type=range] {
+            flex-grow: 2;
+            margin: 0 10px;
+        }
+
+        .red-asterisk {
+            color: red;
+        }
+
+        .radio-container {
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 
@@ -102,7 +165,7 @@
 
     <div id="postGameContent">
         <h1>Thank you for participating!</h1>
-        <h2>Here are some post-trial questions</h2>
+        <h2>Please answer the following questions</h2>
 
         <form id="feedbackForm">
 
