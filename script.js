@@ -731,7 +731,7 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound}. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#8B4513' }).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound}. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#000' }).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
 
       runUpdateLogic = false;
@@ -740,7 +740,7 @@ function updateGameTime(scene) {
           .setOrigin(0.5, 0.5)
           .setDepth(1002)
           .setInteractive();
-      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 100, 30, 0xADD8E6).setOrigin(0.5, 0.5).setDepth(1001);
+      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
 
       nextRoundButton.on('pointerdown', () => {
           proceedToNextRound(scene);
