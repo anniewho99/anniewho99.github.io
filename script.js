@@ -881,6 +881,8 @@ function endGame(scene) {
     // Display the post-game content
     document.getElementById('postGameContent').style.display = 'block';
 
+    postGameContent.scrollIntoView();  
+
     const postGameForm = document.getElementById('feedbackForm');
 
     postGameForm.addEventListener('submit', function(event) {
