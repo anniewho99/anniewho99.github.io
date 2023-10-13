@@ -203,21 +203,23 @@
 
             <p>Please note that all questions marked with an asterisk (*) are required.</p>
 
-            <label for="helpfulnessRating">Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></label>
-            <div class="radio-container">
-                <label>Not helpful at all</label>
-                <label><input type="radio" name="helpfulnessRating" value="1"> 1</label>
-                <label><input type="radio" name="helpfulnessRating" value="2"> 2</label>
-                <label><input type="radio" name="helpfulnessRating" value="3"> 3</label>
-                <label><input type="radio" name="helpfulnessRating" value="4"> 4</label>
-                <label><input type="radio" name="helpfulnessRating" value="5"> 5</label>
-                <label><input type="radio" name="helpfulnessRating" value="6"> 6</label>
-                <label><input type="radio" name="helpfulnessRating" value="7"> 7</label>
-                <label>Very helpful</label>
-            </div>
-
             <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
+
+            <fieldset>
+                <legend>Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></legend>
+                <div class="radio-container">
+                    <label>Not helpful at all</label>
+                    <label><input type="radio" id="helpfulnessRating1" name="helpfulnessRating" value="1"> 1</label>
+                    <label><input type="radio" id="helpfulnessRating2" name="helpfulnessRating" value="2"> 2</label>
+                    <label><input type="radio" id="helpfulnessRating3" name="helpfulnessRating" value="3"> 3</label>
+                    <label><input type="radio" id="helpfulnessRating4" name="helpfulnessRating" value="4"> 4</label>
+                    <label><input type="radio" id="helpfulnessRating5" name="helpfulnessRating" value="5"> 5</label>
+                    <label><input type="radio" id="helpfulnessRating6" name="helpfulnessRating" value="6"> 6</label>
+                    <label><input type="radio" id="helpfulnessRating7" name="helpfulnessRating" value="7"> 7</label>
+                    <label>Very helpful</label>
+                </div>
+            </fieldset>
 
             <fieldset>
                 <legend>Do you see this primarily as a: <span style="color: red;">*</span></legend>
