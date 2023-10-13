@@ -889,9 +889,11 @@ function endGame(scene) {
         // Prevent the form from submitting in the traditional manner
         event.preventDefault();
 
+        let isExplainFilledCorrectly = true; 
+
         let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
-        let isStrategyFilled = document.getElementById('strategy').value !== '';
-        let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') || document.getElementById('explain').value !== '';
+        let isStrategyFilled = document.getElementById('strategy').value.trim() !== ''; 
+        let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') !== null;
         let isRobotStuckSelected = document.querySelector('input[name="robotStuck"]:checked') !== null;
         let isHelpedRobotSelected = document.querySelector('input[name="helpedRobot"]:checked');
 
@@ -900,9 +902,16 @@ function endGame(scene) {
         let isWhyHelpedFilledCorrectly = false;
 
         if (helpedRobotValue === 'yes') {
-            isWhyHelpedFilledCorrectly = document.getElementById('whyHelped').value !== '';
+            isWhyHelpedFilledCorrectly = document.getElementById('whyHelped').value.trim() !== '';  
         } else if (helpedRobotValue === 'no') {
-            isWhyHelpedFilledCorrectly = document.getElementById('whyNotHelped').value !== '';
+            isWhyHelpedFilledCorrectly = document.getElementById('whyNotHelped').value.trim() !== '';
+        }
+
+        let isNeitherSelected = document.querySelector('input[name="gameType"]:checked') ? document.querySelector('input[name="gameType"]:checked').value === 'neither': false;
+
+        // Validate 'explain' if 'neither' is selected
+        if (isNeitherSelected) {
+            isExplainFilledCorrectly = document.getElementById('explain').value.trim() !== ''; // Ensure it's non-empty
         }
 
         // Gather data from the form
@@ -912,14 +921,15 @@ function endGame(scene) {
             isGameTypeSelected &&
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
-            isWhyHelpedFilledCorrectly
+            isWhyHelpedFilledCorrectly &&
+            isExplainFilledCorrectly
         ){
             const data = {
-                helpfulnessRating: document.getElementById('helpfulnessRating').value,
+                helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
                 strategy: document.getElementById('strategy').value,
                 gameType: document.querySelector('input[name="gameType"]:checked').value,
                 explain: document.getElementById('explain').value,
-                robotStuck: document.getElementById('robotStuck').value,
+                robotStuck: document.querySelector('input[name="gameType"]:checked').value,
                 helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
@@ -2211,7 +2221,7 @@ function displayNextInstruction(scene) {
     if(currentInstructionIndex === 4){
         scene.overlay.setVisible(true);
         scene.messageText.setFontSize('22px');
-        scene.messageText.x = scene.sys.game.config.width / 2 - 240;
+        scene.messageText.x = scene.sys.game.config.width / 2 - 320;
         scene.messageText.y = scene.sys.game.config.height / 2;
 
         proceedButton.x = scene.sys.game.config.width / 2;
