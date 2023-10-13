@@ -869,6 +869,11 @@ function proceedToNextRound(scene) {
     if(nextRoundRectangle) nextRoundRectangle.destroy();
 }
 
+function redirectToProlific() {
+    const prolificCompletionUrl = 'https://app.prolific.co/submissions/complete?cc=C7ZNXQ0L';
+    window.location.replace(prolificCompletionUrl);
+}
+
 function endGame(scene) {
     // Hide Phaser canvas
     scene.game.canvas.style.display = 'none';
@@ -923,6 +928,7 @@ function endGame(scene) {
             let valuenow = data;
             writeRealtimeDatabase(pathnow, valuenow);
             finalizeBlockRandomization(studyId, TRAPSEQUENCE);
+            redirectToProlific();
 
         }else {
             alert("Please fill out all the fields before submitting!");
