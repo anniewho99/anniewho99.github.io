@@ -873,7 +873,7 @@ function endGame(scene) {
     // Hide Phaser canvas
     scene.game.canvas.style.display = 'none';
     scene.scene.pause();
-
+    closeFullscreen();
     // Display the post-game content
     document.getElementById('postGameContent').style.display = 'block';
 
