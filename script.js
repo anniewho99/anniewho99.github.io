@@ -1137,6 +1137,9 @@ function create() {
     let valuenow = assignedCondition;
     writeRealtimeDatabase( pathnow , valuenow );
 
+    pathnow = studyId+'/participantData/'+firebaseUserId+ '/participantInfo';
+    writeURLParameters( pathnow );
+
     // Create an overlay and welcome message
     this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
