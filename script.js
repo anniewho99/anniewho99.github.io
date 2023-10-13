@@ -1044,7 +1044,7 @@ function closeFullscreen() {
 function exitHandler() {
     if (currentRound <= 5){
         if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-            alert("It is preferre to complete this study in fullscreen mode. Please press F11 to continue in fullscreen mode.");
+            alert("Please complete this study in fullscreen mode. Please press F11 to continue in fullscreen mode.");
         }
     }
 }
@@ -2136,7 +2136,7 @@ let instructions = [
     " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
     " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.",
-    " Let’s start the first round. Have fun!"
+    " Let's start the first round. There are 5 rounds total. \n Have fun!!"
 ];
 let currentInstructionIndex = 0;
 
