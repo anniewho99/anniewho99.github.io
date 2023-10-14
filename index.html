@@ -250,6 +250,20 @@
             
 
             <fieldset>
+                <legend>Generally, do you see multi-player game primarily as a: <span style="color: red;">*</span></legend>
+
+                <div class="radio-option">
+                    <input type="radio" id="generalCompetitive" name="generalGameType" value="competitive">
+                    <label for="competitive">Competitive game</label><br>
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" id="generalCollaborative" name="generalGameType" value="collaborative">
+                    <label for="collaborative">Collaborative game</label><br>
+                </div>
+            </fieldset>
+
+            <fieldset>
                 <legend>Did you notice the robot getting stuck? <span style="color: red;">*</span></legend>
                 <div class="radio-option">
                     <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
@@ -262,7 +276,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Did you help the robot? <span style="color: red;">*</span></legend>
+                <legend>Did you help the stuck robot? <span style="color: red;">*</span></legend>
                 <div class="radio-option">
                     <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
                     <label for="helpedYes">Yes</label>

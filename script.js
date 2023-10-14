@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-const studyId  = 'pilotStudy';
+const studyId  = 'edits';
 // Show the user id that is provided by the Firebase Psych library.
 console.log( "Firebase UserId=" + firebaseUserId );
 
@@ -65,6 +65,21 @@ if (assignedCondition === 1){
       };
 
 }
+
+let trapTimeForEachRoundToSave = JSON.parse(JSON.stringify(trapTimeForEachRound));
+
+for (let round in trapTimeForEachRoundToSave ) {
+    if (trapTimeForEachRoundToSave[round].human === 200) {
+        trapTimeForEachRoundToSave[round].human = -1;
+    }
+    if (trapTimeForEachRoundToSave[round].AI === 200) {
+        trapTimeForEachRoundToSave[round].AI = -1;
+    }
+}
+
+console.log(trapTimeForEachRound);
+
+let eventNumber = 0;
 
 let player1TrapTimeStart;
 let player2TrapTimeStart;
@@ -172,6 +187,8 @@ let startOfGamePlay;
 let isClickable = true;
 
 let instructionShown = false;
+
+let startGamePlay = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -775,9 +792,7 @@ function proceedToNextRound(scene) {
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
 
-    let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/Trap Timing';
-    let valuenow = trapTimeForEachRound[currentRound - 1];
-    writeRealtimeDatabase( pathnow , valuenow );
+    eventNumber = 0;
   
     doorAICoords = [];
     doorAIadjusted = [];
@@ -870,7 +885,7 @@ function proceedToNextRound(scene) {
 }
 
 function redirectToProlific() {
-    const prolificCompletionUrl = 'https://app.prolific.co/submissions/complete?cc=C7ZNXQ0L';
+    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=CPW6HB98';
     window.location.replace(prolificCompletionUrl);
 }
 
@@ -894,6 +909,7 @@ function endGame(scene) {
         let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
         let isStrategyFilled = document.getElementById('strategy').value.trim() !== ''; 
         let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') !== null;
+        let isGeneralGameTypeSelected = document.querySelector('input[name="generalGameType"]:checked') !== null;
         let isRobotStuckSelected = document.querySelector('input[name="robotStuck"]:checked') !== null;
         let isHelpedRobotSelected = document.querySelector('input[name="helpedRobot"]:checked');
 
@@ -919,6 +935,7 @@ function endGame(scene) {
             isHelpfulnessRatingFilled &&
             isStrategyFilled &&
             isGameTypeSelected &&
+            isGeneralGameTypeSelected &&
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
             isWhyHelpedFilledCorrectly &&
@@ -928,8 +945,9 @@ function endGame(scene) {
                 helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
                 strategy: document.getElementById('strategy').value,
                 gameType: document.querySelector('input[name="gameType"]:checked').value,
+                generalGameType: document.querySelector('input[name="gameType"]:checked').value,
                 explain: document.getElementById('explain').value,
-                robotStuck: document.querySelector('input[name="gameType"]:checked').value,
+                robotStuck: document.querySelector('input[name="generalGameType"]:checked').value,
                 helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
@@ -1144,7 +1162,18 @@ function create() {
     }
     
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/assignedCondition';
-    let valuenow = assignedCondition;
+    let assignedConditionExplained;
+
+    if(assignedCondition === 0){
+        assignedConditionExplained = assignedCondition + "TrapAIFirst";
+    }else{
+        assignedConditionExplained =  assignedCondition + "TrapHumanFirst";
+    }
+    let valuenow = assignedConditionExplained;
+    writeRealtimeDatabase( pathnow , valuenow );
+
+    pathnow = studyId+'/participantData/'+firebaseUserId +'/Trap Time Start For Each Round';
+    valuenow = trapTimeForEachRoundToSave;
     writeRealtimeDatabase( pathnow , valuenow );
 
     pathnow = studyId+'/participantData/'+firebaseUserId+ '/participantInfo';
@@ -1582,62 +1611,60 @@ function handleMovement(player, dx, dy, playerID, scene) {
     player.x = potentialX;
     player.y = potentialY;
 
-    if(runUpdateLogic && currentRound < 6){
+    if(startGamePlay && currentRound < 6){
         let timestamp = Date.now() - startOfGamePlay;
 
-        let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + timestamp + '/Player 1 X';
-        let valuenow = Math.round(player1.x / cellWidth);
+        eventNumber++;
+
+        let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + eventNumber + '/Time since game play (ms)';
+        let valuenow = timestamp;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 1 Y';
-        valuenow = Math.round(player1.y / cellHeight);
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + eventNumber + '/Human Player Position (x,y)';
+        valuenow = [Math.round(player1.x / cellWidth), Math.round(player1.y / cellHeight)];
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 2 X';
-        valuenow = Math.round(player2.x / cellWidth);
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Position (x,y)';
+        valuenow = [Math.round(player2.x / cellWidth), Math.round(player2.y / cellHeight)];
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player 2 Y';
-        valuenow = Math.round(player2.y / cellHeight);
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI State';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI State';
         valuenow = aiState;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player One Trapped State';
-        valuenow = playerOneTrapped;
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Trapped State';
+        valuenow = playerOneTrapped ? true : false;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player Two Trapped State';
-        valuenow = playerTwoTrapped;
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Trapped State';
+        valuenow = playerTwoTrapped ? true : false;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player One Collected Token';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Collected Token';
         valuenow = players.Human.tokensCollected;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Player Two Collected Token';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Collected Token';
         valuenow = players.AI.tokensCollected;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Elapsed time in current round';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Elapsed time in current round';
         valuenow = currentTime;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI doors';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI doors';
         valuenow = doorAIadjusted;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Human doors';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human doors';
         valuenow = doorHumanadjusted;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/Human tokens';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human tokens';
         valuenow = tokenInfoHuman.locations;
         writeRealtimeDatabase( pathnow , valuenow );
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + timestamp + '/AI tokens';
+        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI tokens';
         valuenow = tokenInfo.locations;
         writeRealtimeDatabase( pathnow , valuenow );
     }
@@ -2261,12 +2288,8 @@ function completeSetup(scene) {
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
     player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
 
-    let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/Trap Timing';
-    let valuenow = trapTimeForEachRound[currentRound - 1];
-    writeRealtimeDatabase( pathnow , valuenow );
-
-    pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Grid dimension';
-    valuenow = [gridWidth, gridHeight];
+    let pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Grid dimension';
+    let valuenow = [gridWidth, gridHeight];
     writeRealtimeDatabase( pathnow , valuenow );
 
     pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Subgrids';
@@ -2317,6 +2340,8 @@ function completeSetup(scene) {
     startOfGamePlay = Date.now();
 
     runUpdateLogic = true;
+
+    startGamePlay = true;
 
 }
 
