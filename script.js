@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-const studyId  = 'edits';
+const studyId  = 'pilotStudy';
 // Show the user id that is provided by the Firebase Psych library.
 console.log( "Firebase UserId=" + firebaseUserId );
 
