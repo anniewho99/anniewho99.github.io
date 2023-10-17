@@ -1633,11 +1633,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Trapped State';
-        valuenow = playerOneTrapped ? true : false;
+        valuenow = playerOneTrapped === true;
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Trapped State';
-        valuenow = playerTwoTrapped ? true : false;
+        valuenow = playerTwoTrapped === true;
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Collected Token';
