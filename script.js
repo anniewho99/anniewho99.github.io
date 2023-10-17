@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-const studyId  = 'pilotStudyProlific';
+const studyId  = 'test';
 // Show the user id that is provided by the Firebase Psych library.
 console.log( "Firebase UserId=" + firebaseUserId );
 
@@ -945,9 +945,9 @@ function endGame(scene) {
                 helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
                 strategy: document.getElementById('strategy').value,
                 gameType: document.querySelector('input[name="gameType"]:checked').value,
-                generalGameType: document.querySelector('input[name="gameType"]:checked').value,
+                generalGameType: document.querySelector('input[name="generalGameType"]:checked').value,
                 explain: document.getElementById('explain').value,
-                robotStuck: document.querySelector('input[name="generalGameType"]:checked').value,
+                robotStuck: document.querySelector('input[name="robotStuck"]:checked').value,
                 helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
