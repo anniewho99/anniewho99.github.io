@@ -885,7 +885,7 @@ function proceedToNextRound(scene) {
 }
 
 function redirectToProlific() {
-    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=CPW6HB98';
+    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=C144F0FJ';
     window.location.replace(prolificCompletionUrl);
 }
 
