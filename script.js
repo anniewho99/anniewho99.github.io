@@ -27,7 +27,15 @@ const players = {
     }
 };
 
-const studyId  = 'pilotStudyProlific';
+let studyId = 'pilotStudyProlific';
+
+const paramsHRI = new URLSearchParams(window.location.search);
+const writeToTryoutData = paramsHRI.get('notProlific');
+
+if(writeToTryoutData){
+    studyId = 'tests';
+}
+
 // Show the user id that is provided by the Firebase Psych library.
 console.log( "Firebase UserId=" + firebaseUserId );
 
