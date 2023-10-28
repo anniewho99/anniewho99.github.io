@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-let studyId = 'pilotStudyProlific';
+let studyId = 'edits';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -47,23 +47,54 @@ const showQuestionnaireOnly = params.get('questionnaireOnly');
 let trapTimeForEachRound;
 
 // Example 1: Assign a random condition for Viewpoint
-const TRAPSEQUENCE = 'WHOISIT'; // a string we use to represent the condition name
-let numConditions = 2; // Number of conditions for this variable
+const TRAPSEQUENCE = 'WHATSEQUENCE'; // a string we use to represent the condition name
+let numConditions = 6; // Number of conditions for this variable
 let numDraws = 1; // Number of  assignments (mutually exclusive) we want to sample for this participants
 let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
   maxCompletionTimeMinutes, numDraws); // the await keyword is mandatory
 
 let assignedCondition = assignedConditionTemp[0];
 
-if (assignedCondition === 1){
+// HHAAA
+// AHHAA
+// AAHHA
+// HAHAA
+// AHAHA
+// HAAHA
+if (assignedCondition === 0){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200 },
+        1: { human: 20, AI: 200 },
+        2: { human: 200, AI: 20 },
+        3: { human: 200, AI: 20 },
+        4: { human: 200, AI: 20 },
+      };
+}else if( assignedCondition === 1){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20 },
+        1: { human: 20, AI: 200 },
+        2: { human: 20, AI: 20 },
+        3: { human: 200, AI: 20 },
+        4: { human: 200, AI: 20 },
+      };
+
+}else if( assignedCondition === 2){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20 },
+        1: { human: 200, AI: 20 },
+        2: { human: 20, AI: 200 },
+        3: { human: 20, AI: 200 },
+        4: { human: 200, AI: 20 },
+      };
+}else if( assignedCondition === 3){
     trapTimeForEachRound = {
         0: { human: 20, AI: 200 },
         1: { human: 200, AI: 20 },
         2: { human: 20, AI: 200 },
         3: { human: 200, AI: 20 },
-        4: { human: 20, AI: 200 },
+        4: { human: 200, AI: 20 },
       };
-}else{
+}else if( assignedCondition === 4){
     trapTimeForEachRound = {
         0: { human: 200, AI: 20 },
         1: { human: 20, AI: 200 },
@@ -71,8 +102,17 @@ if (assignedCondition === 1){
         3: { human: 20, AI: 200 },
         4: { human: 200, AI: 20 },
       };
-
+}else if( assignedCondition === 5){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200 },
+        1: { human: 200, AI: 20 },
+        2: { human: 200, AI: 20 },
+        3: { human: 20, AI: 200 },
+        4: { human: 200, AI: 20 },
+      };
 }
+
+
 
 let trapTimeForEachRoundToSave = JSON.parse(JSON.stringify(trapTimeForEachRound));
 
@@ -198,11 +238,22 @@ let instructionShown = false;
 
 let startGamePlay = false;
 
+let fontstyle = document.createElement('style');
+fontstyle.type = 'text/css';
+fontstyle.innerHTML = `
+    @font-face {
+        font-family: 'Arcade';
+        src: url('fonts/ARCADE.TTF') format('truetype');
+    }`;
+
+document.head.appendChild(fontstyle);
+
+
 let config = {
     type: Phaser.AUTO,
     width: 1220,
     height: 520,
-    backgroundColor: '#D2B48C',
+    backgroundColor: '#C8E6C9',
     scale: {
         mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -328,6 +379,13 @@ for (let grid of GRIDS) {
 
 //console.log("door_movements:", door_movements);
 
+function createTextStyle(fontSize, color) {
+    return {
+        font: fontSize + "px Arcade",
+        fill: color
+    };
+}
+
 
 function isMoveForbidden(currX, currY, nextX, nextY) {
     // Convert positions to strings for easier matching.
@@ -344,7 +402,7 @@ function adjustCoord(coord) {
 
 function createSubGrids() {
     // Initialize graphics object for the walls
-    const graphics = this.add.graphics({ lineStyle: { width: 2, color: 0x8B4513 } }); // Dark brown color
+    const graphics = this.add.graphics({ lineStyle: { width: 4, color: 0x696969 } }); // Dark gray color
 
     // Iterate over each grid
     GRIDS.forEach(grid => {
@@ -410,7 +468,7 @@ const coverDoor = (doorCoord, scene) => {
     const coverGraphics = scene.add.graphics();
     
     // Set the fill style to the background color (replace with your background color)
-    coverGraphics.fillStyle(0xD2B48C);
+    coverGraphics.fillStyle(0xC8E6C9);
   
     // Draw the rectangle at the door's position
     coverGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellWidth, doorY - cellHeight, DOOR_WIDTH, cellHeight);
@@ -772,12 +830,14 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 5. Please use the arrow keys to move your red player`, { fontSize: '22px', fill: '#000' }).setOrigin(0.5, 0.5).setDepth(1001);
+      let specificSizeStyle = createTextStyle(25, '#000');
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 5.\nPlease use the arrow keys to move your red player`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
 
       runUpdateLogic = false;
 
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 'Proceed', { fontSize: '20px', fill: '#FFF' })
+      specificSizeStyle = createTextStyle(20, '#FFF');
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 'Proceed', specificSizeStyle)
           .setOrigin(0.5, 0.5)
           .setDepth(1002)
           .setInteractive();
@@ -1128,6 +1188,7 @@ function create() {
 
             openFullscreen();
 
+            displayNextMessage(this);
             // Remove the event listener now that it's no longer needed
             document.getElementById('consentProceed').removeEventListener('click', consentCallback);
         } else {
@@ -1143,14 +1204,28 @@ function create() {
         endGame(this);
     }
 
+    let specificSizeStyle = createTextStyle(30, '#000');
+
     let messages = [
-        ' You are going to play a simple game with a robot player \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
+        ' You are going to play a simple game with a robot player. \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
         ' There are 5 short rounds of the game.\n Each round lasts around 90 seconds.',
-        ' Let’s start with a demo'
+        ' Let’s start with a demo!'
     ];
     let currentMessageIndex = 0;
     
     function displayNextMessage(scene) {
+
+        if (!scene.proceedButton) {
+            scene.proceedButton = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+            
+            let specificSizeStyle = createTextStyle(25, '#FFF');
+            scene.proceedButtonText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height * 0.65, 'Proceed', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1002);
+    
+            // Button interaction
+            scene.proceedButton.on('pointerup', () => {
+                displayNextMessage(scene);
+            });
+        }
         // If there's another message to show
         if (currentMessageIndex < messages.length) {
             scene.messageText.setText(messages[currentMessageIndex]);
@@ -1172,11 +1247,28 @@ function create() {
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/assignedCondition';
     let assignedConditionExplained;
 
+// HHAAA
+// AHHAA
+// AAHHA
+// HAHAA
+// AHAHA
+// HAAHA
+
     if(assignedCondition === 0){
-        assignedConditionExplained = assignedCondition + "TrapAIFirst";
-    }else{
-        assignedConditionExplained =  assignedCondition + "TrapHumanFirst";
+        assignedConditionExplained = assignedCondition + "HHAAA";
+    }else if (assignedCondition === 1){
+        assignedConditionExplained =  assignedCondition + "AHHAA";
+    }else if (assignedCondition === 2){
+        assignedConditionExplained =  assignedCondition + "AAHHA";
+    }else if(assignedCondition === 3){
+        assignedConditionExplained =  assignedCondition + "HAHAA";
+    }else if(assignedCondition === 4){
+        assignedConditionExplained =  assignedCondition + "AHAHA";
+    }else if(assignedCondition === 5){
+        assignedConditionExplained =  assignedCondition + "HAAHA";
     }
+
+
     let valuenow = assignedConditionExplained;
     writeRealtimeDatabase( pathnow , valuenow );
 
@@ -1188,26 +1280,25 @@ function create() {
     writeURLParameters( pathnow );
 
     // Create an overlay and welcome message
-    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD2B48C).setOrigin(0, 0).setDepth(1000);
+    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xC8E6C9).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
     // this.overlay.setVisible(false);
-    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', { fontSize: '20px', fill: '#000'}).setOrigin(0.5, 0.5).setDepth(1001);
+    this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
 
-     // Create a button using graphics
-     this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
-     // Button label
-     this.proceedButtonText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 'Proceed', { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5, 0.5).setDepth(1002);
-     // Initially hide the button
-     this.proceedButton.setVisible(false);
-     this.proceedButtonText.setVisible(false);
+    //  // Create a button using graphics
+    //  this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    //  // Button label
+    //  specificSizeStyle = createTextStyle(25, '#FFF');
+    //  this.proceedButtonText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 'Proceed', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1002);
+    //  // Initially hide the button
+    //  this.proceedButton.setVisible(false);
+    //  this.proceedButtonText.setVisible(false);
      
-     // Button interaction
-     this.proceedButton.on('pointerup', () => {
-         displayNextMessage(this);
-     });
+    //  // Button interaction
+    //  this.proceedButton.on('pointerup', () => {
+    //      displayNextMessage(this);
+    //  });
     
-    // Initial display
-    displayNextMessage(this);
     
 }
 
@@ -1233,6 +1324,7 @@ function update(time) {
 
                     console.log("AI trapped in which grid");
                     console.log(trappedAIStartGrid);
+                    aiState = "TRAPPED";
             
                     moveAIWhenTrapped(trappedAIStartGrid);
             
@@ -2171,10 +2263,11 @@ function initializeDemo(scene) {
     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
     scene.messageText.destroy(); 
-
-    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', { fontSize: '16px', fill: '#000' }).setDepth(1001);
-    proceedButton = scene.add.rectangle(1020, 170, 90, 20, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
-    scene.proceedText = scene.add.text(983, 160, 'Proceed', { fontSize: '18px', fill: '#FFF' }).setDepth(1002);
+    let specificSizeStyle = createTextStyle(20, '#000');
+    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
+    proceedButton = scene.add.rectangle(1020, 200, 90, 20, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    specificSizeStyle = createTextStyle(21, '#FFF');
+    scene.proceedText = scene.add.text(983, 190, 'Proceed', specificSizeStyle).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
         if (isClickable) {
@@ -2187,10 +2280,10 @@ function initializeDemo(scene) {
 }
 
 let instructions = [
-    " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now try to go through a red door.",
+    " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now go through a red door.",
     " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
-    " Also, the blue robot can only\n move through blue doors\n You, as the red player,\n can only move through red doors.",
+    " Also, the blue robot can only\n move through blue doors.\n You, as the red player,\n can only move through red doors.",
     " Let's start the first round. There are 5 rounds total. \n Have fun!!"
 ];
 let currentInstructionIndex = 0;
@@ -2217,7 +2310,9 @@ function displayNextInstruction(scene) {
     if(currentInstructionIndex === 2 && isClickable === true){
         isClickable = false;
 
-        timeText = scene.add.text(910, 10, '', { fontSize: '16px', fill: '#000' });
+        let specificSizeStyle = createTextStyle(25, '#000');
+
+        timeText = scene.add.text(910, 10, '', specificSizeStyle);
 
         runUpdateLogic = true;
 
@@ -2255,7 +2350,7 @@ function displayNextInstruction(scene) {
 
     if(currentInstructionIndex === 4){
         scene.overlay.setVisible(true);
-        scene.messageText.setFontSize('22px');
+        scene.messageText.setFontSize('26px');
         scene.messageText.x = scene.sys.game.config.width / 2 - 320;
         scene.messageText.y = scene.sys.game.config.height / 2;
 
