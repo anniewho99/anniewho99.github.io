@@ -250,7 +250,7 @@ document.head.appendChild(fontstyle);
 
 
 let config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: 1220,
     height: 520,
     backgroundColor: '#C8E6C9',
