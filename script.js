@@ -250,12 +250,12 @@ document.head.appendChild(fontstyle);
 
 
 let config = {
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     width: 1220,
     height: 520,
     backgroundColor: '#C8E6C9',
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         resolution: window.devicePixelRatio || 1
     },
@@ -1177,6 +1177,10 @@ function create() {
     runUpdateLogic = false;
     // Initially pause the game
     this.scene.pause();
+
+    let gameCanvas = this.sys.game.canvas;
+    gameCanvas.style.width = '1220px';
+    gameCanvas.style.height = '520px';
 
    function consentCallback() {
         // Check if the checkbox is checked
