@@ -73,7 +73,7 @@ if (assignedCondition === 0){
     trapTimeForEachRound = {
         0: { human: 200, AI: 20 },
         1: { human: 20, AI: 200 },
-        2: { human: 20, AI: 20 },
+        2: { human: 20, AI: 200 },
         3: { human: 200, AI: 20 },
         4: { human: 200, AI: 20 },
       };
