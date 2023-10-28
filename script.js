@@ -255,8 +255,9 @@ let config = {
     height: 520,
     backgroundColor: '#C8E6C9',
     scale: {
-        mode: Phaser.Scale.NONE, // We will handle the scaling ourselves
+        mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
+        resolution: window.devicePixelRatio || 1
     },
     scene: {
         preload: preload,
