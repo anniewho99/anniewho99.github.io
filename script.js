@@ -2,17 +2,17 @@
 import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
     blockRandomization,finalizeBlockRandomization,firebaseUserId } from "./firebasepsych1.0.js";
 
-const cellHeight = 40; 
-const cellWidth = 60; 
-const gridHeight = 13;
+// const cellHeight = 40; 
+// const cellWidth = 60; 
+// const gridHeight = 13;
 
-const gridWidth = 15;
+// const gridWidth = 15;
 
-const DOOR_WIDTH = 5;
+// const DOOR_WIDTH = 5;
 const door_AI_color = 0x0000FF; // Blue color in hex
 const door_human_color = 0xFF0000; // Red color in hex
 
-const grid_width = 900;
+// const grid_width = 900;
 
 const players = {
     'Human': {
@@ -248,11 +248,12 @@ fontstyle.innerHTML = `
 
 document.head.appendChild(fontstyle);
 
+let dpr = window.devicePixelRatio || 1;
 
 let config = {
     type: Phaser.AUTO,
-    width: 1220,
-    height: 520,
+    width: 1220 * dpr,
+    height: 520 * dpr,
     backgroundColor: '#C8E6C9',
     scale: {
         mode: Phaser.Scale.NONE,
@@ -271,6 +272,16 @@ let config = {
         }
     }
 };
+
+const cellHeight = 40 * dpr; 
+const cellWidth = 60 * dpr; 
+const gridHeight = 13;
+
+const gridWidth = 15;
+
+const DOOR_WIDTH = 5 * dpr;
+
+const grid_width = 900 * dpr;
 
 const GRIDS = [
     {start: [3, 3], end: [5, 5]},
@@ -718,13 +729,13 @@ function addStarTokens(scene, playerID) {
             if (!addedCoordinates.some(coord => coord[0] === x && coord[1] === y)) {
 
                 if (playerID === 0){
-                    let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'flower').setTint(color).setDepth(0);
-                    star.setScale(0.06);
+                    let star = scene.physics.add.sprite((x * cellWidth) - 30 * dpr, (y * cellHeight) - 20 * dpr, 'flower').setTint(color).setDepth(0);
+                    star.setScale(0.06 * dpr);
                     star.color = color;  
                     scene.tokenGroup.add(star);
                 }else{
-                    let star = scene.physics.add.sprite((x * cellWidth) - 30, (y * cellHeight) - 20, 'butterfly').setTint(color).setDepth(0);
-                    star.setScale(0.09);
+                    let star = scene.physics.add.sprite((x * cellWidth) - 30 * dpr, (y * cellHeight) - 20 * dpr, 'butterfly').setTint(color).setDepth(0);
+                    star.setScale(0.09 * dpr);
                     star.color = color;  
                     star.index = count;
                     scene.tokenGroup.add(star);
@@ -831,18 +842,18 @@ function updateGameTime(scene) {
       isTimeoutScheduled = true;
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
-      let specificSizeStyle = createTextStyle(25, '#000');
+      let specificSizeStyle = createTextStyle(25 * dpr, '#000');
       scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 5.\nPlease use the arrow keys to move your red player`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
 
       runUpdateLogic = false;
 
-      specificSizeStyle = createTextStyle(20, '#FFF');
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 'Proceed', specificSizeStyle)
+      specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
           .setOrigin(0.5, 0.5)
           .setDepth(1002)
           .setInteractive();
-      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
 
       nextRoundButton.on('pointerdown', () => {
           proceedToNextRound(scene);
@@ -1209,7 +1220,7 @@ function create() {
         endGame(this);
     }
 
-    let specificSizeStyle = createTextStyle(30, '#000');
+    let specificSizeStyle = createTextStyle(30 * dpr, '#000');
 
     let messages = [
         ' You are going to play a simple game with a robot player. \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
@@ -1221,9 +1232,9 @@ function create() {
     function displayNextMessage(scene) {
 
         if (!scene.proceedButton) {
-            scene.proceedButton = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+            scene.proceedButton = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height * 0.65, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
             
-            let specificSizeStyle = createTextStyle(25, '#FFF');
+            let specificSizeStyle = createTextStyle(25 * dpr, '#FFF');
             scene.proceedButtonText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height * 0.65, 'Proceed', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1002);
     
             // Button interaction
@@ -2257,7 +2268,7 @@ function initializeDemo(scene) {
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, scene));
 
-    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
+    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
@@ -2268,11 +2279,11 @@ function initializeDemo(scene) {
     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
     scene.messageText.destroy(); 
-    let specificSizeStyle = createTextStyle(20, '#000');
-    scene.messageText = scene.add.text(900, 10, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
-    proceedButton = scene.add.rectangle(1020, 200, 90, 20, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
-    specificSizeStyle = createTextStyle(21, '#FFF');
-    scene.proceedText = scene.add.text(983, 190, 'Proceed', specificSizeStyle).setDepth(1002);
+    let specificSizeStyle = createTextStyle(20 * dpr, '#000');
+    scene.messageText = scene.add.text(900 * dpr, 10 * dpr, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
+    proceedButton = scene.add.rectangle(1020 * dpr, 200 * dpr, 90 * dpr, 20 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    specificSizeStyle = createTextStyle(21 * dpr, '#FFF');
+    scene.proceedText = scene.add.text(983 * dpr, 190 * dpr, 'Proceed', specificSizeStyle).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
         if (isClickable) {
@@ -2315,15 +2326,15 @@ function displayNextInstruction(scene) {
     if(currentInstructionIndex === 2 && isClickable === true){
         isClickable = false;
 
-        let specificSizeStyle = createTextStyle(25, '#000');
+        let specificSizeStyle = createTextStyle(25 * dpr, '#000');
 
-        timeText = scene.add.text(910, 10, '', specificSizeStyle);
+        timeText = scene.add.text(910 * dpr, 10 * dpr, '', specificSizeStyle);
 
         runUpdateLogic = true;
 
         timeText.setVisible(false);
 
-        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05 * dpr).setDepth(1);
         player2.setCollideWorldBounds(true); 
         player2.name = 'AI'; 
         player2.data = players['AI'];
@@ -2336,8 +2347,8 @@ function displayNextInstruction(scene) {
         easystarSubgrid.setGrid(subGrid);
         easystarSubgrid.setAcceptableTiles([0]);
 
-        scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04).setDepth(1);
-        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05).setDepth(1);
+        scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
+        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05 * dpr).setDepth(1);
         scene.player1Ghost.setVisible(false);
         scene.player2Ghost.setVisible(false);
 
@@ -2355,15 +2366,16 @@ function displayNextInstruction(scene) {
 
     if(currentInstructionIndex === 4){
         scene.overlay.setVisible(true);
-        scene.messageText.setFontSize('26px');
-        scene.messageText.x = scene.sys.game.config.width / 2 - 320;
+        let fontSize = 26 * dpr;
+        scene.messageText.setFontSize(fontSize + 'px');
+        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
         scene.messageText.y = scene.sys.game.config.height / 2;
 
         proceedButton.x = scene.sys.game.config.width / 2;
         proceedButton.y = scene.sys.game.config.height * 0.65;
 
-        scene.proceedText.x = scene.sys.game.config.width / 2 - 40;
-        scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10;
+        scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
+        scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
 
     }
 
