@@ -2280,12 +2280,13 @@ function initializeDemo(scene) {
     scene.input.keyboard.on('keyup', handleKeyDown.bind(scene));
 
     scene.messageText.destroy(); 
-    let specificSizeStyle = createTextStyle(20 * dpr, '#000');
+    let specificSizeStyle = createTextStyle(20 * dpr * 0.9, '#000');
     scene.messageText = scene.add.text(900 * dpr, 10 * dpr, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
+    scene.messageText.setScale(0.9, 1);
     scene.messageText.setResolution(2); 
-    proceedButton = scene.add.rectangle(1020 * dpr, 220 * dpr, 90 * dpr, 20 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
+    proceedButton = scene.add.rectangle(1020 * dpr, 250 * dpr, 90 * dpr, 20 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
     specificSizeStyle = createTextStyle(21 * dpr, '#FFF');
-    scene.proceedText = scene.add.text(983 * dpr, 210 * dpr, 'Proceed', specificSizeStyle).setDepth(1002);
+    scene.proceedText = scene.add.text(983 * dpr, 240 * dpr, 'Proceed', specificSizeStyle).setDepth(1002);
 
     proceedButton.on('pointerdown', function() {
         if (isClickable) {
