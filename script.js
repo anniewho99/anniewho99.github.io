@@ -1324,11 +1324,11 @@ function update(time) {
 
     handleAIStateandDecision();
 
-    if(isPathBeingFollowed){
-        AIUpdateInterval = handleAIInterval();
-    }else{
-        AIUpdateInterval = 500;
-    }
+    // if(isPathBeingFollowed){
+    //     AIUpdateInterval = handleAIInterval();
+    // }else{
+    //     AIUpdateInterval = 500;
+    // }
 
     if (time - lastAIUpdate > AIUpdateInterval) {
         // If currently following a path, continue moving along it
@@ -2214,30 +2214,30 @@ function handleAIStateandDecision(){
     }
 }
 
-function calculateDirection(point1, point2) {
-    const dx = point2.x - point1.x;
-    const dy = point2.y - point1.y;
-    return [dx, dy];
-}
+// function calculateDirection(point1, point2) {
+//     const dx = point2.x - point1.x;
+//     const dy = point2.y - point1.y;
+//     return [dx, dy];
+// }
 
-function handleAIInterval(){
+// function handleAIInterval(){
 
-    if (pathIndex - 1 == -1){
-        AIUpdateInterval = SLOW_UPDATE_INTERVAL; 
-        return AIUpdateInterval;
-    }
-    let currentDirection = calculateDirection(currentPath[pathIndex - 1], currentPath[pathIndex]);
-    let upcomingDirection = calculateDirection(currentPath[pathIndex], currentPath[pathIndex + 1]);
+//     if (pathIndex - 1 == -1){
+//         AIUpdateInterval = SLOW_UPDATE_INTERVAL; 
+//         return AIUpdateInterval;
+//     }
+//     let currentDirection = calculateDirection(currentPath[pathIndex - 1], currentPath[pathIndex]);
+//     let upcomingDirection = calculateDirection(currentPath[pathIndex], currentPath[pathIndex + 1]);
     
-    if (!arraysEqual(currentDirection, upcomingDirection)) {
-      AIUpdateInterval = SLOW_UPDATE_INTERVAL; // Adjust interval if direction changed
-    } else {
-      AIUpdateInterval = NORMAL_UPDATE_INTERVAL;
-    }
+//     if (!arraysEqual(currentDirection, upcomingDirection)) {
+//       AIUpdateInterval = SLOW_UPDATE_INTERVAL; // Adjust interval if direction changed
+//     } else {
+//       AIUpdateInterval = NORMAL_UPDATE_INTERVAL;
+//     }
 
-    return AIUpdateInterval;
+//     return AIUpdateInterval;
     
-}
+// }
 
 function setupGameElements(scene) {
     initializeDemo(scene);
