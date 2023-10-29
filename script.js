@@ -2153,6 +2153,7 @@ function handleAIStateandDecision(){
         }
     }else if(playerTwoTrapped === 'blue'){
 
+        aiState === "COLLECTING";
         console.log("AI was saved by human");
         if (arraysEqual(trappedAIStartGrid, tokenInfo.subgrid.start)){
             // currentTargetIndex = players['AI'].tokensCollected % 3;
