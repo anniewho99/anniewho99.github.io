@@ -1769,11 +1769,11 @@ function handleMovement(player, dx, dy, playerID, scene) {
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI doors';
-        valuenow = doorAIadjusted;
+        valuenow = doorAICoords.map(door => door.coord);;
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human doors';
-        valuenow = doorHumanadjusted;
+        valuenow = doorHumanCoords.map(door => door.coord);;
         writeRealtimeDatabase( pathnow , valuenow );
 
         pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human tokens';
