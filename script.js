@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-let studyId = 'edits';
+let studyId = 'EXPOneProlific';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
