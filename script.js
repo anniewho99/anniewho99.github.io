@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-let studyId = 'EXPOneProlific';
+let studyId = 'writeDataTest';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -128,6 +128,9 @@ for (let round in trapTimeForEachRoundToSave ) {
 console.log(trapTimeForEachRound);
 
 let eventNumber = 0;
+
+let aiData = {};
+let humanData = {};
 
 let player1TrapTimeStart;
 let player2TrapTimeStart;
@@ -827,6 +830,11 @@ function updateGameTime(scene) {
     currentTime++;
     if (currentTime >= gameDuration && !isTimeoutScheduled) {
 
+        // At the end of each round, save the objects to the database
+        let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound;
+        writeRealtimeDatabase(pathnow + '/AI', aiData);
+        writeRealtimeDatabase(pathnow + '/Human', humanData);
+
         currentRound++;
 
         if (currentRound > 5) {
@@ -942,6 +950,9 @@ function proceedToNextRound(scene) {
   
     players.AI.tokensCollected = 0;
     players.Human.tokensCollected = 0;
+
+    aiData = {};
+    humanData = {};
   
     scene.doorSprites = [];
     calculateDoors();
@@ -1728,61 +1739,36 @@ function handleMovement(player, dx, dy, playerID, scene) {
     player.y = potentialY;
 
     if(startGamePlay && currentRound < 6){
+
         let timestamp = Date.now() - startOfGamePlay;
 
         eventNumber++;
 
-        let pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + eventNumber + '/Time since game play (ms)';
-        let valuenow = timestamp;
-        writeRealtimeDatabase( pathnow , valuenow );
+            // Create local copies of data
+        let currentHumanData = {
+            "TimeSinceGamePlay": timestamp,
+            "Human Position": [Math.round(player1.x / cellWidth), Math.round(player1.y / cellHeight)],
+            "Human Trapped State": playerOneTrapped === true,
+            "Human Collected Token": players.Human.tokensCollected,
+            "Human Doors": doorHumanCoords.map(door => door.coord),
+            "Human Tokens Position": tokenInfoHuman.locations,
+            "Elapsed time in current round": currentTime
+        };
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound + '/' + eventNumber + '/Human Player Position (x,y)';
-        valuenow = [Math.round(player1.x / cellWidth), Math.round(player1.y / cellHeight)];
-        writeRealtimeDatabase( pathnow , valuenow );
+        let currentAIData = {
+            "TimeSinceGamePlay": timestamp,
+            "AI Position": [Math.round(player2.x / cellWidth), Math.round(player2.y / cellHeight)],
+            "AI State": aiState,
+            "AI Trapped State": playerTwoTrapped === true,
+            "AI Collected Token": players.AI.tokensCollected,
+            "AI Doors": doorAICoords.map(door => door.coord),
+            "AI Tokens Position": tokenInfo.locations,
+            "Elapsed time in current round": currentTime
+        };
 
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Position (x,y)';
-        valuenow = [Math.round(player2.x / cellWidth), Math.round(player2.y / cellHeight)];
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI State';
-        valuenow = aiState;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Trapped State';
-        valuenow = playerOneTrapped === true;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Trapped State';
-        valuenow = playerTwoTrapped === true;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human Player Collected Token';
-        valuenow = players.Human.tokensCollected;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI Player Collected Token';
-        valuenow = players.AI.tokensCollected;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Elapsed time in current round';
-        valuenow = currentTime;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI doors';
-        valuenow = doorAICoords.map(door => door.coord);;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human doors';
-        valuenow = doorHumanCoords.map(door => door.coord);;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/Human tokens';
-        valuenow = tokenInfoHuman.locations;
-        writeRealtimeDatabase( pathnow , valuenow );
-
-        pathnow = studyId+'/participantData/'+firebaseUserId+'/Round' + currentRound +'/' + eventNumber + '/AI tokens';
-        valuenow = tokenInfo.locations;
-        writeRealtimeDatabase( pathnow , valuenow );
+        // Now update the main data objects
+        humanData[eventNumber] = { ...currentHumanData };
+        aiData[eventNumber] = { ...currentAIData };
     }
 
 }
