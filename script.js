@@ -1762,8 +1762,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
             "AI Player Trapped State": playerTwoTrapped === true,
             "AI Player Collected Token": players.AI.tokensCollected,
             "AI doors": doorAICoords.map(door => door.coord),
-            "AI tokens": tokenInfo.locations,
-            "Elapsed time in current round": currentTime
+            "AI tokens": tokenInfo.locations
         };
 
         // Now update the main data objects
