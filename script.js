@@ -1746,23 +1746,23 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
             // Create local copies of data
         let currentHumanData = {
-            "TimeSinceGamePlay": timestamp,
-            "Human Position": [Math.round(player1.x / cellWidth), Math.round(player1.y / cellHeight)],
-            "Human Trapped State": playerOneTrapped === true,
-            "Human Collected Token": players.Human.tokensCollected,
-            "Human Doors": doorHumanCoords.map(door => door.coord),
-            "Human Tokens Position": tokenInfoHuman.locations,
+            "Time since game play (ms)": timestamp,
+            "Human Player Position (x,y)": [Math.round(player1.x / cellWidth), Math.round(player1.y / cellHeight)],
+            "Human Player Trapped State": playerOneTrapped === true,
+            "Human Player Collected Token": players.Human.tokensCollected,
+            "Human doors": doorHumanCoords.map(door => door.coord),
+            "Human tokens": tokenInfoHuman.locations,
             "Elapsed time in current round": currentTime
         };
 
         let currentAIData = {
-            "TimeSinceGamePlay": timestamp,
-            "AI Position": [Math.round(player2.x / cellWidth), Math.round(player2.y / cellHeight)],
+            "Time since game play (ms)": timestamp,
+            "AI Player Position (x,y)": [Math.round(player2.x / cellWidth), Math.round(player2.y / cellHeight)],
             "AI State": aiState,
-            "AI Trapped State": playerTwoTrapped === true,
-            "AI Collected Token": players.AI.tokensCollected,
-            "AI Doors": doorAICoords.map(door => door.coord),
-            "AI Tokens Position": tokenInfo.locations,
+            "AI Player Trapped State": playerTwoTrapped === true,
+            "AI Player Collected Token": players.AI.tokensCollected,
+            "AI doors": doorAICoords.map(door => door.coord),
+            "AI tokens": tokenInfo.locations,
             "Elapsed time in current round": currentTime
         };
 
