@@ -172,10 +172,9 @@
         }
 
         .icon-option img {
-            width: auto; /* This will scale the image to fit the container */
-            height: auto; /* This will maintain the aspect ratio of the image */
-            max-width: 60px; /* Maximum width of the image */
-            max-height: 60px; /* Maximum height of the image */
+            width: 40px !important; /* Force the width to be 40px */
+            height: 40px !important; /* Force the height to be 40px */
+            object-fit: contain; /* Ensures the image is scaled correctly within these dimensions */
         }
     </style>
 </head>
