@@ -928,6 +928,10 @@ function proceedToNextRound(scene) {
     humanTrappedGrid = [];
   
     humanDoortoLeave = [];
+
+    scene.blinkTimer = 0;
+    scene.blinkCounter = 0; 
+    scene.shouldBlink = false; 
           
     scene.overlay.setVisible(false);
     scene.messageText.setVisible(false);
@@ -997,6 +1001,8 @@ function endGame(scene) {
 
         let isExplainFilledCorrectly = true; 
 
+        let robotIconSelected = document.querySelector('input[name="robotIcon"]:checked') !== null;
+
         let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
         let isStrategyFilled = document.getElementById('strategy').value.trim() !== ''; 
         let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') !== null;
@@ -1030,7 +1036,7 @@ function endGame(scene) {
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
             isWhyHelpedFilledCorrectly &&
-            isExplainFilledCorrectly
+            isExplainFilledCorrectly && robotIconSelected
         ){
             const data = {
                 helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
@@ -1043,6 +1049,7 @@ function endGame(scene) {
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
                 suggestions: document.getElementById('suggestions').value,
+                robotIcon: document.querySelector('input[name="robotIcon"]:checked').value,
             };
             let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
             let valuenow = data;
@@ -1191,6 +1198,7 @@ function preload() {
     this.load.image('star', 'star.png');
     this.load.image('flower', 'flower.png');
     this.load.image('butterfly', 'butterfly.png');
+    this.load.image('highlightSprite', 'lock.png');
 }
 
 
@@ -1312,6 +1320,21 @@ function create() {
     // this.overlay.setVisible(false);
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
 
+    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0xFFA500, 0.5);
+    this.highlight.setVisible(false);
+
+    // Initialize a blink timer
+    this.blinkTimer = 0;
+    this.blinkInterval = 8; 
+    this.blinkCounter = 0; 
+    this.shouldBlink = false; 
+    this.blinkMax = 4; 
+
+    // this.highlightSprite = this.add.sprite(0, 0, 'highlightSprite').setScale(0.2 * dpr);
+
+
+    // this.highlightSprite.setVisible(false);
+
     //  // Create a button using graphics
     //  this.proceedButton = this.add.rectangle(this.sys.game.config.width / 2, this.sys.game.config.height * 0.65, 100, 30, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
     //  // Button label
@@ -1340,6 +1363,63 @@ function update(time) {
     // }else{
     //     AIUpdateInterval = 500;
     // }
+
+    // if (playerOneTrapped === true) {
+    //     // Position the highlight over player1 and make it visible
+    //     this.highlight.setPosition(humanTrappedGrid[0] * cellWidth + 0.5 * cellWidth, humanTrappedGrid[1] * cellHeight + 0.5 * cellHeight);
+    //     this.highlight.setVisible(true);
+    // } else if (playerTwoTrapped  === true) {
+    //     // Position the highlight over player2 and make it visible
+    //     this.highlight.setPosition( trappedAIStartGrid[0] * cellWidth + 0.5 * cellWidth,  trappedAIStartGrid[1] * cellHeight + 0.5 * cellHeight);
+    //     this.highlight.setVisible(true);
+    // } else {
+    //     // Hide the highlight when no player is trapped
+    //     this.highlight.setVisible(false);
+    // }
+
+
+
+    if ((playerOneTrapped === true || playerTwoTrapped === true) && !this.shouldBlink) {
+        if (!this.blinkStartTimer) {
+            this.blinkStartTimer = this.time.now; // Capture the start time
+        }
+
+        if (this.time.now - this.blinkStartTimer > 3000) { // 3 seconds
+            this.shouldBlink = true; // Start blinking
+        }
+    }
+
+    if (this.shouldBlink === true) {
+        this.blinkTimer++;
+
+        // if (this.blinkCounter == this.blinkMax * 2 - 2){
+        //     this.blinkInterval = 50
+        // }
+
+        // Toggle visibility based on the blink timer
+        if (this.blinkTimer % this.blinkInterval === 0) {
+            this.highlight.setVisible(!this.highlight.visible);
+            this.blinkCounter++;
+
+            // Stop blinking after 4 blinks
+            if (this.blinkCounter >= this.blinkMax * 2) {
+                this.shouldBlink = "blinked";
+                this.highlight.setVisible(false);
+                this.blinkCounter = 0;
+                this.blinkStartTimer = null;
+            }
+        }
+
+        // Position the highlight over the correct player
+        if (playerOneTrapped === true) {
+            this.highlight.setPosition(humanTrappedGrid[0] * cellWidth + 0.5 * cellWidth, humanTrappedGrid[1] * cellHeight + 0.5 * cellHeight);
+        } else if (playerTwoTrapped === true) {
+            this.highlight.setPosition(trappedAIStartGrid[0] * cellWidth + 0.5 * cellWidth, trappedAIStartGrid[1] * cellHeight + 0.5 * cellHeight);
+        }
+    } else {
+        // Hide the highlight when no player is trapped
+        this.highlight.setVisible(false);
+    }
 
     if (time - lastAIUpdate > AIUpdateInterval) {
         // If currently following a path, continue moving along it

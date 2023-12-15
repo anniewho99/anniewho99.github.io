@@ -159,6 +159,24 @@
             margin-bottom: 15px; /* Adjusted bottom margin */
             margin-left: 25px; /* Left indent */
         }
+        .icon-selection-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; /* Adjust as needed for spacing */
+        }
+
+        .icon-option {
+            flex-basis: 20%; /* Adjust this value to control the width of each icon container */
+            text-align: center; /* Center-align the content */
+            margin-bottom: 10px; /* Space between rows */
+        }
+
+        .icon-option img {
+            width: auto; /* This will scale the image to fit the container */
+            height: auto; /* This will maintain the aspect ratio of the image */
+            max-width: 60px; /* Maximum width of the image */
+            max-height: 60px; /* Maximum height of the image */
+        }
     </style>
 </head>
 
@@ -207,6 +225,45 @@
         <form id="feedbackForm">
 
             <p>Please note that all questions marked with an asterisk (*) are required.</p>
+
+            <fieldset>
+                <legend>Select the icon of the robot player: <span style="color: red;">*</span></legend>
+                <div class="icon-selection-container">
+                    <label for="icon1">
+                        <input type="radio" id="icon1" name="robotIcon" value="icon1">
+                        <img src="p2.png" alt="Icon 1">
+                    </label>
+                    <label for="icon2">
+                        <input type="radio" id="icon2" name="robotIcon" value="icon2">
+                        <img src="robot2.png" alt="Icon 2">
+                    </label>
+                    <label for="icon3">
+                        <input type="radio" id="icon3" name="robotIcon" value="icon3">
+                        <img src="robot3.png" alt="Icon 3">
+                    </label>
+                    <label for="icon4">
+                        <input type="radio" id="icon4" name="robotIcon" value="icon4">
+                        <img src="robot4.png" alt="Icon 4">
+                    </label>
+                    <label for="icon5">
+                        <input type="radio" id="icon5" name="robotIcon" value="icon5">
+                        <img src="robotyellow.png" alt="Icon 5">
+                    </label>
+                    <label for="icon6">
+                        <input type="radio" id="icon6" name="robotIcon" value="icon6">
+                        <img src="robot2yellow.png" alt="Icon 6">
+                    </label>
+                    <label for="icon7">
+                        <input type="radio" id="icon7" name="robotIcon" value="icon7">
+                        <img src="robot3yellow.png" alt="Icon 7">
+                    </label>
+                    <label for="icon8">
+                        <input type="radio" id="icon8" name="robotIcon" value="icon8">
+                        <img src="robot4yellow.png" alt="Icon 8">
+                    </label>
+                </div>
+            </fieldset>
+            
 
             <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
