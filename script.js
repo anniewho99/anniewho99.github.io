@@ -991,6 +991,41 @@ function endGame(scene) {
     // Display the post-game content
     document.getElementById('postGameContent').style.display = 'block';
 
+    const iconGroups = [
+        ['icon1', 'p2 copy.png', 'icon5', 'robotyellow.png'],
+        ['icon2', 'robot2.png', 'icon6', 'robot2yellow.png'],
+        ['icon3', 'robot3.png', 'icon7', 'robot3yellow.png'],
+        ['icon4', 'robot4.png', 'icon8', 'robot4yellow.png']
+    ];
+
+    // Shuffle the groups
+    shuffleArray(iconGroups);
+
+    // Function to shuffle an array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Generate HTML for the shuffled groups
+    const container = document.querySelector('.icon-selection-container');
+    container.innerHTML = ''; // Clear existing content
+    iconGroups.forEach(group => {
+        group.forEach((icon, index) => {
+            if (index % 2 === 0) {
+                const label = document.createElement('label');
+                label.htmlFor = group[index];
+                label.innerHTML = `
+                    <input type="radio" id="${group[index]}" name="robotIcon" value="${group[index]}">
+                    <img src="${group[index+1]}" alt="Icon ${index / 2 + 1}">
+                `;
+                container.appendChild(label);
+            }
+        });
+    });
+
     postGameContent.scrollIntoView();  
 
     const postGameForm = document.getElementById('feedbackForm');
