@@ -176,6 +176,24 @@
             height: 60px !important; /* Force the height to be 40px */
             object-fit: contain; /* Ensures the image is scaled correctly within these dimensions */
         }
+        .human-icon-selection-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            /* Add any other necessary styles */
+        }
+
+        .human-icon-option {
+            flex-basis: 20%; /* Adjust as needed */
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .human-icon-option img {
+            width: 60px; /* Adjust as needed */
+            height: 60px;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -263,6 +281,28 @@
                 </div>
             </fieldset>
             
+            <fieldset>
+                <legend>Select the icon of the your player: <span style="color: red;">*</span></legend>
+                <div class="human-icon-selection-container">
+                    <label for="humanicon1">
+                        <input type="radio" id="humanicon1" name="humanIcon" value="humanicon1">
+                        <img src="p1 copy.png" alt="Iconhuman1">
+                    </label>
+                    <label for="humanicon2">
+                        <input type="radio" id="humanicon2" name="humanIcon" value="humanicon2">
+                        <img src="human2.png" alt="Iconhuman2">
+                    </label>
+                    <label for="humanicon3">
+                        <input type="radio" id="humanicon3" name="humanIcon" value="humanicon3">
+                        <img src="human3.png" alt="Iconhuman3">
+                    </label>
+                    <label for="humanicon4">
+                        <input type="radio" id="humanicon4" name="humanIcon" value="humanicon4">
+                        <img src="human4.png" alt="Iconhuman4">
+                    </label>
+                </div>
+            </fieldset>
+
 
             <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
             <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
