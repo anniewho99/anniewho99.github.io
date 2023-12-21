@@ -998,8 +998,17 @@ function endGame(scene) {
         ['icon4', 'robot4.png', 'icon8', 'robot4yellow.png']
     ];
 
+    const humanIconGroups = [
+        ['humanicon1', 'p1 copy.png', 'humanicon5', 'human1pink.png'],
+        ['humanicon2', 'human2.png', 'humanicon6', 'human2pink.png'],
+        ['humanicon3', 'human3.png', 'humanicon7', 'human3pink.png'],
+        ['humanicon4', 'human4.png', 'humanicon8', 'human4pink.png']
+    ];
+
     // Shuffle the groups
     shuffleArray(iconGroups);
+
+    shuffleArray(humanIconGroups);
 
     // Function to shuffle an array
     function shuffleArray(array) {
@@ -1020,6 +1029,23 @@ function endGame(scene) {
                 label.innerHTML = `
                     <input type="radio" id="${group[index]}" name="robotIcon" value="${group[index]}">
                     <img src="${group[index+1]}" alt="Icon ${index / 2 + 1}">
+                `;
+                container.appendChild(label);
+            }
+        });
+    });
+
+    // Generate HTML for the shuffled groups
+    const containerHumanIcon = document.querySelector('.human-icon-selection-container');
+    containerHumanIcon.innerHTML = ''; // Clear existing content
+    humanIconGroups.forEach(group => {
+        group.forEach((icon, index) => {
+            if (index % 2 === 0) {
+                const label = document.createElement('label');
+                label.htmlFor = group[index];
+                label.innerHTML = `
+                    <input type="radio" id="${group[index]}" name="humanIcon" value="${group[index]}">
+                    <img src="${group[index+1]}" alt="Iconhuman ${index / 2 + 1}">
                 `;
                 container.appendChild(label);
             }
