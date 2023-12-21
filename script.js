@@ -1037,6 +1037,8 @@ function endGame(scene) {
         let isExplainFilledCorrectly = true; 
 
         let robotIconSelected = document.querySelector('input[name="robotIcon"]:checked') !== null;
+        let humanIconSelected = document.querySelector('input[name="humanIcon"]:checked') !== null;
+
 
         let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
         let isStrategyFilled = document.getElementById('strategy').value.trim() !== ''; 
@@ -1071,7 +1073,7 @@ function endGame(scene) {
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
             isWhyHelpedFilledCorrectly &&
-            isExplainFilledCorrectly && robotIconSelected
+            isExplainFilledCorrectly && robotIconSelected && humanIconSelected 
         ){
             const data = {
                 helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
@@ -1085,6 +1087,7 @@ function endGame(scene) {
                 whyNotHelped: document.getElementById('whyNotHelped').value,
                 suggestions: document.getElementById('suggestions').value,
                 robotIcon: document.querySelector('input[name="robotIcon"]:checked').value,
+                humantIcon: document.querySelector('input[name="humanIcon"]:checked').value,
             };
             let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
             let valuenow = data;
