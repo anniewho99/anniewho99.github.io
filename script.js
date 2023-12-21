@@ -27,7 +27,7 @@ const players = {
     }
 };
 
-let studyId = 'writeDataTest';
+let studyId = 'ExpTwoProlific';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -980,7 +980,7 @@ function proceedToNextRound(scene) {
 }
 
 function redirectToProlific() {
-    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=C1F9TY3Q';
+    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=CBTKA62X';
     window.location.replace(prolificCompletionUrl);
 }
 
