@@ -1035,22 +1035,22 @@ function endGame(scene) {
         });
     });
 
-    // Generate HTML for the shuffled groups
-    const containerHumanIcon = document.querySelector('.human-icon-selection-container');
-    containerHumanIcon.innerHTML = ''; // Clear existing content
-    humanIconGroups.forEach(group => {
-        group.forEach((icon, index) => {
-            if (index % 2 === 0) {
-                const label = document.createElement('label');
-                label.htmlFor = group[index];
-                label.innerHTML = `
-                    <input type="radio" id="${group[index]}" name="humanIcon" value="${group[index]}">
-                    <img src="${group[index+1]}" alt="Iconhuman ${index / 2 + 1}">
-                `;
-                container.appendChild(label);
-            }
-        });
-    });
+    // // Generate HTML for the shuffled groups
+    // const containerHumanIcon = document.querySelector('.human-icon-selection-container');
+    // containerHumanIcon.innerHTML = ''; // Clear existing content
+    // humanIconGroups.forEach(group => {
+    //     group.forEach((icon, index) => {
+    //         if (index % 2 === 0) {
+    //             const label = document.createElement('label');
+    //             label.htmlFor = group[index];
+    //             label.innerHTML = `
+    //                 <input type="radio" id="${group[index]}" name="humanIcon" value="${group[index]}">
+    //                 <img src="${group[index+1]}" alt="Iconhuman ${index / 2 + 1}">
+    //             `;
+    //             container.appendChild(label);
+    //         }
+    //     });
+    // });
 
     postGameContent.scrollIntoView();  
 
