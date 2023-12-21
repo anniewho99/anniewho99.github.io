@@ -1090,6 +1090,9 @@ function endGame(scene) {
             isExplainFilledCorrectly = document.getElementById('explain').value.trim() !== ''; // Ensure it's non-empty
         }
 
+        const gameTypeValue = document.querySelector('input[name="gameType"]:checked') ? document.querySelector('input[name="gameType"]:checked').value : null;
+        const explainValue = gameTypeValue === "neither" && document.getElementById('explain') ? document.getElementById('explain').value : '';
+
         // Gather data from the form
         if (
             isHelpfulnessRatingFilled &&
@@ -1106,7 +1109,7 @@ function endGame(scene) {
                 strategy: document.getElementById('strategy').value,
                 gameType: document.querySelector('input[name="gameType"]:checked').value,
                 generalGameType: document.querySelector('input[name="generalGameType"]:checked').value,
-                explain: document.getElementById('explain').value,
+                explain: explainValue,
                 robotStuck: document.querySelector('input[name="robotStuck"]:checked').value,
                 helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
                 whyHelped: document.getElementById('whyHelped').value,
