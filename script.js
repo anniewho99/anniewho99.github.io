@@ -1087,7 +1087,7 @@ function endGame(scene) {
 
         // Validate 'explain' if 'neither' is selected
         if (isNeitherSelected) {
-            isExplainFilledCorrectly = document.getElementById('explain').value.trim() !== ''; // Ensure it's non-empty
+            isExplainFilledCorrectly = document.getElementById('explainGame').value.trim() !== ''; // Ensure it's non-empty
         }
 
         const gameTypeValue = document.querySelector('input[name="gameType"]:checked') ? document.querySelector('input[name="gameType"]:checked').value : null;
