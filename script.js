@@ -14,6 +14,7 @@ const door_human_color = 0xFF0000; // Red color in hex
 
 // const grid_width = 900;
 
+//force a rebuild
 const players = {
     'Human': {
         id: 0,
