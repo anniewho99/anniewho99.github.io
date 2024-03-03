@@ -9,26 +9,104 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 // const gridWidth = 15;
 
 // const DOOR_WIDTH = 5;
-const door_AI_color = 0x0000FF; // Blue color in hex
-const door_human_color = 0xFF0000; // Red color in hex
+
+let betwenGridData = [];
+
+let withinGridData = [];
+
+let withinGridPath = [];
+
+let betwenGridPath = [];
+
+let currentPathLength;
+
+let currentPathTime;
+
+let direction = 1;
+
+let isReplay = "AI";
+
+fetch('adjusted_movement.json')
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+
+    // Process each key in the fetched object
+    Object.values(data).forEach(nestedList => {
+      // Concatenate all items into betwenGridData
+      betwenGridData = betwenGridData.concat(nestedList);
+    });
+
+    // At this point, betwenGridData contains all items from every nested list
+    console.log(betwenGridData);
+    // Example start and end points
+    const startExample = [1, 3];
+    const endExample = [5, 9];
+
+          // Find and select a random path with the specified start and end
+    const randomPath = findAndSelectRandomPath(betwenGridData, startExample, endExample);
+
+    if (randomPath) {
+        console.log('Randomly Selected Path:', randomPath);
+    } else {
+        console.log('No path could be selected.');
+        }
+
+    // Now you can use 'betwenGridData' elsewhere in your script
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+  });
+
+
+  fetch('adjusted_within_movement.json')
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+
+    // Process each key in the fetched object
+    Object.values(data).forEach(nestedList => {
+      // Concatenate all items into withinGridData
+      withinGridData = withinGridData.concat(nestedList);
+    });
+
+    // At this point, withinGridDataa contains all items from every nested list
+    console.log(withinGridData);
+
+    // Now you can use 'bwithinGridData' elsewhere in your script
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+  });
+
+let door_AI_color = 0xf0e442;  //yellow //0xcc79a7; // pink color in hex
+const door_human_color = 0xE66100; // orange color in hex
 
 // const grid_width = 900;
 
 //force a rebuild
-const players = {
+let players = {
     'Human': {
         id: 0,
-        color: 0xff0000,  // red
+        color: 0xE66100,  // orange
         tokensCollected: 0
     },
     'AI': {
         id: 1,
-        color: 0x0000ff,  // blue
+        color:  0xf0e442,  //yellow //0xcc79a7  // pink
         tokensCollected: 0
     }
 };
 
-let studyId = 'ExpTwoProlific';
+let studyId = 'ExpThreeTest';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -48,72 +126,98 @@ const showQuestionnaireOnly = params.get('questionnaireOnly');
 let trapTimeForEachRound;
 
 // Example 1: Assign a random condition for Viewpoint
-const TRAPSEQUENCE = 'WHATSEQUENCE'; // a string we use to represent the condition name
-let numConditions = 6; // Number of conditions for this variable
+const TRAPSEQUENCE = 'A1A2'; // a string we use to represent the condition name
+let numConditions = 4; // Number of conditions for this variable
 let numDraws = 1; // Number of  assignments (mutually exclusive) we want to sample for this participants
 let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
   maxCompletionTimeMinutes, numDraws); // the await keyword is mandatory
 
 let assignedCondition = assignedConditionTemp[0];
 
-// HHAAA
-// AHHAA
-// AAHHA
-// HAHAA
-// AHAHA
-// HAAHA
+// //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
+// if (assignedCondition === 0){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777},
+//         1: { human: 20, AI: 200,  Replay: 777},
+//         2: { human: 20, AI: 200, Replay: 777 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 1){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 20, AI: 200, Replay: 777 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+
+// }else if( assignedCondition === 2){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 3){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 777, Replay: 20 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }
+
+//A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 if (assignedCondition === 0){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200 },
-        1: { human: 20, AI: 200 },
-        2: { human: 200, AI: 20 },
-        3: { human: 200, AI: 20 },
-        4: { human: 200, AI: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 1){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 20 },
-        1: { human: 20, AI: 200 },
-        2: { human: 20, AI: 200 },
-        3: { human: 200, AI: 20 },
-        4: { human: 200, AI: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
       };
 
 }else if( assignedCondition === 2){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 20 },
-        1: { human: 200, AI: 20 },
-        2: { human: 20, AI: 200 },
-        3: { human: 20, AI: 200 },
-        4: { human: 200, AI: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 3){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200 },
-        1: { human: 200, AI: 20 },
-        2: { human: 20, AI: 200 },
-        3: { human: 200, AI: 20 },
-        4: { human: 200, AI: 20 },
-      };
-}else if( assignedCondition === 4){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20 },
-        1: { human: 20, AI: 200 },
-        2: { human: 200, AI: 20 },
-        3: { human: 20, AI: 200 },
-        4: { human: 200, AI: 20 },
-      };
-}else if( assignedCondition === 5){
-    trapTimeForEachRound = {
-        0: { human: 20, AI: 200 },
-        1: { human: 200, AI: 20 },
-        2: { human: 200, AI: 20 },
-        3: { human: 20, AI: 200 },
-        4: { human: 200, AI: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
       };
 }
 
+function findAndSelectRandomPath(PathData, start, end) {
+    // Filter betwenGridData to find paths that match the given start and end
+    const matchingPaths = PathData.filter(pathInfo => {
+      const startMatch = JSON.stringify(pathInfo.start) === JSON.stringify(start);
+      const endMatch = JSON.stringify(pathInfo.end) === JSON.stringify(end);
+      return startMatch && endMatch;
+    });
 
+    // Check if there are any matching paths
+    if (matchingPaths.length === 0) {
+      console.error('No paths found for the specified start and end points.');
+      return null;
+    }
+
+    // Randomly select one of the matching paths
+    const randomIndex = Math.floor(Math.random() * matchingPaths.length);
+    const selectedPath = matchingPaths[randomIndex];
+
+    return selectedPath;
+}
 
 let trapTimeForEachRoundToSave = JSON.parse(JSON.stringify(trapTimeForEachRound));
 
@@ -159,8 +263,14 @@ let lastAIUpdate = 0;
 
 let AIUpdateInterval = 500;
 
-const SLOW_UPDATE_INTERVAL = 800;
-const NORMAL_UPDATE_INTERVAL = 500;
+let lastReplayUpdate = 0;
+
+let ReplayUpdateInterval = 300;
+
+let replayState = "NAVIGATING_TO_SUBGRID";
+
+let currentPlayerDataIndex = 0;
+
 let aiStartX = 14;
 let aiStartY = 12;
 
@@ -726,6 +836,48 @@ function addStarTokens(scene, playerID) {
         let addedCoordinates = [];
 
         while (count < 3) {
+
+            if(playerID === 1 && isReplay === "replay"){
+
+                let gridStart = [grid.start[0] - 2, grid.start[1]];
+                let gridEnd = [grid.end[0], grid.end[1] -2];
+
+                let pathStart = findEndCoordinates(chosenGrid, doorAIadjusted);
+                let pathEnd;
+                if(arraysEqual(pathStart, gridStart)){
+                    pathEnd = gridEnd;
+                }else{
+                    pathEnd = gridStart;
+                }
+                console.log("Grid Start and End");
+                console.log(gridStart, gridEnd);
+                withinGridPath = findAndSelectRandomPath(withinGridData, pathStart, pathEnd);
+                console.log("in grid path:");
+                console.log(withinGridPath);
+
+                let selectedPath = withinGridPath.path[0];
+                let sampledPositions = selectedPath.slice(1, 4); 
+
+                //print(sampledPositions);
+
+                sampledPositions.forEach((position, index) => {
+                    //let [x, y] = position; // Destructure the position into x and y
+                    let x = position[0] + 1;
+                    let y = position[1] + 1;
+                    // Adjust placement logic as needed for your grid's coordinate system
+                    let star = scene.physics.add.sprite((x * cellWidth) - 30 * dpr, (y * cellHeight) - 20 * dpr, 'apple')
+                        .setTint(color)
+                        .setDepth(0)
+                        .setScale(0.15 * dpr);
+                    star.color = color;  
+                    star.index = index; // Use index or any other identifier as needed
+                    scene.tokenGroup.add(star);
+                    tokenInfo.locations.push({x, y});
+                });
+                console.log(tokenInfo.locations);
+                count = 3;
+            }
+
             let x = Math.floor(Math.random() * (endX - startX + 1) + startX);
             let y = Math.floor(Math.random() * (endY - startY + 1) + startY);
 
@@ -737,7 +889,7 @@ function addStarTokens(scene, playerID) {
                     star.setScale(0.06 * dpr);
                     star.color = color;  
                     scene.tokenGroup.add(star);
-                }else{
+                }else if(isReplay === "AI"){
                     let star = scene.physics.add.sprite((x * cellWidth) - 30 * dpr, (y * cellHeight) - 20 * dpr, 'butterfly').setTint(color).setDepth(0);
                     star.setScale(0.09 * dpr);
                     star.color = color;  
@@ -745,7 +897,7 @@ function addStarTokens(scene, playerID) {
                     scene.tokenGroup.add(star);
                 }
                 
-                if (playerID === 1){
+                if (playerID === 1 && isReplay === "AI"){
 
                     tokenInfo.locations.push({x, y});
                     console.log(tokenInfo.locations);
@@ -879,7 +1031,14 @@ function proceedToNextRound(scene) {
     // clearTimeout(autoProceedTimeout); // clear the timeout to avoid executing it after user interaction
     
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
-    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+
+    if(trapTimeForEachRound[currentRound - 1].AI === 777){
+        player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].Replay;
+        isReplay = "replay";
+    }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+        player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+        isReplay = "AI";
+    }
 
     eventNumber = 0;
   
@@ -939,12 +1098,27 @@ function proceedToNextRound(scene) {
 
     runUpdateLogic = true;
     currentTime = 0;
-  
-    player1.x = cellWidth/2;
-    player1.y = cellHeight/2;
-  
-    player2.x = grid_width - cellWidth / 2;
-    player2.y = scene.sys.game.config.height - cellHeight / 2;
+
+    if(isReplay === "AI"){
+        player1.x = cellWidth/2;
+        player1.y = cellHeight/2;
+      
+        player2.x = grid_width - cellWidth / 2;
+        player2.y = scene.sys.game.config.height - cellHeight / 2;
+    }else if(isReplay === "replay"){
+        player2.x = cellWidth/2;
+        player2.y = cellHeight/2;
+      
+        player1.x = grid_width - cellWidth / 2;
+        player1.y = scene.sys.game.config.height - cellHeight / 2;
+    }
+
+    if(isReplay === "replay"){
+        door_AI_color = 0xcc79a7;
+        players['AI'].color = 0xcc79a7;
+        player2.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+        scene.player2Ghost.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+    }
   
     aiStartX =  14;
     aiStartY = 12;
@@ -972,6 +1146,8 @@ function proceedToNextRound(scene) {
     isPathBeingFollowed = false;
   
     aiState = "NAVIGATING_TO_SUBGRID";
+
+    replayState = "NAVIGATING_TO_SUBGRID";
   
     isTimeoutScheduled = false;
 
@@ -1260,13 +1436,15 @@ let game = new Phaser.Game(config);
 let player1, player2;
 
 function preload() {
-    this.load.image('player1', 'p1.png'); 
-    this.load.image('player2', 'p2.png');
+    this.load.image('player1', 'colorHuman.png'); 
+    this.load.image('player2', 'yellowRobot.png');
 
     this.load.image('star', 'star.png');
     this.load.image('flower', 'flower.png');
     this.load.image('butterfly', 'butterfly.png');
     this.load.image('highlightSprite', 'lock.png');
+    this.load.image('replayPlayer', 'replay.png');
+    this.load.image('apple', 'apple.png');
 }
 
 
@@ -1388,7 +1566,7 @@ function create() {
     // this.overlay.setVisible(false);
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
 
-    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0xFFA500, 0.5);
+    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0x009292, 0.5);
     this.highlight.setVisible(false);
 
     // Initialize a blink timer
@@ -1424,7 +1602,77 @@ function update(time) {
 
     if (!runUpdateLogic) return;
 
-    handleAIStateandDecision();
+    if(isReplay === "AI"){
+        handleAIStateandDecision();
+    }else if(isReplay === "replay"){
+        handleReplayStateandDecision(); 
+    }
+
+    if (time - lastReplayUpdate > ReplayUpdateInterval && isReplay === "replay") {
+
+        // If currently following a path, continue moving along it
+        if(isPathBeingFollowed){
+            if(replayState === "NAVIGATING_TO_SUBGRID" && currentPlayerDataIndex < currentPath.length){
+                const nextPosition = currentPath[currentPlayerDataIndex];
+                movePlayer2(nextPosition[0], nextPosition[1], this);
+                currentPlayerDataIndex++;
+            }else if(replayState === "COLLECTING" && currentPlayerDataIndex < currentPath.length){
+                const nextPosition = currentPath[currentPlayerDataIndex];
+                movePlayer2(nextPosition[0], nextPosition[1], this);
+                currentPlayerDataIndex++;
+            }else{
+                if(replayState === "NAVIGATING_TO_SUBGRID"){
+                    replayState = "COLLECTING";
+                }else{
+                    replayState = "NAVIGATING_TO_SUBGRID";
+                }
+
+                isPathBeingFollowed = false;
+            }
+        }
+
+        if(playerTwoTrapped === true && currentPlayerDataIndex >= 3){
+            // Adjust for 0-based index and move according to the current direction
+            isPathBeingFollowed = false;
+        
+            // Correct the index before moving, to ensure it's valid
+            const correctedIndex = currentPlayerDataIndex - 2;
+            const nextPosition = currentPath[correctedIndex]; // Use corrected index
+            moveReplayWhenTrapped(nextPosition[0] + 1, nextPosition[1] + 1);
+            replayState = "TRAPPED";
+        
+            // Move after performing the action, to prepare for the next iteration
+            currentPlayerDataIndex += direction;
+        
+            // Check if we need to reverse the direction for the next move
+            if(currentPlayerDataIndex > currentPath.length || currentPlayerDataIndex <= 3){
+                direction *= -1; // Reverse the direction
+        
+                // Adjust currentPlayerDataIndex immediately after reversing direction
+                // This ensures we don't step out of bounds or move one extra in the new direction
+                currentPlayerDataIndex += direction; // Apply the direction change immediately to correct the position
+            }
+        }
+
+        if(playerTwoTrapped ==='blue' && replayState === "TRAPPED"){
+
+            if(currentPlayerDataIndex === currentPath.length){
+                currentPlayerDataIndex = currentPlayerDataIndex - 1;
+            }
+            const nextPosition = currentPath[currentPlayerDataIndex - 2];
+            if(currentPlayerDataIndex > 1){
+                moveReplayToEscape(nextPosition[0] + 1, nextPosition[1] + 1);
+                currentPlayerDataIndex = currentPlayerDataIndex - 1;
+            }else{
+                isPathBeingFollowed = false;
+                replayState = "NAVIGATING_TO_SUBGRID";
+            }
+        }
+       
+
+        lastReplayUpdate = time;
+    }
+
 
     // if(isPathBeingFollowed){
     //     AIUpdateInterval = handleAIInterval();
@@ -1489,7 +1737,7 @@ function update(time) {
         this.highlight.setVisible(false);
     }
 
-    if (time - lastAIUpdate > AIUpdateInterval) {
+    if (time - lastAIUpdate > AIUpdateInterval && isReplay === "AI") {
         // If currently following a path, continue moving along it
         if(isPathBeingFollowed){
 
@@ -1511,7 +1759,7 @@ function update(time) {
         lastAIUpdate = time;
     }
     
-    if (otherPlayerinSubgrid === true) {
+    if (otherPlayerinSubgrid === true && isReplay === "AI") {
 
         console.log("recalculate AI path");
 
@@ -1684,12 +1932,18 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     let doorTrappedPlayer;
 
-    if (playerID == "Human"){
-        doorColor = 0xFF0000;
-        doorColorOther = 0x0000FF;
-    }else{
-        doorColor = 0x0000FF;
-        doorColorOther = 0xFF0000;
+    if (playerID == "Human" && isReplay === "AI"){
+        doorColor = 0xd55e00;
+        doorColorOther = 0xf0e442;
+    }else if(playerID == "AI" && isReplay === "AI"){
+        doorColor = 0xf0e442;
+        doorColorOther = 0xd55e00;
+    }else if(playerID == "Human" && isReplay === "replay"){
+        doorColor = 0xd55e00;
+        doorColorOther = 0xcc79a7;
+    }else if(playerID == "AI" && isReplay === "replay"){
+        doorColor = 0xcc79a7;
+        doorColorOther = 0xd55e00;
     }
 
     // First, check for forbidden moves. If forbidden, we immediately return.
@@ -1743,8 +1997,14 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false && playerTwoTrapped !== true) {
 
-                    // Change both doors to player2's color
-                    doorColor = 0x0000FF;
+                    // Change both doors to player2's colo
+                    
+                    if(isReplay === "AI"){
+                        doorColor = 0xf0e442;
+                    }else{
+                        doorColor = 0xcc79a7;
+                    }
+
                     console.log("Human trapped");
 
                     humanTrappedGrid = startGrid;
@@ -1799,7 +2059,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
-                    doorColor = 0xFF0000;
+                    doorColor = 0xd55e00;
                     console.log("AI trapped");
 
                     trappedAIStartGrid = startGrid;
@@ -1939,6 +2199,128 @@ function handleKeyDown(event) {
             break;
 
     }
+}
+
+function movePlayer2(x, y, scene) {
+
+    let currentplayerX = Math.round(player2.x / cellWidth);
+    let currentplayerY = Math.round(player2.y / cellHeight);
+    // // Logic to move Player 2 to position (x, y)
+    // player2.x = cellWidth * 0.5 + (x -1) * cellWidth;
+    // player2.y = cellHeight * 0.5 + (y - 1) * cellHeight;
+
+    const dx = x - currentplayerX + 1;
+    const dy = y - currentplayerY + 1;
+    console.log("current point");
+    console.log(currentplayerX, currentplayerY);
+
+    console.log("movement");
+    console.log(dx, dy);
+
+    if (dx > 0) {
+        handleMovement(player2, cellWidth, 0, "AI", scene);
+    } else if (dx < 0) {
+        handleMovement(player2, -cellWidth, 0, "AI", scene);
+    } else if (dy > 0) {
+        handleMovement(player2, 0, cellHeight, "AI", scene);
+    } else if (dy < 0) {
+        handleMovement(player2, 0, -cellHeight, "AI", scene);
+    }
+
+
+    console.log("player 2 position");
+    console.log(player2.x);
+    console.log(player2.y);
+
+    ReplayUpdateInterval = currentPathTime[currentPlayerDataIndex];
+
+}
+
+
+function moveReplayWhenTrapped(x, y) {
+
+    player2.x = cellWidth * 0.5 + (x -1) * cellWidth;
+    player2.y = cellHeight * 0.5 + (y - 1) * cellHeight;
+    ReplayUpdateInterval = currentPathTime[currentPlayerDataIndex - 2] * 3;
+
+}
+
+function moveReplayToEscape(x, y) {
+
+    player2.x = cellWidth * 0.5 + (x -1) * cellWidth;
+    player2.y = cellHeight * 0.5 + (y - 1) * cellHeight;
+    ReplayUpdateInterval = currentPathTime[currentPlayerDataIndex];
+
+}
+
+function handleReplayStateandDecision(){
+    if (!isPathBeingFollowed) {
+        if (replayState === "NAVIGATING_TO_SUBGRID"){
+            console.log("NAVIGATING_TO_SUBGRID");
+            handlReplayMovement();
+        }else if(replayState === "COLLECTING"){
+            console.log("COLLECTING");
+            handlReplayMovement();
+        }
+    }
+}
+
+function handlReplayMovement() {
+
+    console.log("current token info");
+    console.log(tokenInfo);
+
+    let currentplayerX = Math.round(player2.x / cellWidth) - 1;
+    let currentplayerY = Math.round(player2.y / cellHeight) - 1;
+    console.log("current aiPosition");
+    console.log(currentplayerX , currentplayerY );
+
+   
+    const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+    console.log([endX, endY]);
+
+    if(replayState === "COLLECTING"){
+        isPathBeingFollowed = true;
+        replayState = "COLLECTING";
+        currentPlayerDataIndex = 1;
+        if (withinGridPath.path[0].length === 2) {
+            // If betwenGridPath.path is an array, use the first element
+            currentPath = withinGridPath.path;
+            currentPathLength = withinGridPath.path.length;
+        } else {
+            // If betwenGridPath.path is not an array, use it directly
+            currentPath = withinGridPath.path[0];
+            currentPathLength = withinGridPath.path[0].length;
+        }
+        currentPathTime = withinGridPath.times;
+        console.log(replayState);
+        console.log(currentPathLength);
+        console.log(currentPath);
+    }else{
+        console.log("current replay positioin");
+        console.log(currentplayerX, currentplayerY);
+        console.log("goal");
+        console.log(endX, endY);
+        betwenGridPath = findAndSelectRandomPath(betwenGridData, [currentplayerX, currentplayerY], [endX, endY]);
+        replayState = "NAVIGATING_TO_SUBGRID";
+        isPathBeingFollowed = true;
+        currentPlayerDataIndex = 1;
+
+        if (betwenGridPath.path[0].length === 2) {
+            // If betwenGridPath.path is an array, use the first element
+            currentPath = betwenGridPath.path;
+            currentPathLength = betwenGridPath.path.length;
+        } else {
+            // If betwenGridPath.path is not an array, use it directly
+            currentPath = betwenGridPath.path[0];
+            currentPathLength = betwenGridPath.path[0].length;
+        }
+        currentPathTime = betwenGridPath.times;
+        console.log(replayState);
+        console.log(currentPathLength);
+        console.log(currentPath);
+    }
+
 }
 
 //Handle subgrid door navigation
@@ -2470,7 +2852,7 @@ function displayNextInstruction(scene) {
 
         timeText.setVisible(false);
 
-        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05 * dpr).setDepth(1);
+        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.25 * dpr).setDepth(1);
         player2.setCollideWorldBounds(true); 
         player2.name = 'AI'; 
         player2.data = players['AI'];
@@ -2484,7 +2866,7 @@ function displayNextInstruction(scene) {
         easystarSubgrid.setAcceptableTiles([0]);
 
         scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
-        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.05 * dpr).setDepth(1);
+        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.25 * dpr).setDepth(1);
         scene.player1Ghost.setVisible(false);
         scene.player2Ghost.setVisible(false);
 
@@ -2540,9 +2922,15 @@ function completeSetup(scene) {
 
     timeText.setVisible(true);
 
+    if(trapTimeForEachRound[currentRound - 1].AI === 777){
+        player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].Replay;
+        isReplay = "replay";
+    }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+        player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+        isReplay = "AI";
+    }
 
-    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
-    player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
+
 
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Grid dimension';
     let valuenow = [gridWidth, gridHeight];
@@ -2552,11 +2940,38 @@ function completeSetup(scene) {
     valuenow = GRIDS;
     writeRealtimeDatabase( pathnow , valuenow );
 
-    player1.x = cellWidth/2;
-    player1.y = cellHeight/2;
+    player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
 
-    player2.x = grid_width - cellWidth / 2;
-    player2.y = scene.sys.game.config.height - cellHeight / 2;
+    if(isReplay === "AI"){
+        player1.x = cellWidth/2;
+        player1.y = cellHeight/2;
+      
+        player2.x = grid_width - cellWidth / 2;
+        player2.y = scene.sys.game.config.height - cellHeight / 2;
+    }else if(isReplay === "replay"){
+        player2.x = cellWidth/2;
+        player2.y = cellHeight/2;
+      
+        player1.x = grid_width - cellWidth / 2;
+        player1.y = scene.sys.game.config.height - cellHeight / 2;
+    }
+
+    if(isReplay === "replay"){
+        door_AI_color = 0xcc79a7;
+        players['AI'].color = 0xcc79a7;
+
+        doorAICoords = [];
+        doorAIadjusted = [];
+        doorHumanCoords = [];
+        doorHumanadjusted = [];
+        allDoors = [];
+        scene.doorSprites = [];
+        calculateDoors();
+        allDoors.forEach(door => drawDoor(door, scene));
+        player2.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+        scene.player2Ghost.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+    }
+
   
     aiStartX =  14;
     aiStartY = 12;
