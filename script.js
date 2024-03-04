@@ -169,14 +169,14 @@ let assignedCondition = assignedConditionTemp[0];
 //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 if (assignedCondition === 0){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 1){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
@@ -184,14 +184,14 @@ if (assignedCondition === 0){
 
 }else if( assignedCondition === 2){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 3){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
@@ -1796,6 +1796,28 @@ function update(time) {
 
     }
 
+    if (otherPlayerinSubgrid === true && isReplay === "replay") {
+
+        console.log("recalculate AI path");
+
+        if(replayState === "COLLECTING"){
+            currentPath = currentPath.reverse();
+            otherPlayerinSubgrid = false;
+            currentPlayerDataIndex = currentPath.length - currentPlayerDataIndex - 1;
+            ReplayUpdateInterval = currentPathTime[currentPlayerDataIndex];
+        }else if(replayState === "NAVIGATING_TO_SUBGRID"){
+            if (withinGridPath.path[0].length === 2) {
+                // If betwenGridPath.path is an array, use the first element
+                withinGridPath.path = withinGridPath.path.reverse();
+            } else {
+                // If betwenGridPath.path is not an array, use it directly
+                withinGridPath.path[0] = withinGridPath.path[0].reverse();
+            }
+            reculculateReplayPath();
+        }
+
+    }
+
     if (isPlayerinSameCell(player1, player2)) {
         console.log("Players are in the same cell");
 
@@ -2256,6 +2278,32 @@ function movePlayer2(x, y, scene) {
 
 }
 
+function reculculateReplayPath(){
+    let currentplayerX = Math.round(player2.x / cellWidth) - 1;
+    let currentplayerY = Math.round(player2.y / cellHeight) - 1;
+    const [endX, endY] = findEndCoordinates(tokenInfo.subgrid, doorAIadjusted);
+
+    easystar.findPath(currentplayerX, currentplayerY, endX, endY, function(path) {
+        if (path === null) {
+            console.log("Path was not found.");
+            isPathBeingFollowed = false; // No path to follow
+        } else {
+            currentPath = path; // Store the new path
+            // currentPath = currentPath.map(step => ({
+            //     x: step.x + 1,
+            //     y: step.y + 1
+            // }));
+            currentPath = currentPath.map(step => [step.x, step.y]);            
+            currentPlayerDataIndex = 1; // Reset the index for the new path
+            console.log("the path");
+            console.log(currentPath);
+            isPathBeingFollowed = true;
+            otherPlayerinSubgrid = false;
+        }
+    });
+    easystar.calculate();        
+
+}
 
 function moveReplayWhenTrapped(x, y) {
 
@@ -2903,6 +2951,8 @@ function displayNextInstruction(scene) {
         easystarSubgrid = new EasyStar.js();
         easystarSubgrid.setGrid(subGrid);
         easystarSubgrid.setAcceptableTiles([0]);
+
+        isReplay = "AI";
 
         scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
         scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.25 * dpr).setDepth(1);
