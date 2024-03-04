@@ -169,14 +169,14 @@ let assignedCondition = assignedConditionTemp[0];
 //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 if (assignedCondition === 0){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 1){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
@@ -184,14 +184,14 @@ if (assignedCondition === 0){
 
 }else if( assignedCondition === 2){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 3){
     trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 200, Replay: 777 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
