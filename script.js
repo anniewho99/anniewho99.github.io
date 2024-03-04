@@ -990,7 +990,7 @@ function updateGameTime(scene) {
 
         currentRound++;
 
-        if (currentRound > 5) {
+        if (currentRound > 4) {
             console.log("Game Over");
             isTimeoutScheduled = true;
             // End the game and show post-game content
@@ -1004,7 +1004,24 @@ function updateGameTime(scene) {
       scene.overlay.setVisible(true);
       if(scene.messageText) scene.messageText.destroy();
       let specificSizeStyle = createTextStyle(25 * dpr, '#000');
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 5.\nPlease use the arrow keys to move your red player`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+      let playerName = "AI"; 
+      let tokenType = "Gold";
+
+      if(trapTimeForEachRound[currentRound - 1].AI === 777){
+        isReplay = "replay";
+      }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+        isReplay = "AI";
+      }
+
+      if(isReplay === "AI"){
+        playerName =  "a yellow robot player";
+        tokenType = "yellow butterflies";
+      }else{
+        playerName =  "a pink human player";
+        tokenType = "pink apples";
+      }
+
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 4.\nPlease use the arrow keys to move your orange player. \nYou are playing with ${playerName} who collects ${tokenType} this round.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
 
       runUpdateLogic = false;
@@ -1168,65 +1185,65 @@ function endGame(scene) {
     // Display the post-game content
     document.getElementById('postGameContent').style.display = 'block';
 
-    const iconGroups = [
-        ['icon1', 'p2 copy.png', 'icon5', 'robotyellow.png'],
-        ['icon2', 'robot2.png', 'icon6', 'robot2yellow.png'],
-        ['icon3', 'robot3.png', 'icon7', 'robot3yellow.png'],
-        ['icon4', 'robot4.png', 'icon8', 'robot4yellow.png']
-    ];
+    // const iconGroups = [
+    //     ['icon1', 'p2 copy.png', 'icon5', 'robotyellow.png'],
+    //     ['icon2', 'robot2.png', 'icon6', 'robot2yellow.png'],
+    //     ['icon3', 'robot3.png', 'icon7', 'robot3yellow.png'],
+    //     ['icon4', 'robot4.png', 'icon8', 'robot4yellow.png']
+    // ];
 
-    const humanIconGroups = [
-        ['humanicon1', 'p1 copy.png', 'humanicon5', 'human1pink.png'],
-        ['humanicon2', 'human2.png', 'humanicon6', 'human2pink.png'],
-        ['humanicon3', 'human3.png', 'humanicon7', 'human3pink.png'],
-        ['humanicon4', 'human4.png', 'humanicon8', 'human4pink.png']
-    ];
+    // const humanIconGroups = [
+    //     ['humanicon1', 'p1 copy.png', 'humanicon5', 'human1pink.png'],
+    //     ['humanicon2', 'human2.png', 'humanicon6', 'human2pink.png'],
+    //     ['humanicon3', 'human3.png', 'humanicon7', 'human3pink.png'],
+    //     ['humanicon4', 'human4.png', 'humanicon8', 'human4pink.png']
+    // ];
 
-    // Shuffle the groups
-    shuffleArray(iconGroups);
+    // // Shuffle the groups
+    // shuffleArray(iconGroups);
 
-    shuffleArray(humanIconGroups);
+    // shuffleArray(humanIconGroups);
 
-    // Function to shuffle an array
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
+    // // Function to shuffle an array
+    // function shuffleArray(array) {
+    //     for (let i = array.length - 1; i > 0; i--) {
+    //         const j = Math.floor(Math.random() * (i + 1));
+    //         [array[i], array[j]] = [array[j], array[i]];
+    //     }
+    // }
 
-    // Generate HTML for the shuffled groups
-    const container = document.querySelector('.icon-selection-container');
-    container.innerHTML = ''; // Clear existing content
-    iconGroups.forEach(group => {
-        group.forEach((icon, index) => {
-            if (index % 2 === 0) {
-                const label = document.createElement('label');
-                label.htmlFor = group[index];
-                label.innerHTML = `
-                    <input type="radio" id="${group[index]}" name="robotIcon" value="${group[index]}">
-                    <img src="${group[index+1]}" alt="Icon ${index / 2 + 1}">
-                `;
-                container.appendChild(label);
-            }
-        });
-    });
+    // // Generate HTML for the shuffled groups
+    // const container = document.querySelector('.icon-selection-container');
+    // container.innerHTML = ''; // Clear existing content
+    // iconGroups.forEach(group => {
+    //     group.forEach((icon, index) => {
+    //         if (index % 2 === 0) {
+    //             const label = document.createElement('label');
+    //             label.htmlFor = group[index];
+    //             label.innerHTML = `
+    //                 <input type="radio" id="${group[index]}" name="robotIcon" value="${group[index]}">
+    //                 <img src="${group[index+1]}" alt="Icon ${index / 2 + 1}">
+    //             `;
+    //             container.appendChild(label);
+    //         }
+    //     });
+    // });
 
-    const containerHumanIcon = document.querySelector('.human-icon-selection-container');
-    containerHumanIcon.innerHTML = ''; // Clear existing content
-    humanIconGroups.forEach(group => {
-        group.forEach((icon, index) => {
-            if (index % 2 === 0) {
-                const label = document.createElement('label');
-                label.htmlFor = group[index];
-                label.innerHTML = `
-                    <input type="radio" id="${group[index]}" name="humanIcon" value="${group[index]}">
-                    <img src="${group[index+1]}" alt="Iconhuman ${index / 2 + 1}">
-                `;
-                containerHumanIcon.appendChild(label); // Append to containerHumanIcon
-            }
-        });
-    });
+    // const containerHumanIcon = document.querySelector('.human-icon-selection-container');
+    // containerHumanIcon.innerHTML = ''; // Clear existing content
+    // humanIconGroups.forEach(group => {
+    //     group.forEach((icon, index) => {
+    //         if (index % 2 === 0) {
+    //             const label = document.createElement('label');
+    //             label.htmlFor = group[index];
+    //             label.innerHTML = `
+    //                 <input type="radio" id="${group[index]}" name="humanIcon" value="${group[index]}">
+    //                 <img src="${group[index+1]}" alt="Iconhuman ${index / 2 + 1}">
+    //             `;
+    //             containerHumanIcon.appendChild(label); // Append to containerHumanIcon
+    //         }
+    //     });
+    // });
     
 
     postGameContent.scrollIntoView();  
@@ -1239,8 +1256,8 @@ function endGame(scene) {
 
         let isExplainFilledCorrectly = true; 
 
-        let robotIconSelected = document.querySelector('input[name="robotIcon"]:checked') !== null;
-        let humanIconSelected = document.querySelector('input[name="humanIcon"]:checked') !== null;
+        // let robotIconSelected = document.querySelector('input[name="robotIcon"]:checked') !== null;
+        // let humanIconSelected = document.querySelector('input[name="humanIcon"]:checked') !== null;
 
 
         let isHelpfulnessRatingFilled = document.querySelector('input[name="helpfulnessRating"]:checked') !== null;
@@ -1279,7 +1296,8 @@ function endGame(scene) {
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
             isWhyHelpedFilledCorrectly &&
-            isExplainFilledCorrectly && robotIconSelected && humanIconSelected 
+            isExplainFilledCorrectly 
+            //&& robotIconSelected && humanIconSelected 
         ){
             const data = {
                 helpfulnessRating: document.querySelector('input[name="helpfulnessRating"]:checked').value, 
@@ -1292,8 +1310,8 @@ function endGame(scene) {
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
                 suggestions: document.getElementById('suggestions').value,
-                robotIcon: document.querySelector('input[name="robotIcon"]:checked').value,
-                humantIcon: document.querySelector('input[name="humanIcon"]:checked').value,
+                // robotIcon: document.querySelector('input[name="robotIcon"]:checked').value,
+                // humantIcon: document.querySelector('input[name="humanIcon"]:checked').value,
             };
             let pathnow = studyId+'/participantData/'+firebaseUserId+'/postGameQuestions';
             let valuenow = data;
@@ -1488,8 +1506,10 @@ function create() {
     let specificSizeStyle = createTextStyle(30 * dpr, '#000');
 
     let messages = [
-        ' You are going to play a simple game with a robot player. \n The primary goal of the game is to collect tokens: flowers and butterflies. \n You will collect flowers while the robot will collect butterflies.',
-        ' There are 5 short rounds of the game.\n Each round lasts around 90 seconds.',
+        ' You are going to play a simple game with another player. \n The primary goal of the game is to collect tokens. \n You will collect flowers, \n while the other player will collect butterflies or apples.',
+        ' There are 4 short rounds of the game.\n Each round lasts 90 seconds.',
+        ' You might be playing with a robot player or\n another human player.',
+        ' At the beginning of each round,\n you will be told whether you are playing\n with a human or a robot.',
         ' Let’s start with a demo!'
     ];
     let currentMessageIndex = 0;
@@ -2796,7 +2816,7 @@ function initializeDemo(scene) {
 
     scene.messageText.destroy(); 
     let specificSizeStyle = createTextStyle(20 * dpr * 0.9, '#000');
-    scene.messageText = scene.add.text(900 * dpr, 10 * dpr, ' You are the red player.\n You can use the arrow keys to\n move your red player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
+    scene.messageText = scene.add.text(900 * dpr, 10 * dpr, ' You are the orange player.\n You can use the arrow keys to\n move your orange player\n at the top-left corner.', specificSizeStyle).setDepth(1001);
     scene.messageText.setScale(0.9, 1);
     scene.messageText.setResolution(2); 
     proceedButton = scene.add.rectangle(1020 * dpr, 250 * dpr, 90 * dpr, 20 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setInteractive().setDepth(1001);
@@ -2813,12 +2833,31 @@ function initializeDemo(scene) {
     });
 }
 
+let playerName = "AI"; 
+let tokenType = "Gold";
+
+if(trapTimeForEachRound[currentRound - 1].AI === 777){
+    isReplay = "replay";
+}else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+    isReplay = "AI";
+}
+
+if(isReplay === "AI"){
+    playerName =  "a yellow robot player";
+    tokenType = "yellow butterflies";
+}else{
+    playerName =  "a pink human player";
+    tokenType = "pink apple";
+}
+
 let instructions = [
-    " There are four areas on the grid\n where flowers and butterflies\n will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the red player, \n can only move through red doors. \n Now go through a red door.",
-    " The tokens you can collect are\n the red flowers. \n When you finish collecting\n all red flowers in an area, \n a new group of red flowers\n will appear in another area.\n Now try to collect three flowers. ",
-    " Now we will add\n a blue robot player to the game.\n The blue robot will only\n collect the blue butterflies.",
-    " Also, the blue robot can only\n move through blue doors.\n You, as the red player,\n can only move through red doors.",
-    " Let's start the first round. There are 5 rounds total. \n Have fun!!"
+    " There are four areas on the grid\n where tokens will appear.\n To get to these areas,\n you have to go through \n the right doors when entering. \n You, the orange player, \n can only move through orange doors. \n Now go through an orange door.",
+    " The tokens you can collect are\n the orange flowers. \n When you finish collecting\n all orange flowers in an area, \n a new group of orange flowers\n will appear in another area.\n Now try to collect three flowers. ",
+    " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
+    " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
+    `Let's start the first round. There are 4 rounds in total.
+Have fun!!
+You are playing with ${playerName} who collects ${tokenType} in this round.`
 ];
 let currentInstructionIndex = 0;
 
@@ -2886,14 +2925,20 @@ function displayNextInstruction(scene) {
         scene.overlay.setVisible(true);
         let fontSize = 26 * dpr;
         scene.messageText.setFontSize(fontSize + 'px');
-        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
-        scene.messageText.y = scene.sys.game.config.height / 2;
+        scene.messageText.x = scene.sys.game.config.width / 2 - 500 * dpr;
+        scene.messageText.y = scene.sys.game.config.height / 2 - 100;
 
         proceedButton.x = scene.sys.game.config.width / 2;
         proceedButton.y = scene.sys.game.config.height * 0.65;
 
         scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
         scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
+
+        // if(isReplay === "AI"){
+        //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width - 200 * dpr, scene.sys.game.config.height * 0.5 + 5 * dpr, 'player2').setScale(0.3 * dpr).setDepth(1001);
+        // }else{
+        //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width  - 200 * dpr, scene.sys.game.config.height * 0.55 + 5 * dpr, 'replayPlayer').setScale(0.5 * dpr).setDepth(1001);
+        // }
 
     }
 
