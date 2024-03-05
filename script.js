@@ -87,7 +87,7 @@ fetch('adjusted_movement.json')
     console.error('There was a problem with your fetch operation:', error);
   });
 
-let door_AI_color = 0xf0e442;  //yellow //0xcc79a7; // pink color in hex
+let door_AI_color = 0xf0e442;  //yellow 
 const door_human_color = 0xE66100; // orange color in hex
 
 // const grid_width = 900;
@@ -101,10 +101,18 @@ let players = {
     },
     'AI': {
         id: 1,
-        color:  0xf0e442,  //yellow //0xcc79a7  // pink
+        color:  0xf0e442,  //yellow 
         tokensCollected: 0
     }
 };
+
+let roundOneColor = 0x7F5FBF; //purple
+
+let roundTwoColor = 0xcc79a7; //pink
+
+let roundThreeColor = 0x0D77B7; //blue
+
+let roundFourColor = 0xf0e442; //yellow
 
 let studyId = 'ExpThreeTest';
 
@@ -135,49 +143,17 @@ let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numC
 let assignedCondition = assignedConditionTemp[0];
 
 // //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
-// if (assignedCondition === 0){
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777},
-//         1: { human: 20, AI: 200,  Replay: 777},
-//         2: { human: 20, AI: 200, Replay: 777 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }else if( assignedCondition === 1){
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
-//         1: { human: 20, AI: 200, Replay: 777 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-
-// }else if( assignedCondition === 2){
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }else if( assignedCondition === 3){
-//     trapTimeForEachRound = {
-//         0: { human: 200, AI: 777, Replay: 20 },
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }
-
-//A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 if (assignedCondition === 0){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
-        1: { human: 200, AI: 777, Replay: 20 },
-        2: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 200, Replay: 777},
+        1: { human: 20, AI: 200,  Replay: 777},
+        2: { human: 20, AI: 200, Replay: 777 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }else if( assignedCondition === 1){
     trapTimeForEachRound = {
         0: { human: 20, AI: 200, Replay: 777 },
-        1: { human: 200, AI: 777, Replay: 20 },
+        1: { human: 20, AI: 200, Replay: 777 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
@@ -191,12 +167,44 @@ if (assignedCondition === 0){
       };
 }else if( assignedCondition === 3){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
 }
+
+//A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
+// if (assignedCondition === 0){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 1){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+
+// }else if( assignedCondition === 2){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 3){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }
 
 function findAndSelectRandomPath(PathData, start, end) {
     // Filter betwenGridData to find paths that match the given start and end
@@ -706,7 +714,6 @@ function arraysEqual(arr1, arr2) {
 }
 
 
-
 function crossesDoor(start, end, playerID) {
     let validAdjustedDoors;
     if (playerID === "Human") {
@@ -1014,11 +1021,11 @@ function updateGameTime(scene) {
       }
 
       if(isReplay === "AI"){
-        playerName =  "a yellow robot player";
-        tokenType = "yellow butterflies";
+        playerName =  "a robot player";
+        tokenType = "butterflies";
       }else{
-        playerName =  "a pink human player";
-        tokenType = "pink apples";
+        playerName =  "a human player";
+        tokenType = "apples";
       }
 
       scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 4.\nPlease use the arrow keys to move your orange player. \nYou are playing with ${playerName} who collects ${tokenType} this round.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
@@ -1131,11 +1138,25 @@ function proceedToNextRound(scene) {
     }
 
     if(isReplay === "replay"){
-        door_AI_color = 0xcc79a7;
-        players['AI'].color = 0xcc79a7;
-        player2.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
-        scene.player2Ghost.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+        // door_AI_color = 0xcc79a7;
+        // players['AI'].color = 0xcc79a7;
+        player2.setTexture('player1').setScale(0.04 * dpr).setDepth(1);
+        scene.player2Ghost.setTexture('player1').setScale(0.04 * dpr).setDepth(1);
     }
+
+    if(currentRound === 2){
+        door_AI_color = roundTwoColor;
+        players['AI'].color = roundTwoColor;
+    }else if(currentRound === 3){
+        door_AI_color = roundThreeColor;
+        players['AI'].color = roundThreeColor;
+    }else if(currentRound === 4){
+        door_AI_color = roundFourColor;
+        players['AI'].color = roundFourColor;
+    }
+
+    player2.setTint(players['AI'].color);
+    scene.player2Ghost.setTint(players['AI'].color);
   
     aiStartX =  14;
     aiStartY = 12;
@@ -1455,7 +1476,7 @@ let player1, player2;
 
 function preload() {
     this.load.image('player1', 'colorHuman.png'); 
-    this.load.image('player2', 'yellowRobot.png');
+    this.load.image('player2', 'outlineRobot.png');
 
     this.load.image('star', 'star.png');
     this.load.image('flower', 'flower.png');
@@ -1586,7 +1607,7 @@ function create() {
     // this.overlay.setVisible(false);
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
 
-    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0x009292, 0.5);
+    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0x39FF14, 0.5);
     this.highlight.setVisible(false);
 
     // Initialize a blink timer
@@ -1974,19 +1995,19 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
     let doorTrappedPlayer;
 
-    if (playerID == "Human" && isReplay === "AI"){
-        doorColor = 0xd55e00;
-        doorColorOther = 0xf0e442;
-    }else if(playerID == "AI" && isReplay === "AI"){
-        doorColor = 0xf0e442;
-        doorColorOther = 0xd55e00;
-    }else if(playerID == "Human" && isReplay === "replay"){
-        doorColor = 0xd55e00;
-        doorColorOther = 0xcc79a7;
-    }else if(playerID == "AI" && isReplay === "replay"){
-        doorColor = 0xcc79a7;
-        doorColorOther = 0xd55e00;
-    }
+    // if (playerID == "Human" && isReplay === "AI"){
+    //     doorColor = 0xd55e00;
+    //     doorColorOther = 0xf0e442;
+    // }else if(playerID == "AI" && isReplay === "AI"){
+    //     doorColor = 0xf0e442;
+    //     doorColorOther = 0xd55e00;
+    // }else if(playerID == "Human" && isReplay === "replay"){
+    //     doorColor = 0xd55e00;
+    //     doorColorOther = 0xcc79a7;
+    // }else if(playerID == "AI" && isReplay === "replay"){
+    //     doorColor = 0xcc79a7;
+    //     doorColorOther = 0xd55e00;
+    // }
 
     // First, check for forbidden moves. If forbidden, we immediately return.
     if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
@@ -2039,13 +2060,8 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                 if (playerID === "Human" && currentTime >= player1TrapTimeStart && playerOneTrapped === false && playerTwoTrapped !== true) {
 
-                    // Change both doors to player2's colo
-                    
-                    if(isReplay === "AI"){
-                        doorColor = 0xf0e442;
-                    }else{
-                        doorColor = 0xcc79a7;
-                    }
+                    // Change both doors to player2's color
+                    doorColor = players['AI'].color;
 
                     console.log("Human trapped");
 
@@ -2101,7 +2117,7 @@ function handleMovement(player, dx, dy, playerID, scene) {
 
                     playerTwoTrapped = true;
                     // Change both doors to player1's color
-                    doorColor = 0xd55e00;
+                    doorColor = players['Human'].color;
                     console.log("AI trapped");
 
                     trappedAIStartGrid = startGrid;
@@ -2856,6 +2872,7 @@ function initializeDemo(scene) {
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
+    player1.setTint(players['Human'].color);
 
     scene.physics.world.debugGraphic = scene.add.graphics().setAlpha(0);
 
@@ -2891,11 +2908,11 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 }
 
 if(isReplay === "AI"){
-    playerName =  "a yellow robot player";
-    tokenType = "yellow butterflies";
+    playerName =  "a robot player";
+    tokenType = "butterflies";
 }else{
-    playerName =  "a pink human player";
-    tokenType = "pink apple";
+    playerName =  "a human player";
+    tokenType = "apple";
 }
 
 let instructions = [
@@ -2943,6 +2960,7 @@ function displayNextInstruction(scene) {
         player2.setCollideWorldBounds(true); 
         player2.name = 'AI'; 
         player2.data = players['AI'];
+        player2.setTint(players['AI'].color);
 
         easystar = new EasyStar.js();
         easystar.setGrid(initialGrid);
@@ -3051,21 +3069,29 @@ function completeSetup(scene) {
         player1.y = scene.sys.game.config.height - cellHeight / 2;
     }
 
-    if(isReplay === "replay"){
-        door_AI_color = 0xcc79a7;
-        players['AI'].color = 0xcc79a7;
+    door_AI_color = roundOneColor;
+    players['AI'].color = roundOneColor;
 
-        doorAICoords = [];
-        doorAIadjusted = [];
-        doorHumanCoords = [];
-        doorHumanadjusted = [];
-        allDoors = [];
-        scene.doorSprites = [];
-        calculateDoors();
-        allDoors.forEach(door => drawDoor(door, scene));
-        player2.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
-        scene.player2Ghost.setTexture('replayPlayer').setScale(0.17 * dpr).setDepth(1);
+    if(isReplay === "replay"){
+        // door_AI_color = 0xcc79a7;
+        // players['AI'].color = 0xcc79a7;
+        player2.setTexture('player1').setScale(0.04 * dpr).setDepth(1).setTint(players['AI'].color);
+        scene.player2Ghost.setTexture('player1').setScale(0.04 * dpr).setDepth(1).setTint(players['AI'].color);
     }
+
+    doorAICoords = [];
+    doorAIadjusted = [];
+    doorHumanCoords = [];
+    doorHumanadjusted = [];
+    allDoors = [];
+    scene.doorSprites = [];
+    calculateDoors();
+    allDoors.forEach(door => drawDoor(door, scene));
+
+    player1.setTint(players['Human'].color);
+    player2.setTint(players['AI'].color);
+    scene.player1Ghost.setTint(players['Human'].color);
+    scene.player2Ghost.setTint(players['AI'].color);
 
   
     aiStartX =  14;
