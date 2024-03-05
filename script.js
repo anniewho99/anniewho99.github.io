@@ -1028,21 +1028,37 @@ function updateGameTime(scene) {
         tokenType = "apples";
       }
 
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 4.\nPlease use the arrow keys to move your orange player. \nYou are playing with ${playerName} who collects ${tokenType} this round.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Finding a new player for the new round...`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
       scene.messageText.setVisible(true);
+
+
+      scene.time.delayedCall(5000, () => {
+          scene.messageText.setText(`We will now start round ${currentRound} of 4!\nPlease use the arrow keys to move your orange player. \nYou are playing with ${playerName} who collects ${tokenType} this round.`);
+
+          specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+          nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
+              .setOrigin(0.5, 0.5)
+              .setDepth(1002)
+              .setInteractive();
+          nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+    
+          nextRoundButton.on('pointerdown', () => {
+              proceedToNextRound(scene);
+          });
+      });
 
       runUpdateLogic = false;
 
-      specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
-      nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
-          .setOrigin(0.5, 0.5)
-          .setDepth(1002)
-          .setInteractive();
-      nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+    //   specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+    //   nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
+    //       .setOrigin(0.5, 0.5)
+    //       .setDepth(1002)
+    //       .setInteractive();
+    //   nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
 
-      nextRoundButton.on('pointerdown', () => {
-          proceedToNextRound(scene);
-      });
+    //   nextRoundButton.on('pointerdown', () => {
+    //       proceedToNextRound(scene);
+    //   });
       
     //   autoProceedTimeout = setTimeout(() => {
     //       proceedToNextRound(scene);
@@ -2920,8 +2936,8 @@ let instructions = [
     " The tokens you can collect are\n the orange flowers. \n When you finish collecting\n all orange flowers in an area, \n a new group of orange flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
-    `Let's start the first round. There are 4 rounds in total.
-Have fun!!
+    " Finding a new player for the current round...",
+    `Have fun!!
 You are playing with ${playerName} who collects ${tokenType} in this round.`
 ];
 let currentInstructionIndex = 0;
@@ -2989,11 +3005,11 @@ function displayNextInstruction(scene) {
         proceedButton.setFillStyle(0xCCCCCC);
     }
 
-    if(currentInstructionIndex === 4){
+    if(currentInstructionIndex === 5){
         scene.overlay.setVisible(true);
         let fontSize = 26 * dpr;
         scene.messageText.setFontSize(fontSize + 'px');
-        scene.messageText.x = scene.sys.game.config.width / 2 - 500 * dpr;
+        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
         scene.messageText.y = scene.sys.game.config.height / 2 - 100;
 
         proceedButton.x = scene.sys.game.config.width / 2;
@@ -3007,6 +3023,29 @@ function displayNextInstruction(scene) {
         // }else{
         //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width  - 200 * dpr, scene.sys.game.config.height * 0.55 + 5 * dpr, 'replayPlayer').setScale(0.5 * dpr).setDepth(1001);
         // }
+
+    }
+
+    if(currentInstructionIndex === 4){
+        scene.overlay.setVisible(true);
+        let fontSize = 26 * dpr;
+        scene.messageText.setFontSize(fontSize + 'px');
+        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
+        scene.messageText.y = scene.sys.game.config.height / 2 - 100;
+
+        proceedButton.setVisible(false);
+        scene.proceedText.setVisible(false);
+
+        scene.time.delayedCall(5000, () => {
+            scene.messageText.setText('Game ready to start! \nLets start the first round. There are 4 rounds in total.');
+            proceedButton.x = scene.sys.game.config.width / 2;
+            proceedButton.y = scene.sys.game.config.height * 0.65;
+    
+            scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
+            scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
+            proceedButton.setVisible(true);
+            scene.proceedText.setVisible(true);
+        });
 
     }
 
