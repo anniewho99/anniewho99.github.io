@@ -1156,8 +1156,8 @@ function proceedToNextRound(scene) {
     if(isReplay === "replay"){
         // door_AI_color = 0xcc79a7;
         // players['AI'].color = 0xcc79a7;
-        player2.setTexture('player1').setScale(0.04 * dpr).setDepth(1);
-        scene.player2Ghost.setTexture('player1').setScale(0.04 * dpr).setDepth(1);
+        player2.setTexture('player1').setScale(0.05 * dpr).setDepth(1);
+        scene.player2Ghost.setTexture('player1').setScale(0.05 * dpr).setDepth(1);
     }
 
     if(currentRound === 2){
@@ -1585,25 +1585,16 @@ function create() {
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/assignedCondition';
     let assignedConditionExplained;
 
-// HHAAA
-// AHHAA
-// AAHHA
-// HAHAA
-// AHAHA
-// HAAHA
+// //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 
     if(assignedCondition === 0){
-        assignedConditionExplained = assignedCondition + "HHAAA";
+        assignedConditionExplained = assignedCondition + "A1A1A1A2";
     }else if (assignedCondition === 1){
-        assignedConditionExplained =  assignedCondition + "AHHAA";
+        assignedConditionExplained =  assignedCondition + "A1A1A2A2";
     }else if (assignedCondition === 2){
-        assignedConditionExplained =  assignedCondition + "AAHHA";
+        assignedConditionExplained =  assignedCondition + "A1A2A2A2";
     }else if(assignedCondition === 3){
-        assignedConditionExplained =  assignedCondition + "HAHAA";
-    }else if(assignedCondition === 4){
-        assignedConditionExplained =  assignedCondition + "AHAHA";
-    }else if(assignedCondition === 5){
-        assignedConditionExplained =  assignedCondition + "HAAHA";
+        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
     }
 
 
@@ -2884,7 +2875,7 @@ function initializeDemo(scene) {
     //allDoors.forEach(drawDoor.bind(this));
     allDoors.forEach(door => drawDoor(door, scene));
 
-    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
+    player1 = scene.physics.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.05 * dpr).setDepth(1);
     player1.setCollideWorldBounds(true); 
     player1.name = 'Human'; 
     player1.data = players['Human']; 
@@ -2972,7 +2963,7 @@ function displayNextInstruction(scene) {
 
         timeText.setVisible(false);
 
-        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.25 * dpr).setDepth(1);
+        player2 = scene.physics.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.35 * dpr).setDepth(1);
         player2.setCollideWorldBounds(true); 
         player2.name = 'AI'; 
         player2.data = players['AI'];
@@ -2988,8 +2979,8 @@ function displayNextInstruction(scene) {
 
         isReplay = "AI";
 
-        scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.04 * dpr).setDepth(1);
-        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.25 * dpr).setDepth(1);
+        scene.player1Ghost = scene.add.sprite(cellWidth / 2, cellHeight / 2, 'player1').setScale(0.05 * dpr).setDepth(1);
+        scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.35 * dpr).setDepth(1);
         scene.player1Ghost.setVisible(false);
         scene.player2Ghost.setVisible(false);
 
@@ -3114,8 +3105,8 @@ function completeSetup(scene) {
     if(isReplay === "replay"){
         // door_AI_color = 0xcc79a7;
         // players['AI'].color = 0xcc79a7;
-        player2.setTexture('player1').setScale(0.04 * dpr).setDepth(1).setTint(players['AI'].color);
-        scene.player2Ghost.setTexture('player1').setScale(0.04 * dpr).setDepth(1).setTint(players['AI'].color);
+        player2.setTexture('player1').setScale(0.05 * dpr).setDepth(1).setTint(players['AI'].color);
+        scene.player2Ghost.setTexture('player1').setScale(0.05 * dpr).setDepth(1).setTint(players['AI'].color);
     }
 
     doorAICoords = [];
