@@ -243,166 +243,121 @@
 
             <p>Please note that all questions marked with an asterisk (*) are required.</p>
 
-            <!-- <fieldset>
-                <legend>Select the icon of the robot player: <span style="color: red;">*</span></legend>
-                <div class="icon-selection-container">
-                    <label for="icon1">
-                        <input type="radio" id="icon1" name="robotIcon" value="icon1">
-                        <img src="p2 copy.png" alt="Icon 1">
-                    </label>
-                    <label for="icon2">
-                        <input type="radio" id="icon2" name="robotIcon" value="icon2">
-                        <img src="robot2.png" alt="Icon 2">
-                    </label>
-                    <label for="icon3">
-                        <input type="radio" id="icon3" name="robotIcon" value="icon3">
-                        <img src="robot3.png" alt="Icon 3">
-                    </label>
-                    <label for="icon4">
-                        <input type="radio" id="icon4" name="robotIcon" value="icon4">
-                        <img src="robot4.png" alt="Icon 4">
-                    </label>
-                    <label for="icon5">
-                        <input type="radio" id="icon5" name="robotIcon" value="icon5">
-                        <img src="robotyellow.png" alt="Icon 5">
-                    </label>
-                    <label for="icon6">
-                        <input type="radio" id="icon6" name="robotIcon" value="icon6">
-                        <img src="robot2yellow.png" alt="Icon 6">
-                    </label>
-                    <label for="icon7">
-                        <input type="radio" id="icon7" name="robotIcon" value="icon7">
-                        <img src="robot3yellow.png" alt="Icon 7">
-                    </label>
-                    <label for="icon8">
-                        <input type="radio" id="icon8" name="robotIcon" value="icon8">
-                        <img src="robot4yellow.png" alt="Icon 8">
-                    </label>
-                </div>
-            </fieldset>
-            
-            <fieldset>
-                <legend>Select the icon of the your player: <span style="color: red;">*</span></legend>
-                <div class="human-icon-selection-container">
-                    <label for="humanicon1">
-                        <input type="radio" id="humanicon1" name="humanIcon" value="humanicon1">
-                        <img src="p1 copy.png" alt="Iconhuman1">
-                    </label>
-                    <label for="humanicon2">
-                        <input type="radio" id="humanicon2" name="humanIcon" value="humanicon2">
-                        <img src="human2.png" alt="Iconhuman2">
-                    </label>
-                    <label for="humanicon3">
-                        <input type="radio" id="humanicon3" name="humanIcon" value="humanicon3">
-                        <img src="human3.png" alt="Iconhuman3">
-                    </label>
-                    <label for="humanicon4">
-                        <input type="radio" id="humanicon4" name="humanIcon" value="humanicon4">
-                        <img src="human4.png" alt="Iconhuman4">
-                    </label>
-                    <label for="humanicon5">
-                        <input type="radio" id="humanicon5" name="humanIcon" value="humanicon5">
-                        <img src="human1pink.png" alt="Iconhuman5">
-                    </label>
-                    <label for="humanicon6">
-                        <input type="radio" id="humanicon6" name="humanIcon" value="humanicon6">
-                        <img src="human2pink.png" alt="Iconhuman6">
-                    </label>
-                    <label for="humanicon7">
-                        <input type="radio" id="humanicon7" name="humanIcon" value="humanicon7">
-                        <img src="human3pink.png" alt="Iconhuman7">
-                    </label>
-                    <label for="humanicon8">
-                        <input type="radio" id="humanicon8" name="humanIcon" value="humanicon8">
-                        <img src="human4pink.png" alt="Iconhuman8">
-                    </label>
-                </div>
-            </fieldset> -->
+            <div id="questionnaireSection">
+                <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
+                <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
+                <fieldset>
+                    <legend>Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></legend>
+                    <div class="radio-container">
+                        <label>Not helpful at all</label>
+                        <label><input type="radio" id="helpfulnessRating1" name="helpfulnessRating" value="1"> 1</label>
+                        <label><input type="radio" id="helpfulnessRating2" name="helpfulnessRating" value="2"> 2</label>
+                        <label><input type="radio" id="helpfulnessRating3" name="helpfulnessRating" value="3"> 3</label>
+                        <label><input type="radio" id="helpfulnessRating4" name="helpfulnessRating" value="4"> 4</label>
+                        <label><input type="radio" id="helpfulnessRating5" name="helpfulnessRating" value="5"> 5</label>
+                        <label><input type="radio" id="helpfulnessRating6" name="helpfulnessRating" value="6"> 6</label>
+                        <label><input type="radio" id="helpfulnessRating7" name="helpfulnessRating" value="7"> 7</label>
+                        <label>Very helpful</label>
+                    </div>
+                </fieldset>
 
-            <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
-            <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
-
-            <fieldset>
-                <legend>Rating of the perceived helpfulness of the robot player: <span style="color: red;">*</span></legend>
-                <div class="radio-container">
-                    <label>Not helpful at all</label>
-                    <label><input type="radio" id="helpfulnessRating1" name="helpfulnessRating" value="1"> 1</label>
-                    <label><input type="radio" id="helpfulnessRating2" name="helpfulnessRating" value="2"> 2</label>
-                    <label><input type="radio" id="helpfulnessRating3" name="helpfulnessRating" value="3"> 3</label>
-                    <label><input type="radio" id="helpfulnessRating4" name="helpfulnessRating" value="4"> 4</label>
-                    <label><input type="radio" id="helpfulnessRating5" name="helpfulnessRating" value="5"> 5</label>
-                    <label><input type="radio" id="helpfulnessRating6" name="helpfulnessRating" value="6"> 6</label>
-                    <label><input type="radio" id="helpfulnessRating7" name="helpfulnessRating" value="7"> 7</label>
-                    <label>Very helpful</label>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Do you see this primarily as a: <span style="color: red;">*</span></legend>
-                <div class="radio-option">
-                    <input type="radio" id="competitiveGame" name="gameType" value="competitive">
-                    <label for="competitiveGame">Competitive game</label><br>
-                    <small> - Players compete against each other to collect more tokens than their opponent.</small>
-                </div>
+                <fieldset>
+                    <legend>Do you see this primarily as a: <span style="color: red;">*</span></legend>
+                    <div class="radio-option">
+                        <input type="radio" id="competitiveGame" name="gameType" value="competitive">
+                        <label for="competitiveGame">Competitive game</label><br>
+                        <small> - Players compete against each other to collect more tokens than their opponent.</small>
+                    </div>
+                    
+                    <div class="radio-option">
+                        <input type="radio" id="collaborativeGame" name="gameType" value="collaborative">
+                        <label for="collaborativeGame">Collaborative game</label><br>
+                        <small> - Players work together to collect as many tokens as they can.</small>
+                    </div>
+                    
+                    <div class="radio-option">
+                        <input type="radio" id="neitherGame" name="gameType" value="neither">
+                        <label for="neitherGame">Neither</label>
+                        <textarea id="explainGame" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea>
+                    </div>
+                </fieldset>
                 
-                <div class="radio-option">
-                    <input type="radio" id="collaborativeGame" name="gameType" value="collaborative">
-                    <label for="collaborativeGame">Collaborative game</label><br>
-                    <small> - Players work together to collect as many tokens as they can.</small>
-                </div>
+                <fieldset>
+                    <legend>Generally, do you see multi-player game primarily as a: <span style="color: red;">*</span></legend>
+                    <div class="radio-option">
+                        <input type="radio" id="generalCompetitiveGame" name="generalGameType" value="competitive">
+                        <label for="generalCompetitiveGame">Competitive game</label><br>
+                    </div>
+                    
+                    <div class="radio-option">
+                        <input type="radio" id="generalCollaborativeGame" name="generalGameType" value="collaborative">
+                        <label for="generalCollaborativeGame">Collaborative game</label><br>
+                    </div>
+                </fieldset>
                 
-                <div class="radio-option">
-                    <input type="radio" id="neitherGame" name="gameType" value="neither">
-                    <label for="neitherGame">Neither</label>
-                    <textarea id="explainGame" name="explain" rows="2" cols="50" placeholder="Please explain..."></textarea>
-                </div>
-            </fieldset>
-            
-            <fieldset>
-                <legend>Generally, do you see multi-player game primarily as a: <span style="color: red;">*</span></legend>
-                <div class="radio-option">
-                    <input type="radio" id="generalCompetitiveGame" name="generalGameType" value="competitive">
-                    <label for="generalCompetitiveGame">Competitive game</label><br>
-                </div>
+
+                <fieldset>
+                    <legend>Did you notice the other player getting stuck? <span style="color: red;">*</span></legend>
+                    <div class="radio-option">
+                        <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
+                        <label for="robotStuckYes">Yes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="robotStuckNo" name="robotStuck" value="no">
+                        <label for="robotStuckNo">No</label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Did you help the stuck player? <span style="color: red;">*</span></legend>
+                    <div class="radio-option">
+                        <input type="radio" id="helpedAlways" name="helpFrequency" value="always">
+                        <label for="helpedAlways">Always</label><br>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="helpedSometimes" name="helpFrequency" value="sometimes">
+                        <label for="helpedSometimes">Sometimes</label><br>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="helpedNever" name="helpFrequency" value="never">
+                        <label for="helpedNever">Never</label>
+                    </div>
+                </fieldset>
                 
-                <div class="radio-option">
-                    <input type="radio" id="generalCollaborativeGame" name="generalGameType" value="collaborative">
-                    <label for="generalCollaborativeGame">Collaborative game</label><br>
-                </div>
-            </fieldset>
+                <fieldset>
+                    <legend>Whenever you helped, why did you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you choose to help the other player?"></textarea><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Whenever you didn't help, why didn't you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you choose not to help the other player?"></textarea><br>
+                </fieldset>
+                
+
+                <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: </label><br>
+                <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
+
+                <button type="button" id="nextButton">Next</button>
+            </div>
             
+            <script>
+            document.getElementById('nextButton').addEventListener('click', function() {
+                // Hide the questions or the entire questionnaire section
+                document.getElementById('questionnaireSection').style.display = 'none'; // Assuming your questions are wrapped in this div
+                
+                // Show the submit section
+                document.getElementById('submitSection').style.display = 'block';
+            });
+            </script>
 
-            <fieldset>
-                <legend>Did you notice the other player getting stuck? <span style="color: red;">*</span></legend>
-                <div class="radio-option">
-                    <input type="radio" id="robotStuckYes" name="robotStuck" value="yes">
-                    <label for="robotStuckYes">Yes</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="robotStuckNo" name="robotStuck" value="no">
-                    <label for="robotStuckNo">No</label>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Did you help the stuck player? <span style="color: red;">*</span></legend>
-                <div class="radio-option">
-                    <input type="radio" id="helpedYes" name="helpedRobot" value="yes">
-                    <label for="helpedYes">Yes</label>
-                    <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you help the robot?"></textarea><br>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="helpedNo" name="helpedRobot" value="no">
-                    <label for="helpedNo">No</label>
-                    <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you not help the robot?"></textarea><br>
-                </div>
-            </fieldset>
-
-            <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: </label><br>
-            <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
-
-            <input type="submit" value="Submit">
+            <div id="submitSection" style="display:none;">
+                <p>The human player is a replay of previously collected human data instead of a real-time human player. Press submit to go back to Prolific.</p>
+                <input type="submit" value="Submit">
+            </div>
+<!-- 
+            <input type="submit" value="Submit"> -->
         </form>
     </div>
 

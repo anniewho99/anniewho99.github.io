@@ -87,7 +87,7 @@ fetch('adjusted_movement.json')
     console.error('There was a problem with your fetch operation:', error);
   });
 
-let door_AI_color = 0xf0e442;  //yellow 
+let door_AI_color = 0xecdd13;  //yellow 
 const door_human_color = 0xE66100; // orange color in hex
 
 // const grid_width = 900;
@@ -101,18 +101,18 @@ let players = {
     },
     'AI': {
         id: 1,
-        color:  0xf0e442,  //yellow 
+        color:  0xecdd13,  //yellow 
         tokensCollected: 0
     }
 };
 
 let roundOneColor = 0x7F5FBF; //purple
 
-let roundTwoColor = 0xcc79a7; //pink
+let roundTwoColor = 0x009e73; //green
 
 let roundThreeColor = 0x0D77B7; //blue
 
-let roundFourColor = 0xf0e442; //yellow
+let roundFourColor = 0xecdd13; //yellow
 
 let studyId = 'ExpThreeTest';
 
@@ -376,7 +376,7 @@ let config = {
     type: Phaser.AUTO,
     width: 1220 * dpr,
     height: 520 * dpr,
-    backgroundColor: '#C8E6C9',
+    backgroundColor: '#D1D1D1', //#C8E6C9
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -602,7 +602,7 @@ const coverDoor = (doorCoord, scene) => {
     const coverGraphics = scene.add.graphics();
     
     // Set the fill style to the background color (replace with your background color)
-    coverGraphics.fillStyle(0xC8E6C9);
+    coverGraphics.fillStyle(0xD1D1D1);
   
     // Draw the rectangle at the door's position
     coverGraphics.fillRect((doorX - DOOR_WIDTH / 2) - cellWidth, doorY - cellHeight, DOOR_WIDTH, cellHeight);
@@ -1006,48 +1006,72 @@ function updateGameTime(scene) {
             endGame(scene);
             return;
         }
-  
-      isTimeoutScheduled = true;
-      scene.overlay.setVisible(true);
-      if(scene.messageText) scene.messageText.destroy();
-      let specificSizeStyle = createTextStyle(25 * dpr, '#000');
-      let playerName = "AI"; 
-      let tokenType = "Gold";
+        
+        isTimeoutScheduled = true;
 
-      if(trapTimeForEachRound[currentRound - 1].AI === 777){
-        isReplay = "replay";
-      }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
-        isReplay = "AI";
-      }
+        runUpdateLogic = false;
 
-      if(isReplay === "AI"){
-        playerName =  "a robot player";
-        tokenType = "butterflies";
-      }else{
-        playerName =  "a human player";
-        tokenType = "apples";
-      }
+        let textStyle = createTextStyle(25 * dpr, '#000');
+        
+        // Create and display the message for the end of the round
+        let endRoundMessage = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2, 'Current round has ended, are you ready for the next round?', textStyle).setOrigin(0.5).setDepth(1002);
 
-      scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `Finding a new player for the new round...`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
-      scene.messageText.setVisible(true);
+        textStyle = createTextStyle(25 * dpr, '#FFF');
+        
+        // Create the proceed button
+        let proceedButton = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 100, 'Proceed', textStyle)
+            .setInteractive()
+            .setOrigin(0.5).setDepth(1002);
 
+        let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+        let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
+          
+        proceedButton.on('pointerdown', () => {
+                // Remove the end round message and the proceed button when clicked
+            endRoundMessage.destroy();
+            proceedButton.destroy();
+            proceedRectangle.destroy();
+            textRectangle.destroy();
 
-      scene.time.delayedCall(5000, () => {
-          scene.messageText.setText(`We will now start round ${currentRound} of 4!\nPlease use the arrow keys to move your orange player. \nYou are playing with ${playerName} who collects ${tokenType} this round.`);
+            scene.overlay.setVisible(true);
+            if(scene.messageText) scene.messageText.destroy();
+            let specificSizeStyle = createTextStyle(25 * dpr, '#000');
+            let playerIntrouction = "AI"; 
+      
+            if(trapTimeForEachRound[currentRound - 1].AI === 777){
+              isReplay = "replay";
+            }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+              isReplay = "AI";
+            }
+      
+            if(isReplay === "AI"){
+              playerIntrouction =  "\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
+            }else{
+              playerIntrouction =  "\n We found an available human player.\n You will play with a human player that collects apples.";
+            }
+      
+            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 4!\nFinding a new human player for the new round...`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+            scene.messageText.setVisible(true);
+      
+      
+            scene.time.delayedCall(5000, () => {
+                scene.messageText.setText(` Game ready to start!\n Please use the arrow keys to move your orange player. \n ${playerIntrouction}`);
+      
+                specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+                nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
+                    .setOrigin(0.5, 0.5)
+                    .setDepth(1002)
+                    .setInteractive();
+                nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+          
+                nextRoundButton.on('pointerdown', () => {
+                    proceedToNextRound(scene);
+                });
+            });
 
-          specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
-          nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
-              .setOrigin(0.5, 0.5)
-              .setDepth(1002)
-              .setInteractive();
-          nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
-    
-          nextRoundButton.on('pointerdown', () => {
-              proceedToNextRound(scene);
-          });
-      });
+        });
 
-      runUpdateLogic = false;
+      //runUpdateLogic = false;
 
     //   specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
     //   nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
@@ -1302,17 +1326,17 @@ function endGame(scene) {
         let isGameTypeSelected = document.querySelector('input[name="gameType"]:checked') !== null;
         let isGeneralGameTypeSelected = document.querySelector('input[name="generalGameType"]:checked') !== null;
         let isRobotStuckSelected = document.querySelector('input[name="robotStuck"]:checked') !== null;
-        let isHelpedRobotSelected = document.querySelector('input[name="helpedRobot"]:checked');
+        let isHelpedRobotSelected = document.querySelector('input[name="helpFrequency"]:checked') !== null;
 
-        // Checking the 'helpedRobot' field and the appropriate textarea
-        let helpedRobotValue = isHelpedRobotSelected ? isHelpedRobotSelected.value : '';
-        let isWhyHelpedFilledCorrectly = false;
+        // // Checking the 'helpedRobot' field and the appropriate textarea
+        // let helpedRobotValue = isHelpedRobotSelected ? isHelpedRobotSelected.value : '';
+        // let isWhyHelpedFilledCorrectly = false;
 
-        if (helpedRobotValue === 'yes') {
-            isWhyHelpedFilledCorrectly = document.getElementById('whyHelped').value.trim() !== '';  
-        } else if (helpedRobotValue === 'no') {
-            isWhyHelpedFilledCorrectly = document.getElementById('whyNotHelped').value.trim() !== '';
-        }
+        // if (helpedRobotValue === 'yes') {
+        //     isWhyHelpedFilledCorrectly = document.getElementById('whyHelped').value.trim() !== '';  
+        // } else if (helpedRobotValue === 'no') {
+        //     isWhyHelpedFilledCorrectly = document.getElementById('whyNotHelped').value.trim() !== '';
+        // }
 
         let isNeitherSelected = document.querySelector('input[name="gameType"]:checked') ? document.querySelector('input[name="gameType"]:checked').value === 'neither': false;
 
@@ -1609,7 +1633,7 @@ function create() {
     writeURLParameters( pathnow );
 
     // Create an overlay and welcome message
-    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xC8E6C9).setOrigin(0, 0).setDepth(1000);
+    this.overlay = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0xD1D1D1).setOrigin(0, 0).setDepth(1000);
     this.overlay.setAlpha(1); // Adjust the alpha for desired transparency
     // this.overlay.setVisible(false);
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
@@ -2905,8 +2929,7 @@ function initializeDemo(scene) {
     });
 }
 
-let playerName = "AI"; 
-let tokenType = "Gold";
+let playerIntrouction = "AI"; 
 
 if(trapTimeForEachRound[currentRound - 1].AI === 777){
     isReplay = "replay";
@@ -2915,11 +2938,11 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 }
 
 if(isReplay === "AI"){
-    playerName =  "a robot player";
-    tokenType = "butterflies";
+    playerIntrouction =  " Have fun!!\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
+    //"We can't find an available player at the moment.\nYou will play with a robot player that collects butterflies";
 }else{
-    playerName =  "a human player";
-    tokenType = "apple";
+    playerIntrouction =  " Have fun!!\n We found an available human player.\n You will play with a human player that collects apples.";
+    //"We found an available human player.\nYou will play with a human player that collects apples";
 }
 
 let instructions = [
@@ -2927,9 +2950,8 @@ let instructions = [
     " The tokens you can collect are\n the orange flowers. \n When you finish collecting\n all orange flowers in an area, \n a new group of orange flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
-    " Finding a new player for the current round...",
-    `Have fun!!
-You are playing with ${playerName} who collects ${tokenType} in this round.`
+    " Lets start the first round. There are 4 rounds in total. \n Finding a new human player for the current round...",
+    // ` Have fun!!\n We${playerIntrouction}`
 ];
 let currentInstructionIndex = 0;
 
@@ -2983,6 +3005,8 @@ function displayNextInstruction(scene) {
         scene.player2Ghost = scene.add.sprite(grid_width - cellWidth / 2, scene.sys.game.config.height - cellHeight / 2, 'player2').setScale(0.35 * dpr).setDepth(1);
         scene.player1Ghost.setVisible(false);
         scene.player2Ghost.setVisible(false);
+        scene.player1Ghost.setTint(players['Human'].color);
+        scene.player2Ghost.setTint(players['AI'].color);
 
         addStarTokens(scene, players['AI'].id);
 
@@ -2996,26 +3020,26 @@ function displayNextInstruction(scene) {
         proceedButton.setFillStyle(0xCCCCCC);
     }
 
-    if(currentInstructionIndex === 5){
-        scene.overlay.setVisible(true);
-        let fontSize = 26 * dpr;
-        scene.messageText.setFontSize(fontSize + 'px');
-        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
-        scene.messageText.y = scene.sys.game.config.height / 2 - 100;
+    // if(currentInstructionIndex === 5){
+    //     scene.overlay.setVisible(true);
+    //     let fontSize = 26 * dpr;
+    //     scene.messageText.setFontSize(fontSize + 'px');
+    //     scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
+    //     scene.messageText.y = scene.sys.game.config.height / 2 - 100;
 
-        proceedButton.x = scene.sys.game.config.width / 2;
-        proceedButton.y = scene.sys.game.config.height * 0.65;
+    //     proceedButton.x = scene.sys.game.config.width / 2;
+    //     proceedButton.y = scene.sys.game.config.height * 0.65;
 
-        scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
-        scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
+    //     scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
+    //     scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
 
-        // if(isReplay === "AI"){
-        //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width - 200 * dpr, scene.sys.game.config.height * 0.5 + 5 * dpr, 'player2').setScale(0.3 * dpr).setDepth(1001);
-        // }else{
-        //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width  - 200 * dpr, scene.sys.game.config.height * 0.55 + 5 * dpr, 'replayPlayer').setScale(0.5 * dpr).setDepth(1001);
-        // }
+    //     // if(isReplay === "AI"){
+    //     //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width - 200 * dpr, scene.sys.game.config.height * 0.5 + 5 * dpr, 'player2').setScale(0.3 * dpr).setDepth(1001);
+    //     // }else{
+    //     //     scene.displayIcon = scene.add.sprite(scene.sys.game.config.width  - 200 * dpr, scene.sys.game.config.height * 0.55 + 5 * dpr, 'replayPlayer').setScale(0.5 * dpr).setDepth(1001);
+    //     // }
 
-    }
+    // }
 
     if(currentInstructionIndex === 4){
         scene.overlay.setVisible(true);
@@ -3028,7 +3052,7 @@ function displayNextInstruction(scene) {
         scene.proceedText.setVisible(false);
 
         scene.time.delayedCall(5000, () => {
-            scene.messageText.setText('Game ready to start! \nLets start the first round. There are 4 rounds in total.');
+            scene.messageText.setText(playerIntrouction);
             proceedButton.x = scene.sys.game.config.width / 2;
             proceedButton.y = scene.sys.game.config.height * 0.65;
     
