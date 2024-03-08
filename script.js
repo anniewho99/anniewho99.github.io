@@ -257,7 +257,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 10; 
+let gameDuration = 90; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -1049,25 +1049,45 @@ function updateGameTime(scene) {
             }else{
               playerIntrouction =  "\n We found an available human player.\n You will play with a human player that collects apples.";
             }
+
+            let countdownDuration = 15; // 15 seconds
+            let countdownTimer = countdownDuration;
       
-            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, `We will now start round ${currentRound} of 4!\nFinding a new human player for the new round...`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n Please use the arrow keys to move your orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
             scene.messageText.setVisible(true);
+
+
+            scene.time.delayedCall(3000, () => {
       
-      
-            scene.time.delayedCall(5000, () => {
-                scene.messageText.setText(` Game ready to start!\n Please use the arrow keys to move your orange player. \n ${playerIntrouction}`);
-      
-                specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
-                nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
-                    .setOrigin(0.5, 0.5)
-                    .setDepth(1002)
-                    .setInteractive();
-                nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
-          
-                nextRoundButton.on('pointerdown', () => {
-                    proceedToNextRound(scene);
+                let timerEvent = scene.time.addEvent({
+                    delay: 1000, // 1000ms = 1 second
+                    callback: () => {
+                    countdownTimer--; // Decrease timer
+                    scene.messageText.setText(` Finding a new human player for the new round...\n Next round starts in: ${countdownTimer} seconds`);
+                    if (countdownTimer <= 0) {
+                        scene.messageText.setText(` ${playerIntrouction}`);
+        
+                    // specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+                    // nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
+                    //     .setOrigin(0.5, 0.5)
+                    //     .setDepth(1002)
+                    //     .setInteractive();
+                    // nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            
+                        scene.time.delayedCall(3000, () => {
+                            scene.messageText.setText(" Game ready to start. Have fun! ");
+                            scene.time.delayedCall(3000, () => {
+                                proceedToNextRound(scene);
+                            });
+                        });
+                        timerEvent.remove();
+                    }
+                },
+                callbackScope: this,
+                loop: true
                 });
-            });
+            })
+
 
         });
 
@@ -1229,9 +1249,9 @@ function proceedToNextRound(scene) {
   
     isTimeoutScheduled = false;
 
-    if(nextRoundButton) nextRoundButton.destroy(); 
+    // if(nextRoundButton) nextRoundButton.destroy(); 
 
-    if(nextRoundRectangle) nextRoundRectangle.destroy();
+    // if(nextRoundRectangle) nextRoundRectangle.destroy();
 }
 
 function redirectToProlific() {
@@ -2942,10 +2962,10 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 }
 
 if(isReplay === "AI"){
-    playerIntrouction =  " We can't find an available player at the moment.\n For this round, you will play with a robot player that collects butterflies. \n Have fun!";
+    playerIntrouction =  " We can't find an available player at the moment.\n For this round, you will play with a robot player that collects butterflies.";
     //"We can't find an available player at the moment.\nYou will play with a robot player that collects butterflies";
 }else{
-    playerIntrouction =  " We found an available human player.\n For this round, you will play with a human player that collects apples. \n Have fun!";
+    playerIntrouction =  " We found an available human player.\n For this round, you will play with a human player that collects apples.";
     //"We found an available human player.\nYou will play with a human player that collects apples";
 }
 
@@ -2954,7 +2974,8 @@ let instructions = [
     " The tokens you can collect are\n the orange flowers. \n When you finish collecting\n all orange flowers in an area, \n a new group of orange flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
-    " Lets start the first round. There are 4 rounds in total. \n Finding a human player for the current round...",
+    " Lets start the first round.\n There are 4 rounds in total.",
+    " Finding a human player for the current round...",
     // ` Have fun!!\n We${playerIntrouction}`
 ];
 let currentInstructionIndex = 0;
@@ -3045,7 +3066,7 @@ function displayNextInstruction(scene) {
 
     // }
 
-    if(currentInstructionIndex === 4){
+    if(currentInstructionIndex === 5){
         scene.overlay.setVisible(true);
         let fontSize = 26 * dpr;
         scene.messageText.setFontSize(fontSize + 'px');
@@ -3055,15 +3076,40 @@ function displayNextInstruction(scene) {
         proceedButton.setVisible(false);
         scene.proceedText.setVisible(false);
 
-        scene.time.delayedCall(5000, () => {
-            scene.messageText.setText(playerIntrouction);
-            proceedButton.x = scene.sys.game.config.width / 2;
-            proceedButton.y = scene.sys.game.config.height * 0.65;
-    
-            scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
-            scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
-            proceedButton.setVisible(true);
-            scene.proceedText.setVisible(true);
+        // Countdown duration in seconds
+        let countdownDuration = 15; // 5 seconds for example
+        let countdownTimer = countdownDuration;
+
+        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Next round starts in: ${countdownTimer} seconds`);
+
+
+        let timerEvent = scene.time.addEvent({
+            delay: 1000, // 1000ms = 1 second
+            callback: () => {
+            countdownTimer--;
+            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Next round starts in: ${countdownTimer} seconds`);
+            if (countdownTimer <= 0) {
+                scene.messageText.setText(playerIntrouction);
+                // proceedButton.x = scene.sys.game.config.width / 2;
+                // proceedButton.y = scene.sys.game.config.height * 0.65;
+        
+                // scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
+                // scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
+                // proceedButton.setVisible(true);
+                // scene.proceedText.setVisible(true);
+                proceedButton.destroy();
+                scene.time.delayedCall(4000, () => {
+                    scene.messageText.setText("Game starts now. Have fun!");
+                    scene.time.delayedCall(2000, () => {
+                    completeSetup(scene);
+                    });
+
+                });
+                timerEvent.remove();
+            }
+            },
+            callbackScope: this,
+            loop: true
         });
 
     }
@@ -3072,11 +3118,11 @@ function displayNextInstruction(scene) {
         scene.messageText.setText(instructions[currentInstructionIndex]);
         currentInstructionIndex++;
     } 
-    else {
-        // All instructions shown, remove L key listener and proceed with game setup
-        proceedButton.destroy();
-        completeSetup(scene);
-    }
+    // else {
+    //     // All instructions shown, remove L key listener and proceed with game setup
+    //     proceedButton.destroy();
+    //     completeSetup(scene);
+    // }
 }
 
 function completeSetup(scene) {
