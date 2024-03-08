@@ -355,11 +355,21 @@
 
             <div id="submitSection" style="display:none;">
                 <p>In this experiment, you might have been presented with several different human players. Please note that the actions of these human players are based on previously collected data, and therefore, you were not playing with live human players but a replay of previous participants. We use replayed action to better control the environment and improve our ability to draw scientific conclusion.</p>
-                <p>If in light of this information, you are not comfortable with sharing your data, do not press the submit button below. Pressing submit button belows completes the experiment and brings you back to Prolific.</p>
+                <p>If in light of this information, you are not comfortable with sharing your data, do not press the submit button below. Pressing submit button belows completes the experiment and brings you back to Prolific. Pressing the exit button closes the current page and leaves the study.</p>
                 <input type="submit" value="Submit">
+                <button type="button" id="exitButton" style="margin-left: 10px;">Exit</button>
             </div>
-<!-- 
-            <input type="submit" value="Submit"> -->
+
+            <script>
+                document.getElementById('exitButton').addEventListener('click', function() {
+                    // Attempt to close the current tab or window
+                    window.close();
+                    alert("Please close this window to exit the study."); // Show a message instructing manual action
+                
+                    // Note: For security reasons, modern browsers only allow scripts to close windows that were opened by that script. 
+                    // If this doesn't work as intended, you might need to direct users to close the window manually or navigate away.
+                });
+            </script>
         </form>
     </div>
 
