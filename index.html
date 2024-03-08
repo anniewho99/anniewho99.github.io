@@ -236,14 +236,15 @@
     </div>
 
     <div id="postGameContent">
-        <h1>Thank you for participating!</h1>
-        <h2>Please answer the following questions</h2>
-
         <form id="feedbackForm">
 
-            <p>Please note that all questions marked with an asterisk (*) are required.</p>
-
             <div id="questionnaireSection">
+                <h1>Thank you for participating!</h1>
+                <h2>Please answer the following questions</h2>
+
+                <p>Please note that all questions marked with an asterisk (*) are required.</p>
+
+
                 <label for="strategy">What was your strategy in the game? <span style="color: red;">*</span></label>
                 <textarea id="strategy" name="strategy" rows="4" cols="50"></textarea><br><br>
 
@@ -326,20 +327,20 @@
                 </fieldset>
                 
                 <fieldset>
-                    <legend>Whenever you helped, why did you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <legend>Whenever you helped the player who were stuck, why did you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
                     <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you choose to help the other player?"></textarea><br>
                 </fieldset>
                 
                 <fieldset>
-                    <legend>Whenever you didn't help, why didn't you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <legend>Whenever you didn't help the player who were stuck, why didn't you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
                     <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you choose not to help the other player?"></textarea><br>
                 </fieldset>
                 
 
                 <label for="suggestions">This is a pilot study, and your feedback is invaluable! Do you have any suggestions to enhance the experiment? We'd love to hear your insights: </label><br>
-                <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
+                <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea>
 
-                <button type="button" id="nextButton">Next</button>
+                <button type="button" id="nextButton">Next</button><br><br><br><br>
             </div>
             
             <script>
@@ -353,7 +354,8 @@
             </script>
 
             <div id="submitSection" style="display:none;">
-                <p>The human player is a replay of previously collected human data instead of a real-time human player. Press submit to go back to Prolific.</p>
+                <p>In this experiment, you might have been presented with several different human players. Please note that the actions of these human players are based on previously collected data, and therefore, you were not playing with live human players but a replay of previous participants. We use replayed action to better control the environment and improve our ability to draw scientific conclusion.</p>
+                <p>If in light of this information, you are not comfortable with sharing your data, do not press the submit button below. Pressing submit button belows completes the experiment and brings you back to Prolific.</p>
                 <input type="submit" value="Submit">
             </div>
 <!-- 

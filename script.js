@@ -257,7 +257,7 @@ let isDoorRotating = false;
 let doorSwitch = false;
 
 let currentTime = 0; // Start time in seconds
-let gameDuration = 90; 
+let gameDuration = 10; 
 
 let playerOneTrapped = false;
 let playerTwoTrapped = false;
@@ -1327,6 +1327,9 @@ function endGame(scene) {
         let isGeneralGameTypeSelected = document.querySelector('input[name="generalGameType"]:checked') !== null;
         let isRobotStuckSelected = document.querySelector('input[name="robotStuck"]:checked') !== null;
         let isHelpedRobotSelected = document.querySelector('input[name="helpFrequency"]:checked') !== null;
+        let whyHelped = document.getElementById('whyHelped').value.trim() !== '';
+        let whyNotHelped = document.getElementById('whyNotHelped').value.trim() !== '';
+
 
         // // Checking the 'helpedRobot' field and the appropriate textarea
         // let helpedRobotValue = isHelpedRobotSelected ? isHelpedRobotSelected.value : '';
@@ -1356,8 +1359,9 @@ function endGame(scene) {
             isGeneralGameTypeSelected &&
             isRobotStuckSelected &&
             isHelpedRobotSelected &&
-            isWhyHelpedFilledCorrectly &&
-            isExplainFilledCorrectly 
+            isExplainFilledCorrectly &&
+            whyHelped &&
+            whyNotHelped
             //&& robotIconSelected && humanIconSelected 
         ){
             const data = {
@@ -1367,7 +1371,7 @@ function endGame(scene) {
                 generalGameType: document.querySelector('input[name="generalGameType"]:checked').value,
                 explain: explainValue,
                 robotStuck: document.querySelector('input[name="robotStuck"]:checked').value,
-                helpedRobot: document.querySelector('input[name="helpedRobot"]:checked').value,
+                helpedRobot: document.querySelector('input[name="helpFrequency"]:checked').value,
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
                 suggestions: document.getElementById('suggestions').value,
@@ -2938,10 +2942,10 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 }
 
 if(isReplay === "AI"){
-    playerIntrouction =  " Have fun!!\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
+    playerIntrouction =  " We can't find an available player at the moment.\n For this round, you will play with a robot player that collects butterflies. \n Have fun!";
     //"We can't find an available player at the moment.\nYou will play with a robot player that collects butterflies";
 }else{
-    playerIntrouction =  " Have fun!!\n We found an available human player.\n You will play with a human player that collects apples.";
+    playerIntrouction =  " We found an available human player.\n For this round, you will play with a human player that collects apples. \n Have fun!";
     //"We found an available human player.\nYou will play with a human player that collects apples";
 }
 
@@ -2950,7 +2954,7 @@ let instructions = [
     " The tokens you can collect are\n the orange flowers. \n When you finish collecting\n all orange flowers in an area, \n a new group of orange flowers\n will appear in another area.\n Now try to collect three flowers. ",
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
-    " Lets start the first round. There are 4 rounds in total. \n Finding a new human player for the current round...",
+    " Lets start the first round. There are 4 rounds in total. \n Finding a human player for the current round...",
     // ` Have fun!!\n We${playerIntrouction}`
 ];
 let currentInstructionIndex = 0;
