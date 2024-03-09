@@ -1003,93 +1003,118 @@ function updateGameTime(scene) {
             // End the game and show post-game content
 
             runUpdateLogic = false;
-            endGame(scene);
-            return;
-        }
-        
-        isTimeoutScheduled = true;
-
-        runUpdateLogic = false;
-
-        let textStyle = createTextStyle(25 * dpr, '#000');
-        
-        // Create and display the message for the end of the round
-        let endRoundMessage = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2, 'Current round has ended, are you ready for the next round?', textStyle).setOrigin(0.5).setDepth(1002);
-
-        textStyle = createTextStyle(25 * dpr, '#FFF');
-        
-        // Create the proceed button
-        let proceedButton = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 100, 'Proceed', textStyle)
-            .setInteractive()
-            .setOrigin(0.5).setDepth(1002);
-
-        let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
-        let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
-          
-        proceedButton.on('pointerdown', () => {
-                // Remove the end round message and the proceed button when clicked
-            endRoundMessage.destroy();
-            proceedButton.destroy();
-            proceedRectangle.destroy();
-            textRectangle.destroy();
-
-            scene.overlay.setVisible(true);
-            if(scene.messageText) scene.messageText.destroy();
-            let specificSizeStyle = createTextStyle(25 * dpr, '#000');
-            let playerIntrouction = "AI"; 
-      
-            if(trapTimeForEachRound[currentRound - 1].AI === 777){
-              isReplay = "replay";
-            }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
-              isReplay = "AI";
-            }
-      
-            if(isReplay === "AI"){
-              playerIntrouction =  "\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
-            }else{
-              playerIntrouction =  "\n We found an available human player.\n You will play with a human player that collects apples.";
-            }
-
-            let countdownDuration = 15; // 15 seconds
-            let countdownTimer = countdownDuration;
-      
-            scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n Please use the arrow keys to move your orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
-            scene.messageText.setVisible(true);
-
-
-            scene.time.delayedCall(3000, () => {
-      
-                let timerEvent = scene.time.addEvent({
-                    delay: 1000, // 1000ms = 1 second
-                    callback: () => {
-                    countdownTimer--; // Decrease timer
-                    scene.messageText.setText(` Finding a new human player for the new round...\n Next round starts in: ${countdownTimer} seconds`);
-                    if (countdownTimer <= 0) {
-                        scene.messageText.setText(` ${playerIntrouction}`);
-        
-                    // specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
-                    // nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
-                    //     .setOrigin(0.5, 0.5)
-                    //     .setDepth(1002)
-                    //     .setInteractive();
-                    // nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+                
+            let textStyle = createTextStyle(25 * dpr, '#000');
             
-                        scene.time.delayedCall(3000, () => {
-                            scene.messageText.setText(" Game ready to start. Have fun! ");
+            // Create and display the message for the end of the round
+            let endRoundMessage = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2, 'Game has ended. Press proceed to go to the post-game questionnaire.', textStyle).setOrigin(0.5).setDepth(1002);
+    
+            textStyle = createTextStyle(25 * dpr, '#FFF');
+            
+            // Create the proceed button
+            let proceedButton = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 100, 'Proceed', textStyle)
+                .setInteractive()
+                .setOrigin(0.5).setDepth(1002);
+    
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
+              
+            proceedButton.on('pointerdown', () => {
+                endRoundMessage.destroy();
+                proceedButton.destroy();
+                proceedRectangle.destroy();
+                textRectangle.destroy();
+                endGame(scene);
+                return;
+            });
+
+        }else{
+            isTimeoutScheduled = true;
+
+            runUpdateLogic = false;
+    
+            let textStyle = createTextStyle(25 * dpr, '#000');
+            
+            // Create and display the message for the end of the round
+            let endRoundMessage = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2, 'Current round has ended, are you ready for the next round?', textStyle).setOrigin(0.5).setDepth(1002);
+    
+            textStyle = createTextStyle(25 * dpr, '#FFF');
+            
+            // Create the proceed button
+            let proceedButton = scene.add.text(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 100, 'Proceed', textStyle)
+                .setInteractive()
+                .setOrigin(0.5).setDepth(1002);
+    
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
+              
+            proceedButton.on('pointerdown', () => {
+                    // Remove the end round message and the proceed button when clicked
+                endRoundMessage.destroy();
+                proceedButton.destroy();
+                proceedRectangle.destroy();
+                textRectangle.destroy();
+    
+                scene.overlay.setVisible(true);
+                if(scene.messageText) scene.messageText.destroy();
+                let specificSizeStyle = createTextStyle(25 * dpr, '#000');
+                let playerIntrouction = "AI"; 
+          
+                if(trapTimeForEachRound[currentRound - 1].AI === 777){
+                  isReplay = "replay";
+                }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
+                  isReplay = "AI";
+                }
+          
+                if(isReplay === "AI"){
+                  playerIntrouction =  "\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
+                }else{
+                  playerIntrouction =  "\n We found an available human player.\n You will play with a human player that collects apples.";
+                }
+    
+                let countdownDuration = 15; // 15 seconds
+                let countdownTimer = countdownDuration;
+          
+                scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n Please use the arrow keys to move your orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+                scene.messageText.setVisible(true);
+    
+    
+                scene.time.delayedCall(3000, () => {
+          
+                    let timerEvent = scene.time.addEvent({
+                        delay: 1000, // 1000ms = 1 second
+                        callback: () => {
+                        countdownTimer--; // Decrease timer
+                        scene.messageText.setText(` Finding a new human player for the new round...\n Next round starts in: ${countdownTimer} seconds`);
+                        if (countdownTimer <= 0) {
+                            scene.messageText.setText(` ${playerIntrouction}`);
+            
+                        // specificSizeStyle = createTextStyle(20 * dpr, '#FFF');
+                        // nextRoundButton = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 'Proceed', specificSizeStyle)
+                        //     .setOrigin(0.5, 0.5)
+                        //     .setDepth(1002)
+                        //     .setInteractive();
+                        // nextRoundRectangle = scene.add.rectangle(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2 + 80 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+                
                             scene.time.delayedCall(3000, () => {
-                                proceedToNextRound(scene);
+                                scene.messageText.setText(" Game ready to start. Have fun! ");
+                                scene.time.delayedCall(3000, () => {
+                                    proceedToNextRound(scene);
+                                });
                             });
-                        });
-                        timerEvent.remove();
-                    }
-                },
-                callbackScope: this,
-                loop: true
-                });
-            })
+                            timerEvent.remove();
+                        }
+                    },
+                    callbackScope: this,
+                    loop: true
+                    });
+                })
+    
+    
+            });
 
-
-        });
+        }
+    
 
       //runUpdateLogic = false;
 
