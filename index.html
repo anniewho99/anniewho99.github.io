@@ -344,14 +344,45 @@
             </div>
             
             <script>
-            document.getElementById('nextButton').addEventListener('click', function() {
-                // Hide the questions or the entire questionnaire section
-                document.getElementById('questionnaireSection').style.display = 'none'; // Assuming your questions are wrapped in this div
+                document.getElementById('nextButton').addEventListener('click', function() {
+                    // Assume form is valid initially
+                    let formIsValid = true;
                 
-                // Show the submit section
-                document.getElementById('submitSection').style.display = 'block';
-            });
-            </script>
+                    // Check text inputs and textareas within 'questionnaireSection'
+                    const textInputs = document.querySelectorAll('#questionnaireSection input[type="text"], #questionnaireSection textarea');
+                    textInputs.forEach(input => {
+                        if (input.value.trim() === '') {
+                            formIsValid = false;
+                            // Optionally, highlight empty fields or show a message
+                            input.style.borderColor = 'red'; // Example of highlighting
+                        } else {
+                            input.style.borderColor = ''; // Reset style if filled
+                        }
+                    });
+                
+                    // Check radio buttons - assuming each group of radio buttons has a common name
+                    const radioNames = [...new Set(document.querySelectorAll('#questionnaireSection input[type="radio"]').values())].map(radio => radio.name);
+                    radioNames.forEach(name => {
+                        const radioGroup = document.querySelectorAll(`input[name="${name}"]:checked`);
+                        if (radioGroup.length === 0) {
+                            formIsValid = false;
+                            // Highlight or indicate the group needs selection
+                            // This is trickier for radios, might need to set a message or highlight the legend/label
+                        }
+                    });
+                
+                    // Add checks for other input types (checkboxes, select, etc.) as needed
+                
+                    // Only proceed if the form is valid
+                    if (formIsValid) {
+                        document.getElementById('questionnaireSection').style.display = 'none'; // Hide questionnaire section
+                        document.getElementById('submitSection').style.display = 'block'; // Show submit section
+                    } else {
+                        alert('Please fill out all required fields.'); // Inform the user
+                    }
+                });
+                </script>
+                
 
             <div id="submitSection" style="display:none;">
                 <p>In this experiment, you might have been presented with several different human players. Please note that the actions of these human players are based on previously collected data, and therefore, you were not playing with live human players but a replay of previous participants. We use replayed action to better control the environment and improve our ability to draw scientific conclusion.</p>
