@@ -114,7 +114,7 @@ let roundThreeColor = 0x0D77B7; //blue
 
 let roundFourColor = 0xecdd13; //yellow
 
-let studyId = 'ExpThreeTest';
+let studyId = 'ExpThreePilot';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -1280,7 +1280,7 @@ function proceedToNextRound(scene) {
 }
 
 function redirectToProlific() {
-    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=CBTKA62X';
+    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=CRALLKRT';
     window.location.replace(prolificCompletionUrl);
 }
 
