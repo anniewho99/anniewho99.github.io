@@ -349,7 +349,7 @@
                     let formIsValid = true;
 
                     // Exclude 'suggestions' from the general validation
-                    const textInputs = document.querySelectorAll('#questionnaireSection input[type="text"], #questionnaireSection textarea:not(#suggestions)');
+                    const textInputs = document.querySelectorAll('#questionnaireSection input[type="text"], #questionnaireSection textarea:not(#suggestions), #questionnaireSection textarea:not(#explainGame)');
                     textInputs.forEach(input => {
                         if (input.value.trim() === '') {
                             formIsValid = false;
