@@ -1075,7 +1075,7 @@ function updateGameTime(scene) {
                 let countdownDuration = 15; // 15 seconds
                 let countdownTimer = countdownDuration;
           
-                scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n Please use the arrow keys to move your orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
+                scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n As a reminder, you are the orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
                 scene.messageText.setVisible(true);
     
     

@@ -263,7 +263,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset id="gameTypeQuestion">
                     <legend>Do you see this primarily as a: <span style="color: red;">*</span></legend>
                     <div class="radio-option">
                         <input type="radio" id="competitiveGame" name="gameType" value="competitive">
@@ -284,7 +284,7 @@
                     </div>
                 </fieldset>
                 
-                <fieldset>
+                <fieldset id = "generalGameTypeQuestion">
                     <legend>Generally, do you see multi-player game primarily as a: <span style="color: red;">*</span></legend>
                     <div class="radio-option">
                         <input type="radio" id="generalCompetitiveGame" name="generalGameType" value="competitive">
@@ -296,7 +296,36 @@
                         <label for="generalCollaborativeGame">Collaborative game</label><br>
                     </div>
                 </fieldset>
-                
+
+                <script>
+                    function shuffle(array) {
+                        for (let i = array.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [array[i], array[j]] = [array[j], array[i]];
+                        }
+                    }
+                    
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Select specific fieldsets by IDs
+                        const specificFieldsets = [
+                            document.querySelector('#gameTypeQuestion'),
+                            document.querySelector('#generalGameTypeQuestion')
+                        ];
+                    
+                        specificFieldsets.forEach(fieldset => {
+                            if (fieldset) { // Check if the fieldset exists
+                                const options = Array.from(fieldset.querySelectorAll('.radio-option'));
+                                shuffle(options);
+                                // Clear the current content
+                                fieldset.innerHTML = fieldset.querySelector('legend').outerHTML; // Keep the legend
+                                // Append the shuffled options back
+                                options.forEach(option => {
+                                    fieldset.appendChild(option);
+                                });
+                            }
+                        });
+                    });
+                    </script>                    
 
                 <fieldset>
                     <legend>Did you notice the other player getting stuck? <span style="color: red;">*</span></legend>
@@ -327,12 +356,12 @@
                 </fieldset>
                 
                 <fieldset>
-                    <legend>Whenever you helped the player who were stuck, why did you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <legend>Whenever you helped the player who was stuck, why did you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
                     <textarea id="whyHelped" name="whyHelped" rows="2" cols="50" placeholder="Why did you choose to help the other player?"></textarea><br>
                 </fieldset>
                 
                 <fieldset>
-                    <legend>Whenever you didn't help the player who were stuck, why didn't you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
+                    <legend>Whenever you didn't help the player who was stuck, why didn't you help? (fill in NA if not applicable)<span style="color: red;">*</span></legend>
                     <textarea id="whyNotHelped" name="whyNotHelped" rows="2" cols="50" placeholder="Why did you choose not to help the other player?"></textarea><br>
                 </fieldset>
                 
@@ -395,10 +424,10 @@
                 
 
             <div id="submitSection" style="display:none;">
-                <p>In this experiment, you might have been presented with several different human players. Please note that the actions of these human players are based on previously collected data, and therefore, you were not playing with live human players but a replay of previous participants. We use replayed action to better control the environment and improve our ability to draw scientific conclusion.</p>
-                <p>If in light of this information, you are not comfortable with sharing your data, do not press the submit button below. Pressing submit button belows completes the experiment and brings you back to Prolific. Pressing the exit button closes the current page and leaves the study.</p>
-                <input type="submit" value="Submit">
-                <button type="button" id="exitButton" style="margin-left: 10px;">Exit</button>
+                <p>In this experiment, you might have been presented with several different human players. Please note that the actions of these human players are based on previously collected data, and therefore, you were not playing with live human players but a replay of previous participants. We use replayed action to better control the environment and improve our ability to draw scientific conclusions.</p>
+                <p>If in light of this information, you are not comfortable with sharing your data, do not press the submit button below. Pressing complete button belows completes the experiment and brings you back to Prolific. Pressing the withdraw button closes the current page and leaves the study.</p>
+                <input type="submit" value="Complete the study and return to Prolific." class="submit-button">
+                <button type="button" id="exitButton" class="exit-button">Withdraw, I don't want my data to be collected.</button>
             </div>
 
             <script>
