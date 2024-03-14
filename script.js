@@ -114,7 +114,7 @@ let roundThreeColor = 0x0D77B7; //blue
 
 let roundFourColor = 0xecdd13; //yellow
 
-let studyId = 'ExpThreePilot';
+let studyId = 'ExpThreeEdits';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -134,21 +134,26 @@ const showQuestionnaireOnly = params.get('questionnaireOnly');
 let trapTimeForEachRound;
 
 // Example 1: Assign a random condition for Viewpoint
-const TRAPSEQUENCE = 'A1A2'; // a string we use to represent the condition name
-let numConditions = 4; // Number of conditions for this variable
+const TRAPSEQUENCE = 'ABCD'; // a string we use to represent the condition name
+let numConditions = 6; // Number of conditions for this variable
 let numDraws = 1; // Number of  assignments (mutually exclusive) we want to sample for this participants
 let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numConditions,
   maxCompletionTimeMinutes, numDraws); // the await keyword is mandatory
 
 let assignedCondition = assignedConditionTemp[0];
 
-// //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
+// B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
+// Round B1: AI helps user | Round B2: will user help another human
+// Round B1: Human helps user | Round B2: will user help another AI
+// Round C1: AI helps user | Round C2: will user help another AI (how many AI players did you play with)
+// Round D1: Human helps user | Round D2: will user help another human
+
 if (assignedCondition === 0){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777},
-        1: { human: 20, AI: 200,  Replay: 777},
-        2: { human: 20, AI: 200, Replay: 777 },
-        3: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 20, AI: 777, Replay: 200},
+        1: { human: 20, AI: 777,  Replay: 200},
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
       };
 }else if( assignedCondition === 1){
     trapTimeForEachRound = {
@@ -160,10 +165,10 @@ if (assignedCondition === 0){
 
 }else if( assignedCondition === 2){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
-        1: { human: 200, AI: 777, Replay: 20 },
-        2: { human: 200, AI: 777, Replay: 20 },
-        3: { human: 200, AI: 777, Replay: 20 },
+        0: { human: 200, AI: 20, Replay: 777 },
+        1: { human: 200, AI: 20, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
       };
 }else if( assignedCondition === 3){
     trapTimeForEachRound = {
@@ -172,19 +177,32 @@ if (assignedCondition === 0){
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
+}else if( assignedCondition === 4){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 20, AI: 200, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
+}else if( assignedCondition === 5){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 777, Replay: 200 },
+        1: { human: 20, AI: 777, Replay: 200 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
+      };
 }
 
-//A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
 // if (assignedCondition === 0){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
+//         0: { human: 5, AI: 777, Replay: 200 },
 //         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
 //       };
 // }else if( assignedCondition === 1){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
+//         0: { human: 5, AI: 777, Replay: 200},
 //         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
@@ -192,14 +210,14 @@ if (assignedCondition === 0){
 
 // }else if( assignedCondition === 2){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
+//         0: { human: 5, AI: 777, Replay: 200 },
 //         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
 //       };
 // }else if( assignedCondition === 3){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
+//         0: { human: 5, AI: 777, Replay: 200 },
 //         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
@@ -1089,7 +1107,7 @@ function updateGameTime(scene) {
                         callback: () => {
                         countdownTimer--; // Decrease timer
                         countdownDuration--;
-                        scene.messageText.setText(` Finding a new human player for the new round...\n Trying to find another player in: ${countdownDuration} seconds`);
+                        scene.messageText.setText(` Finding a new human player for the new round...\n Trying to find another player: ${countdownDuration} seconds`);
                         if (countdownTimer <= 0) {
                             scene.messageText.setText(` ${playerIntrouction}`);
             
@@ -1663,16 +1681,20 @@ function create() {
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/assignedCondition';
     let assignedConditionExplained;
 
-// //A1A1A1A2, A1A1A2A2, A1A2A2A2, A2A2A2A2
+// B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
 
     if(assignedCondition === 0){
-        assignedConditionExplained = assignedCondition + "A1A1A1A2";
+        assignedConditionExplained = assignedCondition + "B1B1B2B2";
     }else if (assignedCondition === 1){
         assignedConditionExplained =  assignedCondition + "A1A1A2A2";
     }else if (assignedCondition === 2){
-        assignedConditionExplained =  assignedCondition + "A1A2A2A2";
+        assignedConditionExplained =  assignedCondition + "B2B2B2B2";
     }else if(assignedCondition === 3){
         assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+    }else if(assignedCondition === 4){
+        assignedConditionExplained =  assignedCondition + "C1C1C2C2";
+    }else if(assignedCondition === 5){
+        assignedConditionExplained =  assignedCondition + "D1D1D2D2";
     }
 
 
@@ -1746,13 +1768,27 @@ function update(time) {
                 const nextPosition = currentPath[currentPlayerDataIndex];
                 movePlayer2(nextPosition[0], nextPosition[1], this);
                 currentPlayerDataIndex++;
+            }else if(replayState === "SAVING_STAGE_ONE" && currentPlayerDataIndex < currentPath.length){
+                const nextPosition = currentPath[currentPlayerDataIndex];
+                movePlayer2(nextPosition[0], nextPosition[1], this);
+                currentPlayerDataIndex++;
+            }else if(replayState === "SAVING_STAGE_TWO" && currentPlayerDataIndex < currentPath.length){
+                const nextPosition = currentPath[currentPlayerDataIndex];
+                movePlayer2(nextPosition[0], nextPosition[1], this);
+                currentPlayerDataIndex++;
             }else{
-                if(replayState === "NAVIGATING_TO_SUBGRID"){
+                if(replayState === "NAVIGATING_TO_SUBGRID" && timeToSaveTrappedHuman === false){
                     replayState = "COLLECTING";
-                }else{
+                }else if(replayState  === "COLLECTING"){
+                    replayState = "NAVIGATING_TO_SUBGRID";
+                }else if(timeToSaveTrappedHuman && replayState === "NAVIGATING_TO_SUBGRID" && playerOneTrapped === true){
+                    timeToSaveTrappedHuman = false;
+                    replayState = "SAVING_STAGE_ONE";
+                }else if(replayState === "SAVING_STAGE_ONE"){
+                    replayState = "SAVING_STAGE_TWO";
+                }else if(replayState === "SAVING_STAGE_TWO"){
                     replayState = "NAVIGATING_TO_SUBGRID";
                 }
-
                 isPathBeingFollowed = false;
             }
         }
@@ -2430,6 +2466,13 @@ function handleReplayStateandDecision(){
         }else if(replayState === "COLLECTING"){
             console.log("COLLECTING");
             handlReplayMovement();
+        }else if (replayState === "SAVING_STAGE_ONE"){
+            timeToSaveTrappedHuman = false;
+            console.log("SAVING_STAGE_ONE");
+            handlReplayMovement();
+        }else if(replayState === "SAVING_STAGE_TWO"){
+            console.log("SAVING_STAGE_TWO");
+            handlReplayMovement();
         }
     }
 }
@@ -2465,7 +2508,7 @@ function handlReplayMovement() {
         console.log(replayState);
         console.log(currentPathLength);
         console.log(currentPath);
-    }else{
+    }else if(replayState === "NAVIGATING_TO_SUBGRID"){
         console.log("current replay positioin");
         console.log(currentplayerX, currentplayerY);
         console.log("goal");
@@ -2488,7 +2531,70 @@ function handlReplayMovement() {
         console.log(replayState);
         console.log(currentPathLength);
         console.log(currentPath);
+    }else if (replayState === "SAVING_STAGE_ONE"){
+        timeToSaveTrappedHuman = false;
+        handleReplaySavingOne();
+    }else if(replayState === "SAVING_STAGE_TWO"){
+        handleReplaySavingTwo();
     }
+
+}
+
+function handleReplaySavingOne(){
+    let replayGridEntrance;
+    if (humanDoortoLeave[0] - humanTrappedGrid[0] < 2){
+        replayGridEntrance = [humanDoortoLeave[0] - 2, humanDoortoLeave[1] - 1];
+    }else{
+        replayGridEntrance = [humanDoortoLeave[0] - 1, humanDoortoLeave[1] - 1];
+    }
+    let currentplayerX = Math.round(player2.x / cellWidth) - 1;
+    let currentplayerY = Math.round(player2.y / cellHeight) - 1;
+
+    betwenGridPath = findAndSelectRandomPath(betwenGridData, [currentplayerX, currentplayerY], replayGridEntrance);
+    replayState = "SAVING_STAGE_ONE";
+
+    if (betwenGridPath.path[0].length === 2) {
+        currentPath = betwenGridPath.path;
+        currentPathLength = betwenGridPath.path.length;
+    } else {
+        currentPath = betwenGridPath.path[0];
+        currentPathLength = betwenGridPath.path[0].length;
+    }
+    currentPathTime = betwenGridPath.times;
+    console.log(replayState);
+    console.log(currentPathLength);
+    console.log(currentPath);
+    isPathBeingFollowed = true;
+    currentPlayerDataIndex = 1;
+
+}
+
+function handleReplaySavingTwo(){
+    let replayGridEntrance;
+    if (humanDoortoLeave[0] - humanTrappedGrid[0] < 2){
+        replayGridEntrance = [humanDoortoLeave[0] + 2, humanDoortoLeave[1] - 1];
+    }else{
+        replayGridEntrance = [humanDoortoLeave[0] - 5, humanDoortoLeave[1] - 1];
+    }
+    let currentplayerX = Math.round(player2.x / cellWidth) - 1;
+    let currentplayerY = Math.round(player2.y / cellHeight) - 1;
+
+    let exitPath = findAndSelectRandomPath(withinGridData, [currentplayerX, currentplayerY], replayGridEntrance);
+    replayState = "SAVING_STAGE_TWO";
+
+    if (exitPath.path[0].length === 2) {
+        currentPath = exitPath.path;
+        currentPathLength = exitPath.path.length;
+    } else {
+        currentPath = exitPath.path[0];
+        currentPathLength = exitPath.path[0].length;
+    }
+    currentPathTime = exitPath.times;
+    console.log(replayState);
+    console.log(currentPathLength);
+    console.log(currentPath);
+    isPathBeingFollowed = true;
+    currentPlayerDataIndex = 1;
 
 }
 
@@ -3110,17 +3216,17 @@ function displayNextInstruction(scene) {
         let countdownDuration = 15; 
         let countdownTimer = countdownDuration;
         if(isReplay === "replay"){
-            countdownTimer = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+            countdownTimer = 12;
         }
 
-        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player in: ${countdownDuration} seconds`);
+        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player: ${countdownDuration} seconds`);
 
         let timerEvent = scene.time.addEvent({
             delay: 1000, // 1000ms = 1 second
             callback: () => {
             countdownTimer--;
             countdownDuration --;
-            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player in: ${countdownDuration} seconds`);
+            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player: ${countdownDuration} seconds`);
             if (countdownTimer <= 0) {
                 scene.messageText.setText(playerIntrouction);
                 // proceedButton.x = scene.sys.game.config.width / 2;
