@@ -1016,7 +1016,7 @@ function updateGameTime(scene) {
                 .setInteractive()
                 .setOrigin(0.5).setDepth(1002);
     
-            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
             let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
               
             proceedButton.on('pointerdown', () => {
@@ -1045,7 +1045,7 @@ function updateGameTime(scene) {
                 .setInteractive()
                 .setOrigin(0.5).setDepth(1002);
     
-            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 100 * dpr, 30 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
             let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
               
             proceedButton.on('pointerdown', () => {
@@ -1074,6 +1074,9 @@ function updateGameTime(scene) {
     
                 let countdownDuration = 15; // 15 seconds
                 let countdownTimer = countdownDuration;
+                if(isReplay === "replay"){
+                    countdownTimer = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+                }
           
                 scene.messageText = scene.add.text(scene.sys.game.config.width / 2, scene.sys.game.config.height / 2, ` We will now start round ${currentRound} of 4!\n As a reminder, you are the orange player.`, specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
                 scene.messageText.setVisible(true);
@@ -1085,7 +1088,8 @@ function updateGameTime(scene) {
                         delay: 1000, // 1000ms = 1 second
                         callback: () => {
                         countdownTimer--; // Decrease timer
-                        scene.messageText.setText(` Finding a new human player for the new round...\n Next round starts in: ${countdownTimer} seconds`);
+                        countdownDuration--;
+                        scene.messageText.setText(` Finding a new human player for the new round...\n We will try to find another player in: ${countdownDuration} seconds`);
                         if (countdownTimer <= 0) {
                             scene.messageText.setText(` ${playerIntrouction}`);
             
@@ -1618,7 +1622,7 @@ function create() {
     let messages = [
         ' You are going to play a simple game with another player. \n The primary goal of the game is to collect tokens. \n You will collect flowers, \n while the other player will collect butterflies or apples.',
         ' There are 4 short rounds of the game.\n Each round lasts 90 seconds.',
-        ' You might be playing with a robot player or\n another human player.',
+        ' You will play with another human player.\n If we cannot find one, you will be paired with a robot player.\n',
         ' At the beginning of each round,\n you will be told whether you are playing\n with a human or a robot.',
         ' Let’s start with a demo!'
     ];
@@ -1687,15 +1691,15 @@ function create() {
     // this.overlay.setVisible(false);
     this.messageText = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2, '', specificSizeStyle).setOrigin(0.5, 0.5).setDepth(1001);
 
-    this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0x39FF14, 0.5);
-    this.highlight.setVisible(false);
+    // this.highlight = this.add.rectangle(0, 0, cellWidth * 3, cellHeight * 3, 0x39FF14, 0.5);
+    // this.highlight.setVisible(false);
 
-    // Initialize a blink timer
-    this.blinkTimer = 0;
-    this.blinkInterval = 8; 
-    this.blinkCounter = 0; 
-    this.shouldBlink = false; 
-    this.blinkMax = 4; 
+    // // Initialize a blink timer
+    // this.blinkTimer = 0;
+    // this.blinkInterval = 8; 
+    // this.blinkCounter = 0; 
+    // this.shouldBlink = false; 
+    // this.blinkMax = 4; 
 
     // this.highlightSprite = this.add.sprite(0, 0, 'highlightSprite').setScale(0.2 * dpr);
 
@@ -1816,47 +1820,47 @@ function update(time) {
 
 
 
-    if ((playerOneTrapped === true || playerTwoTrapped === true) && !this.shouldBlink) {
-        if (!this.blinkStartTimer) {
-            this.blinkStartTimer = this.time.now; // Capture the start time
-        }
+    // if ((playerOneTrapped === true || playerTwoTrapped === true) && !this.shouldBlink) {
+    //     if (!this.blinkStartTimer) {
+    //         this.blinkStartTimer = this.time.now; // Capture the start time
+    //     }
 
-        if (this.time.now - this.blinkStartTimer > 3000) { // 3 seconds
-            this.shouldBlink = true; // Start blinking
-        }
-    }
+    //     if (this.time.now - this.blinkStartTimer > 3000) { // 3 seconds
+    //         this.shouldBlink = true; // Start blinking
+    //     }
+    // }
 
-    if (this.shouldBlink === true) {
-        this.blinkTimer++;
+    // if (this.shouldBlink === true) {
+    //     this.blinkTimer++;
 
-        // if (this.blinkCounter == this.blinkMax * 2 - 2){
-        //     this.blinkInterval = 50
-        // }
+    //     // if (this.blinkCounter == this.blinkMax * 2 - 2){
+    //     //     this.blinkInterval = 50
+    //     // }
 
-        // Toggle visibility based on the blink timer
-        if (this.blinkTimer % this.blinkInterval === 0) {
-            this.highlight.setVisible(!this.highlight.visible);
-            this.blinkCounter++;
+    //     // Toggle visibility based on the blink timer
+    //     if (this.blinkTimer % this.blinkInterval === 0) {
+    //         this.highlight.setVisible(!this.highlight.visible);
+    //         this.blinkCounter++;
 
-            // Stop blinking after 4 blinks
-            if (this.blinkCounter >= this.blinkMax * 2) {
-                this.shouldBlink = "blinked";
-                this.highlight.setVisible(false);
-                this.blinkCounter = 0;
-                this.blinkStartTimer = null;
-            }
-        }
+    //         // Stop blinking after 4 blinks
+    //         if (this.blinkCounter >= this.blinkMax * 2) {
+    //             this.shouldBlink = "blinked";
+    //             this.highlight.setVisible(false);
+    //             this.blinkCounter = 0;
+    //             this.blinkStartTimer = null;
+    //         }
+    //     }
 
-        // Position the highlight over the correct player
-        if (playerOneTrapped === true) {
-            this.highlight.setPosition(humanTrappedGrid[0] * cellWidth + 0.5 * cellWidth, humanTrappedGrid[1] * cellHeight + 0.5 * cellHeight);
-        } else if (playerTwoTrapped === true) {
-            this.highlight.setPosition(trappedAIStartGrid[0] * cellWidth + 0.5 * cellWidth, trappedAIStartGrid[1] * cellHeight + 0.5 * cellHeight);
-        }
-    } else {
-        // Hide the highlight when no player is trapped
-        this.highlight.setVisible(false);
-    }
+    //     // Position the highlight over the correct player
+    //     if (playerOneTrapped === true) {
+    //         this.highlight.setPosition(humanTrappedGrid[0] * cellWidth + 0.5 * cellWidth, humanTrappedGrid[1] * cellHeight + 0.5 * cellHeight);
+    //     } else if (playerTwoTrapped === true) {
+    //         this.highlight.setPosition(trappedAIStartGrid[0] * cellWidth + 0.5 * cellWidth, trappedAIStartGrid[1] * cellHeight + 0.5 * cellHeight);
+    //     }
+    // } else {
+    //     // Hide the highlight when no player is trapped
+    //     this.highlight.setVisible(false);
+    // }
 
     if (time - lastAIUpdate > AIUpdateInterval && isReplay === "AI") {
         // If currently following a path, continue moving along it
@@ -3102,17 +3106,20 @@ function displayNextInstruction(scene) {
         scene.proceedText.setVisible(false);
 
         // Countdown duration in seconds
-        let countdownDuration = 15; // 5 seconds for example
+        let countdownDuration = 15; 
         let countdownTimer = countdownDuration;
+        if(isReplay === "replay"){
+            countdownTimer = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+        }
 
-        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Next round starts in: ${countdownTimer} seconds`);
-
+        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n We will try to find another player in: ${countdownDuration} seconds`);
 
         let timerEvent = scene.time.addEvent({
             delay: 1000, // 1000ms = 1 second
             callback: () => {
             countdownTimer--;
-            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Next round starts in: ${countdownTimer} seconds`);
+            countdownDuration --;
+            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n We will try to find another player in: ${countdownDuration} seconds`);
             if (countdownTimer <= 0) {
                 scene.messageText.setText(playerIntrouction);
                 // proceedButton.x = scene.sys.game.config.width / 2;
