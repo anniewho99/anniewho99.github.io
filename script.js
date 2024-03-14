@@ -1621,8 +1621,8 @@ function create() {
     let specificSizeStyle = createTextStyle(30 * dpr, '#000');
 
     let messages = [
-        ' You are going to play a simple game with another player. \n The primary goal of the game is to collect tokens. \n You will collect flowers, \n while the other player will collect butterflies or apples.',
-        ' There are 4 short rounds of the game.\n Each round lasts 90 seconds.',
+        ' You are going to play a simple game with another player. \n The primary goal of the game is to collect tokens. \n You will collect flowers, while the other player will collect butterflies or apples.',
+        ' The game consists of four short rounds.\n Each round lasts 90 seconds.',
         ' You will play with another human player.\n If we cannot find one, you will be paired with a robot player.\n',
         ' At the beginning of each round,\n you will be told whether you are playing\n with a human or a robot.',
         ' Let’s start with a demo!'
@@ -3113,14 +3113,14 @@ function displayNextInstruction(scene) {
             countdownTimer = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
         }
 
-        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n We will try to find another player in: ${countdownDuration} seconds`);
+        scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player in: ${countdownDuration} seconds`);
 
         let timerEvent = scene.time.addEvent({
             delay: 1000, // 1000ms = 1 second
             callback: () => {
             countdownTimer--;
             countdownDuration --;
-            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n We will try to find another player in: ${countdownDuration} seconds`);
+            scene.messageText.setText(instructions[currentInstructionIndex - 1] + `\n Trying to find another player in: ${countdownDuration} seconds`);
             if (countdownTimer <= 0) {
                 scene.messageText.setText(playerIntrouction);
                 // proceedButton.x = scene.sys.game.config.width / 2;
