@@ -1089,7 +1089,7 @@ function updateGameTime(scene) {
                         callback: () => {
                         countdownTimer--; // Decrease timer
                         countdownDuration--;
-                        scene.messageText.setText(` Finding a new human player for the new round...\n We will try to find another player in: ${countdownDuration} seconds`);
+                        scene.messageText.setText(` Finding a new human player for the new round...\n Trying to find another player in: ${countdownDuration} seconds`);
                         if (countdownTimer <= 0) {
                             scene.messageText.setText(` ${playerIntrouction}`);
             
