@@ -1424,6 +1424,7 @@ function endGame(scene) {
                 whyHelped: document.getElementById('whyHelped').value,
                 whyNotHelped: document.getElementById('whyNotHelped').value,
                 suggestions: document.getElementById('suggestions').value,
+                feedbackRealness: document.getElementById('interactionPerception').value,
                 // robotIcon: document.querySelector('input[name="robotIcon"]:checked').value,
                 // humantIcon: document.querySelector('input[name="humanIcon"]:checked').value,
             };
