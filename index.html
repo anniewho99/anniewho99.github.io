@@ -433,8 +433,9 @@
             <script>
                 document.getElementById('exitButton').addEventListener('click', function() {
                     // Attempt to close the current tab or window
-                    window.close();
-                    alert("Please close this window to exit the study."); // Show a message instructing manual action
+                    const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=C1KI32PM';
+                    window.location.replace(prolificCompletionUrl);
+                    //alert("Please close this window to exit the study."); // Show a message instructing manual action
                 
                     // Note: For security reasons, modern browsers only allow scripts to close windows that were opened by that script. 
                     // If this doesn't work as intended, you might need to direct users to close the window manually or navigate away.
