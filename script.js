@@ -1016,7 +1016,7 @@ function updateGameTime(scene) {
                 .setInteractive()
                 .setOrigin(0.5).setDepth(1002);
     
-            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 95, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
             let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
               
             proceedButton.on('pointerdown', () => {
@@ -1045,7 +1045,7 @@ function updateGameTime(scene) {
                 .setInteractive()
                 .setOrigin(0.5).setDepth(1002);
     
-            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 50 * dpr, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
+            let proceedRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 + 95, 130 * dpr, 45 * dpr, 0x007BFF).setOrigin(0.5, 0.5).setDepth(1001);
             let textRectangle = scene.add.rectangle(scene.sys.game.config.width / 2 - 250, scene.sys.game.config.height / 2 - 10, 800 * dpr, 60 * dpr, 0xD1D1D1).setOrigin(0.5, 0.5).setDepth(1001);
               
             proceedButton.on('pointerdown', () => {
