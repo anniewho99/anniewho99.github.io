@@ -3111,11 +3111,57 @@ let instructions = [
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
     " Lets start the first round.\n There are 4 rounds in total.",
+    " Please choose player name (max 10 characters): \n press enter when finish",
     " Finding a human player for the current round...",
     // ` Have fun!!\n We${playerIntrouction}`
 ];
 let currentInstructionIndex = 0;
 
+let playerNameHuman = "";
+
+function createPlayerNameInput(scene) {
+    // Calculate position based on game size or specific object position
+    const x = 1220 / 2 + 200;
+    const y = 300;
+
+    // Create the HTML input element
+    const inputElement = document.createElement('input');
+    inputElement.type = 'text';
+    inputElement.style.position = 'fixed';
+    inputElement.style.top = y + 'px';
+    inputElement.style.left = x + 'px';
+    inputElement.style.transform = 'translate(-50%, -50%)';
+    inputElement.style.maxWidth = '200px'; // Set a max width
+    inputElement.maxLength = 10; // Limit characters to 10
+    inputElement.id = 'playerNameInput'; // Assign an ID for easy access
+
+    document.body.appendChild(inputElement); // Add input element to the document
+
+    // Focus the input element immediately to prompt user input
+    inputElement.focus();
+
+    // Optionally, add an event listener for the "Enter" key to save the name and remove the input
+    inputElement.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const playerName = inputElement.value.trim();
+            if (playerName.length > 0) {
+                // Save playerName to your game's state or global variable
+                playerNameHuman = playerName;
+                isClickable = true;
+
+                if (isClickable) {
+                    proceedButton.setFillStyle(0x007BFF);
+                } else {
+                    proceedButton.setFillStyle(0xCCCCCC);
+                }
+                
+                // Remove the input element from the document
+                document.body.removeChild(inputElement);
+                
+            }
+        }
+    });
+}
 
 function displayNextInstruction(scene) {
 
@@ -3201,8 +3247,31 @@ function displayNextInstruction(scene) {
     //     // }
 
     // }
+    if (currentInstructionIndex === 5) {
+        scene.overlay.setVisible(true);
+        let fontSize = 26 * dpr;
+        scene.messageText.setFontSize(fontSize + 'px');
+        scene.messageText.x = scene.sys.game.config.width / 2 - 320 * dpr;
+        scene.messageText.y = scene.sys.game.config.height / 2 - 100;
+        isClickable = false;
 
-    if(currentInstructionIndex === 5){
+        if (isClickable) {
+            proceedButton.setFillStyle(0x007BFF);
+        } else {
+            proceedButton.setFillStyle(0xCCCCCC);
+        }
+
+        createPlayerNameInput(scene);
+
+        proceedButton.x = scene.sys.game.config.width / 2;
+        proceedButton.y = scene.sys.game.config.height * 0.65;
+
+        scene.proceedText.x = scene.sys.game.config.width / 2 - 40 * dpr;
+        scene.proceedText.y = scene.sys.game.config.height * 0.65 - 10 * dpr;
+
+    }
+
+    if(currentInstructionIndex === 6){
         scene.overlay.setVisible(true);
         let fontSize = 26 * dpr;
         scene.messageText.setFontSize(fontSize + 'px');
