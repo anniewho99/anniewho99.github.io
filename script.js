@@ -164,7 +164,7 @@ let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numC
 let assignedCondition = assignedConditionTemp[0];
 
 // B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
-// Round B1: AI helps user | Round B2: will user help another human
+// Round A1: AI helps user | Round A2: will user help another human
 // Round B1: Human helps user | Round B2: will user help another AI
 // Round C1: AI helps user | Round C2: will user help another AI (how many AI players did you play with)
 // Round D1: Human helps user | Round D2: will user help another human
@@ -3164,16 +3164,19 @@ let currentInstructionIndex = 0;
 let playerNameHuman = "";
 
 function createPlayerNameInput(scene) {
-    // Calculate position based on game size or specific object position
-    const x = scene.sys.game.config.width / 3.5;
-    const y = scene.sys.game.config.height / 3.7;
 
-    // Create the HTML input element
+    const canvas = scene.sys.game.canvas;
+    const rect = canvas.getBoundingClientRect(); // Get the bounding rectangle of the canvas
+
+    // Calculate position based on the canvas position and the desired offset
+    const offsetX = rect.width / 1.5;
+    const offsetY = rect.height / 2;
+
     const inputElement = document.createElement('input');
     inputElement.type = 'text';
-    inputElement.style.position = 'fixed';
-    inputElement.style.top = y + 'px';
-    inputElement.style.left = x + 'px';
+    inputElement.style.position = 'fixed'; // Use 'fixed' to position relative to the viewport
+    inputElement.style.top = (rect.top + offsetY) + 'px';
+    inputElement.style.left = (rect.left + offsetX) + 'px';
     inputElement.style.transform = 'translate(-50%, -50%)';
     inputElement.style.maxWidth = '200px'; // Set a max width
     inputElement.maxLength = 10; // Limit characters to 10
