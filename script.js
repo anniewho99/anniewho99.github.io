@@ -114,7 +114,7 @@ let roundThreeColor = 0x0D77B7; //blue
 
 let roundFourColor = 0xecdd13; //yellow
 
-let studyId = 'ExpThreeEdits';
+let studyId = 'ExpThreeReal';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
