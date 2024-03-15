@@ -114,6 +114,27 @@ let roundThreeColor = 0x0D77B7; //blue
 
 let roundFourColor = 0xecdd13; //yellow
 
+let replayNames = [
+    "PurpleYam",
+    "dewdrop",
+    "stantheman",
+    "bigfloof",
+];
+
+let robotNames = [
+    "purpleBot1",
+    "greenBot2 ",
+    "blueBot3",
+    "yellowBot4",
+];
+
+let otherPlayerColors = [
+    '#7F5FBF',
+    '#009e73',
+    '#0D77B7',
+    '#ECDD13',
+];
+
 let studyId = 'ExpThreeReal';
 
 const paramsHRI = new URLSearchParams(window.location.search);
@@ -364,6 +385,10 @@ let startTimer = false;
 
 let timeText;
 
+let humanPlayerIntro;
+
+let otherPlayerIntro;
+
 let easystar;
 
 let easystarSubgrid;
@@ -532,9 +557,17 @@ for (let grid of GRIDS) {
 //console.log("door_movements:", door_movements);
 
 function createTextStyle(fontSize, color) {
+    let colorString = color;
+    // Check if color is a number, meaning it's likely given in hexadecimal format
+    if (typeof color === 'number') {
+        // Convert the hexadecimal number to a string
+        colorString = '#' + color.toString(16);
+    }
+    // If color is already a string, it doesn't need conversion
+
     return {
         font: fontSize + "px Arcade",
-        fill: color
+        fill: colorString // Sets the text color
     };
 }
 
@@ -1085,9 +1118,9 @@ function updateGameTime(scene) {
                 }
           
                 if(isReplay === "AI"){
-                  playerIntrouction =  "\n We can't find an available player at the moment.\n You will play with a robot player that collects butterflies.";
+                    playerIntrouction =  ` We can't find an available player at the moment.\n For this round, you will play with a robot player\n (ID: ${robotNames[currentRound - 1]}) that collects butterflies.`;
                 }else{
-                  playerIntrouction =  "\n We found an available human player.\n You will play with a human player that collects apples.";
+                    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${replayNames[currentRound - 1]}) that collects apples.`;
                 }
     
                 let countdownDuration = 15; // 15 seconds
@@ -1169,6 +1202,19 @@ function proceedToNextRound(scene) {
     }else if(trapTimeForEachRound[currentRound - 1].Replay === 777){
         player2TrapTimeStart = trapTimeForEachRound[currentRound - 1].AI;
         isReplay = "AI";
+    }
+
+    // let specificSizeStyle = createTextStyle(25 * dpr, players['Human'].color);
+
+    // humanPlayerIntro = scene.add.text(910 * dpr, 70 * dpr, '', specificSizeStyle);
+    // humanPlayerIntro.setText(`${playerNameHuman} (You)`);
+    otherPlayerIntro.destroy();
+    let specificSizeStyle = createTextStyle(25 * dpr, otherPlayerColors[currentRound - 1]);
+    otherPlayerIntro = scene.add.text(910 * dpr, 100 * dpr, '', specificSizeStyle);
+    if(isReplay === "AI"){
+        otherPlayerIntro.setText(`${robotNames[currentRound - 1]}`);
+    }else{
+        otherPlayerIntro.setText(`${replayNames[currentRound - 1]}`); 
     }
 
     eventNumber = 0;
@@ -3098,11 +3144,9 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 }
 
 if(isReplay === "AI"){
-    playerIntrouction =  " We can't find an available player at the moment.\n For this round, you will play with a robot player that collects butterflies.";
-    //"We can't find an available player at the moment.\nYou will play with a robot player that collects butterflies";
+    playerIntrouction =  ` We can't find an available player at the moment.\n For this round, you will play with a robot player\n (ID: ${robotNames[currentRound - 1]}) that collects butterflies.`;
 }else{
-    playerIntrouction =  " We found an available human player.\n For this round, you will play with a human player that collects apples.";
-    //"We found an available human player.\nYou will play with a human player that collects apples";
+    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${replayNames[currentRound - 1]}) that collects apples.`;
 }
 
 let instructions = [
@@ -3111,7 +3155,7 @@ let instructions = [
     " Now we will add\n a yellow robot player to the game.\n The yellow robot will only\n collect the yellow butterflies.",
     " Also, the yellow robot can only\n move through yellow doors.\n You, as the orange player,\n can only move through orange doors.",
     " Lets start the first round.\n There are 4 rounds in total.",
-    " Please choose player name (max 10 characters): \n press enter when finish",
+    " Please choose a player name (max 10 characters) and press enter",
     " Finding a human player for the current round...",
     // ` Have fun!!\n We${playerIntrouction}`
 ];
@@ -3121,8 +3165,8 @@ let playerNameHuman = "";
 
 function createPlayerNameInput(scene) {
     // Calculate position based on game size or specific object position
-    const x = 1220 / 2 + 200;
-    const y = 300;
+    const x = scene.sys.game.config.width / 3.5;
+    const y = scene.sys.game.config.height / 3.7;
 
     // Create the HTML input element
     const inputElement = document.createElement('input');
@@ -3355,8 +3399,6 @@ function completeSetup(scene) {
         isReplay = "AI";
     }
 
-
-
     let pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/Grid dimension';
     let valuenow = [gridWidth, gridHeight];
     writeRealtimeDatabase( pathnow , valuenow );
@@ -3383,6 +3425,18 @@ function completeSetup(scene) {
 
     door_AI_color = roundOneColor;
     players['AI'].color = roundOneColor;
+
+    let specificSizeStyle = createTextStyle(25 * dpr, players['Human'].color);
+
+    humanPlayerIntro = scene.add.text(910 * dpr, 70 * dpr, '', specificSizeStyle);
+    humanPlayerIntro.setText(`${playerNameHuman} (You)`);
+    specificSizeStyle = createTextStyle(25 * dpr, otherPlayerColors[currentRound - 1]);
+    otherPlayerIntro = scene.add.text(910 * dpr, 100 * dpr, '', specificSizeStyle);
+    if(isReplay === "AI"){
+        otherPlayerIntro.setText(`${robotNames[currentRound - 1]}`);
+    }else{
+        otherPlayerIntro.setText(`${replayNames[currentRound - 1]}`); 
+    }
 
     if(isReplay === "replay"){
         // door_AI_color = 0xcc79a7;
