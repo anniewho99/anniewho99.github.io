@@ -3169,7 +3169,7 @@ function createPlayerNameInput(scene) {
     const rect = canvas.getBoundingClientRect(); // Get the bounding rectangle of the canvas
 
     // Calculate position based on the canvas position and the desired offset
-    const offsetX = rect.width / 1.5;
+    const offsetX = rect.width / 1.94;
     const offsetY = rect.height / 2;
 
     const inputElement = document.createElement('input');
