@@ -118,8 +118,16 @@ let replayNames = [
     "PurpleYam",
     "dewdrop",
     "stantheman",
-    "bigfloof",
+    "tinyfloof",
+    "ajlamers",
+    "kainer61",
+    "bigsmoke",
+    "grabby",
+    "wuttang",
+    "brettchief",
 ];
+
+let currentReplayName;
 
 let robotNames = [
     "purpleBot1",
@@ -1120,7 +1128,8 @@ function updateGameTime(scene) {
                 if(isReplay === "AI"){
                     playerIntrouction =  ` We can't find an available player at the moment.\n For this round, you will play with a robot player\n (ID: ${robotNames[currentRound - 1]}) that collects butterflies.`;
                 }else{
-                    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${replayNames[currentRound - 1]}) that collects apples.`;
+                    currentReplayName =  getRandomNameAndRemove();
+                    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${currentReplayName}) that collects apples.`;
                 }
     
                 let countdownDuration = 15; // 15 seconds
@@ -1214,7 +1223,7 @@ function proceedToNextRound(scene) {
     if(isReplay === "AI"){
         otherPlayerIntro.setText(`${robotNames[currentRound - 1]}`);
     }else{
-        otherPlayerIntro.setText(`${replayNames[currentRound - 1]}`); 
+        otherPlayerIntro.setText(`${currentReplayName}`); 
     }
 
     eventNumber = 0;
@@ -3146,7 +3155,8 @@ if(trapTimeForEachRound[currentRound - 1].AI === 777){
 if(isReplay === "AI"){
     playerIntrouction =  ` We can't find an available player at the moment.\n For this round, you will play with a robot player\n (ID: ${robotNames[currentRound - 1]}) that collects butterflies.`;
 }else{
-    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${replayNames[currentRound - 1]}) that collects apples.`;
+    currentReplayName =  getRandomNameAndRemove();
+    playerIntrouction =  ` We found an available human player.\n For this round, you will play with a human player\n (ID: ${currentReplayName}) that collects apples.`;
 }
 
 let instructions = [
@@ -3162,6 +3172,19 @@ let instructions = [
 let currentInstructionIndex = 0;
 
 let playerNameHuman = "";
+
+function getRandomNameAndRemove() {
+    if (replayNames.length > 0) {
+        // Generate a random index based on the length of the replayNames array
+        const index = Math.floor(Math.random() * replayNames.length);
+        // Extract the name at the generated index
+        const name = replayNames.splice(index, 1)[0];
+        return name;
+    } else {
+        console.log("No names left in the array.");
+        return null; // Or handle the empty array case as you see fit
+    }
+}
 
 function createPlayerNameInput(scene) {
 
@@ -3438,7 +3461,7 @@ function completeSetup(scene) {
     if(isReplay === "AI"){
         otherPlayerIntro.setText(`${robotNames[currentRound - 1]}`);
     }else{
-        otherPlayerIntro.setText(`${replayNames[currentRound - 1]}`); 
+        otherPlayerIntro.setText(`${currentReplayName}`); 
     }
 
     if(isReplay === "replay"){
