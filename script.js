@@ -222,36 +222,6 @@ if (assignedCondition === 0){
       };
 }
 
-// if (assignedCondition === 0){
-//     trapTimeForEachRound = {
-//         0: { human: 5, AI: 777, Replay: 200 },
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }else if( assignedCondition === 1){
-//     trapTimeForEachRound = {
-//         0: { human: 5, AI: 777, Replay: 200},
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-
-// }else if( assignedCondition === 2){
-//     trapTimeForEachRound = {
-//         0: { human: 5, AI: 777, Replay: 200 },
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }else if( assignedCondition === 3){
-//     trapTimeForEachRound = {
-//         0: { human: 5, AI: 777, Replay: 200 },
-//         1: { human: 200, AI: 777, Replay: 20 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
-// }
 
 function findAndSelectRandomPath(PathData, start, end) {
     // Filter betwenGridData to find paths that match the given start and end
@@ -1304,6 +1274,9 @@ function proceedToNextRound(scene) {
         // players['AI'].color = 0xcc79a7;
         player2.setTexture('player1').setScale(0.05 * dpr).setDepth(1);
         scene.player2Ghost.setTexture('player1').setScale(0.05 * dpr).setDepth(1);
+    }else if(isReplay === "AI"){
+        player2.setTexture('player2').setScale(0.35 * dpr).setDepth(1);
+        scene.player2Ghost.setTexture('player2').setScale(0.35 * dpr).setDepth(1);
     }
 
     if(currentRound === 2){
