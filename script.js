@@ -143,7 +143,7 @@ let otherPlayerColors = [
     '#ECDD13',
 ];
 
-let studyId = 'ExpThreeReal';
+let studyId = 'ExpThreeNameTag';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
