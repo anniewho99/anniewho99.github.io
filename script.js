@@ -3433,6 +3433,10 @@ function completeSetup(scene) {
     valuenow = GRIDS;
     writeRealtimeDatabase( pathnow , valuenow );
 
+    pathnow = studyId+'/participantData/'+firebaseUserId+'/Initial setup' +'/playerID';
+    valuenow = playerNameHuman;
+    writeRealtimeDatabase( pathnow , valuenow );
+
     player1TrapTimeStart = trapTimeForEachRound[currentRound - 1].human;
 
     if(isReplay === "AI"){
