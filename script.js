@@ -1776,17 +1776,17 @@ function create() {
     // }
 
     if(assignedCondition === 0){
-        assignedConditionExplained = assignedCondition + "B2B2B2B2";
+        assignedConditionExplained = "B2B2B2B2";
     }else if (assignedCondition === 1){
-        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+        assignedConditionExplained = "A2A2A2A2";
     }else if(assignedCondition === 2){
-        assignedConditionExplained = assignedCondition + "B2B2B2B2";
+        assignedConditionExplained = "B2B2B2B2";
     }else if (assignedCondition === 3){
-        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+        assignedConditionExplained = "A2A2A2A2";
     }else if(assignedCondition === 4){
-        assignedConditionExplained = assignedCondition + "B2B2B2B2";
+        assignedConditionExplained = "B2B2B2B2";
     }else if (assignedCondition === 5){
-        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+        assignedConditionExplained = "A2A2A2A2";
     }
 
 
