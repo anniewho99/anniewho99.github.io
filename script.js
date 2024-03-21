@@ -143,7 +143,7 @@ let otherPlayerColors = [
     '#ECDD13',
 ];
 
-let studyId = 'ExpThreeNameTag';
+let studyId = 'ExpThreeMatchPerformance';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -171,57 +171,107 @@ let assignedConditionTemp = await blockRandomization(studyId, TRAPSEQUENCE, numC
 
 let assignedCondition = assignedConditionTemp[0];
 
+console.log("assigned condition");
+console.log(assignedCondition);
+
 // B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
 // Round A1: AI helps user | Round A2: will user help another human
 // Round B1: Human helps user | Round B2: will user help another AI
 // Round C1: AI helps user | Round C2: will user help another AI (how many AI players did you play with)
 // Round D1: Human helps user | Round D2: will user help another human
 
-if (assignedCondition === 0){
-    trapTimeForEachRound = {
-        0: { human: 20, AI: 777, Replay: 200},
-        1: { human: 20, AI: 777,  Replay: 200},
-        2: { human: 200, AI: 20, Replay: 777 },
-        3: { human: 200, AI: 20, Replay: 777 },
-      };
-}else if( assignedCondition === 1){
-    trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
-        1: { human: 20, AI: 200, Replay: 777 },
-        2: { human: 200, AI: 777, Replay: 20 },
-        3: { human: 200, AI: 777, Replay: 20 },
-      };
+// if (assignedCondition === 0){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 777, Replay: 200},
+//         1: { human: 20, AI: 777,  Replay: 200},
+//         2: { human: 200, AI: 20, Replay: 777 },
+//         3: { human: 200, AI: 20, Replay: 777 },
+//       };
+// }else if( assignedCondition === 1){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 20, AI: 200, Replay: 777 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
 
-}else if( assignedCondition === 2){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20, Replay: 777 },
-        1: { human: 200, AI: 20, Replay: 777 },
-        2: { human: 200, AI: 20, Replay: 777 },
-        3: { human: 200, AI: 20, Replay: 777 },
-      };
-}else if( assignedCondition === 3){
+// }else if( assignedCondition === 2){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 20, Replay: 777 },
+//         1: { human: 200, AI: 20, Replay: 777 },
+//         2: { human: 200, AI: 20, Replay: 777 },
+//         3: { human: 200, AI: 20, Replay: 777 },
+//       };
+// }else if( assignedCondition === 3){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 777, Replay: 20 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 4){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 200, Replay: 777 },
+//         1: { human: 20, AI: 200, Replay: 777 },
+//         2: { human: 200, AI: 20, Replay: 777 },
+//         3: { human: 200, AI: 20, Replay: 777 },
+//       };
+// }else if( assignedCondition === 5){
+//     trapTimeForEachRound = {
+//         0: { human: 20, AI: 777, Replay: 200 },
+//         1: { human: 20, AI: 777, Replay: 200 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }
+
+
+if (assignedCondition === 0){
     trapTimeForEachRound = {
         0: { human: 200, AI: 777, Replay: 20 },
         1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
-}else if( assignedCondition === 4){
+}else if( assignedCondition === 1){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 200, Replay: 777 },
-        1: { human: 20, AI: 200, Replay: 777 },
+        0: { human: 200, AI: 20, Replay: 777 },
+        1: { human: 200, AI: 20, Replay: 777 },
         2: { human: 200, AI: 20, Replay: 777 },
         3: { human: 200, AI: 20, Replay: 777 },
       };
-}else if( assignedCondition === 5){
+
+}else if (assignedCondition === 2){
     trapTimeForEachRound = {
-        0: { human: 20, AI: 777, Replay: 200 },
-        1: { human: 20, AI: 777, Replay: 200 },
+        0: { human: 200, AI: 777, Replay: 20 },
+        1: { human: 200, AI: 777, Replay: 20 },
         2: { human: 200, AI: 777, Replay: 20 },
         3: { human: 200, AI: 777, Replay: 20 },
       };
-}
+}else if( assignedCondition === 3){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20, Replay: 777 },
+        1: { human: 200, AI: 20, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
 
+}else if (assignedCondition === 4){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 777, Replay: 20 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
+      };
+}else if( assignedCondition === 5){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20, Replay: 777 },
+        1: { human: 200, AI: 20, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
+
+}
 
 function findAndSelectRandomPath(PathData, start, end) {
     // Filter betwenGridData to find paths that match the given start and end
@@ -286,7 +336,7 @@ let trappedDoors = null;
 let lastAIUpdate = 0;
 // const AIUpdateInterval = 500;
 
-let AIUpdateInterval = 500;
+let AIUpdateInterval = 300;
 
 let lastReplayUpdate = 0;
 
@@ -1711,18 +1761,32 @@ function create() {
 
 // B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
 
+    // if(assignedCondition === 0){
+    //     assignedConditionExplained = assignedCondition + "B1B1B2B2";
+    // }else if (assignedCondition === 1){
+    //     assignedConditionExplained =  assignedCondition + "A1A1A2A2";
+    // }else if (assignedCondition === 2){
+    //     assignedConditionExplained =  assignedCondition + "B2B2B2B2";
+    // }else if(assignedCondition === 3){
+    //     assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+    // }else if(assignedCondition === 4){
+    //     assignedConditionExplained =  assignedCondition + "C1C1C2C2";
+    // }else if(assignedCondition === 5){
+    //     assignedConditionExplained =  assignedCondition + "D1D1D2D2";
+    // }
+
     if(assignedCondition === 0){
-        assignedConditionExplained = assignedCondition + "B1B1B2B2";
+        assignedConditionExplained = assignedCondition + "B2B2B2B2";
     }else if (assignedCondition === 1){
-        assignedConditionExplained =  assignedCondition + "A1A1A2A2";
-    }else if (assignedCondition === 2){
-        assignedConditionExplained =  assignedCondition + "B2B2B2B2";
-    }else if(assignedCondition === 3){
+        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
+    }else if(assignedCondition === 2){
+        assignedConditionExplained = assignedCondition + "B2B2B2B2";
+    }else if (assignedCondition === 3){
         assignedConditionExplained =  assignedCondition + "A2A2A2A2";
     }else if(assignedCondition === 4){
-        assignedConditionExplained =  assignedCondition + "C1C1C2C2";
-    }else if(assignedCondition === 5){
-        assignedConditionExplained =  assignedCondition + "D1D1D2D2";
+        assignedConditionExplained = assignedCondition + "B2B2B2B2";
+    }else if (assignedCondition === 5){
+        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
     }
 
 
