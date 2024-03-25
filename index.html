@@ -23,8 +23,8 @@
             bottom: 0; 
             width: 100%;
             height: 100%;
-            max-width: 800px; /* Or any other value that seems fit */
-            margin: auto; /* Horizontal centering */
+            max-width: 800px; 
+            margin: auto; 
             padding: 20px;
             background: rgba(255, 255, 255, 1);
             z-index: 1000;
@@ -36,12 +36,12 @@
         }
 
         #postGameContent {
-            display: none; /* initially hidden */
-            background-color: #fff; /* white background */
-            padding: 20px; /* padding around content */
-            border-radius: 8px; /* rounded corners */
-            max-width: 600px; /* maximum width */
-            margin: auto; /* centered horizontally */
+            display: none; 
+            background-color: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            max-width: 600px; 
+            margin: auto; 
             overflow-y: auto; 
             max-height: 100vh; 
         }
@@ -64,8 +64,8 @@
         }
 
         #fullscreenNote {
-            color: #e44d26;  /* Making the note in a red-orange color for visibility */
-            font-weight: bold; /* Making text bold */
+            color: #e44d26;  
+            font-weight: bold; 
         }
 
         h1, h2 {
@@ -108,7 +108,7 @@
             width: 100%;
             padding: 8px;
             margin-top: 5px;
-            margin-bottom: 15px; /* Reduced bottom margin */
+            margin-bottom: 15px; 
             box-sizing: border-box;
             resize: vertical;
         }
@@ -118,14 +118,14 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
-            flex-wrap: wrap; /* Allows items to wrap to next line */
+            flex-wrap: wrap; 
         }
 
         .radio-container label {
             margin-right: 15px;
         }
 
-        /* Aligns radio buttons */
+  
         .radio-container input[type=radio] {
             margin-left: 5px;
         }
@@ -142,10 +142,10 @@
         }
 
         fieldset {
-            margin-bottom: 20px;  /* Adjust as needed */
+            margin-bottom: 20px; 
         }
 
-        /* Adjustments for radio buttons not inside .radio-container */
+     
         input[type=radio] + label {
             margin-right: 30px;
         }
@@ -156,41 +156,40 @@
 
         small {
             display: block;
-            margin-bottom: 15px; /* Adjusted bottom margin */
-            margin-left: 25px; /* Left indent */
+            margin-bottom: 15px; 
+            margin-left: 25px;
         }
         .icon-selection-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around; /* Adjust as needed for spacing */
+            justify-content: space-around; 
         }
 
         .icon-option {
-            flex-basis: 20%; /* Adjust this value to control the width of each icon container */
-            text-align: center; /* Center-align the content */
-            margin-bottom: 10px; /* Space between rows */
+            flex-basis: 20%; 
+            text-align: center; 
+            margin-bottom: 10px; 
         }
 
         .icon-option img {
-            width: 60px !important; /* Force the width to be 40px */
-            height: 60px !important; /* Force the height to be 40px */
-            object-fit: contain; /* Ensures the image is scaled correctly within these dimensions */
+            width: 60px !important; 
+            height: 60px !important; 
+            object-fit: contain; 
         }
         .human-icon-selection-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
-            /* Add any other necessary styles */
         }
 
         .human-icon-option {
-            flex-basis: 20%; /* Adjust as needed */
+            flex-basis: 20%; 
             text-align: center;
             margin-bottom: 10px;
         }
 
         .human-icon-option img {
-            width: 60px; /* Adjust as needed */
+            width: 60px; 
             height: 60px;
             object-fit: contain;
         }
@@ -439,13 +438,10 @@
 
             <script>
                 document.getElementById('exitButton').addEventListener('click', function() {
-                    // Attempt to close the current tab or window
+
                     const prolificCompletionUrl = 'https://app.prolific.com/submissions/complete?cc=C1KI32PM';
                     window.location.replace(prolificCompletionUrl);
-                    //alert("Please close this window to exit the study."); // Show a message instructing manual action
-                
-                    // Note: For security reasons, modern browsers only allow scripts to close windows that were opened by that script. 
-                    // If this doesn't work as intended, you might need to direct users to close the window manually or navigate away.
+
                 });
             </script>
         </form>

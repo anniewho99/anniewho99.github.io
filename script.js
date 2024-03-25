@@ -35,19 +35,14 @@ fetch('adjusted_movement.json')
   })
   .then(data => {
 
-    // Process each key in the fetched object
     Object.values(data).forEach(nestedList => {
-      // Concatenate all items into betwenGridData
       betwenGridData = betwenGridData.concat(nestedList);
     });
 
-    // At this point, betwenGridData contains all items from every nested list
     console.log(betwenGridData);
-    // Example start and end points
     const startExample = [1, 3];
     const endExample = [5, 9];
 
-          // Find and select a random path with the specified start and end
     const randomPath = findAndSelectRandomPath(betwenGridData, startExample, endExample);
 
     if (randomPath) {
@@ -55,8 +50,6 @@ fetch('adjusted_movement.json')
     } else {
         console.log('No path could be selected.');
         }
-
-    // Now you can use 'betwenGridData' elsewhere in your script
   })
   .catch(error => {
     console.error('There was a problem with your fetch operation:', error);
@@ -72,16 +65,12 @@ fetch('adjusted_movement.json')
   })
   .then(data => {
 
-    // Process each key in the fetched object
     Object.values(data).forEach(nestedList => {
-      // Concatenate all items into withinGridData
       withinGridData = withinGridData.concat(nestedList);
     });
 
-    // At this point, withinGridDataa contains all items from every nested list
     console.log(withinGridData);
 
-    // Now you can use 'bwithinGridData' elsewhere in your script
   })
   .catch(error => {
     console.error('There was a problem with your fetch operation:', error);
@@ -92,7 +81,6 @@ const door_human_color = 0xE66100; // orange color in hex
 
 // const grid_width = 900;
 
-//force a rebuild
 let players = {
     'Human': {
         id: 0,
@@ -143,7 +131,7 @@ let otherPlayerColors = [
     '#ECDD13',
 ];
 
-let studyId = 'ExpThreeMatchPerformance';
+let studyId = 'edits';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
@@ -180,98 +168,98 @@ console.log(assignedCondition);
 // Round C1: AI helps user | Round C2: will user help another AI (how many AI players did you play with)
 // Round D1: Human helps user | Round D2: will user help another human
 
-// if (assignedCondition === 0){
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 777, Replay: 200},
-//         1: { human: 20, AI: 777,  Replay: 200},
-//         2: { human: 200, AI: 20, Replay: 777 },
-//         3: { human: 200, AI: 20, Replay: 777 },
-//       };
-// }else if( assignedCondition === 1){
-//     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
-//         1: { human: 20, AI: 200, Replay: 777 },
-//         2: { human: 200, AI: 777, Replay: 20 },
-//         3: { human: 200, AI: 777, Replay: 20 },
-//       };
+if (assignedCondition === 0){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 777, Replay: 200},
+        1: { human: 20, AI: 777,  Replay: 200},
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
+}else if( assignedCondition === 1){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 20, AI: 200, Replay: 777 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
+      };
 
-// }else if( assignedCondition === 2){
-//     trapTimeForEachRound = {
-//         0: { human: 200, AI: 20, Replay: 777 },
-//         1: { human: 200, AI: 20, Replay: 777 },
-//         2: { human: 200, AI: 20, Replay: 777 },
-//         3: { human: 200, AI: 20, Replay: 777 },
-//       };
-// }else if( assignedCondition === 3){
+}else if( assignedCondition === 2){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 20, Replay: 777 },
+        1: { human: 200, AI: 20, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
+}else if( assignedCondition === 3){
+    trapTimeForEachRound = {
+        0: { human: 200, AI: 777, Replay: 20 },
+        1: { human: 200, AI: 777, Replay: 20 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
+      };
+}else if( assignedCondition === 4){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 200, Replay: 777 },
+        1: { human: 20, AI: 200, Replay: 777 },
+        2: { human: 200, AI: 20, Replay: 777 },
+        3: { human: 200, AI: 20, Replay: 777 },
+      };
+}else if( assignedCondition === 5){
+    trapTimeForEachRound = {
+        0: { human: 20, AI: 777, Replay: 200 },
+        1: { human: 20, AI: 777, Replay: 200 },
+        2: { human: 200, AI: 777, Replay: 20 },
+        3: { human: 200, AI: 777, Replay: 20 },
+      };
+}
+
+
+// if (assignedCondition === 0){
 //     trapTimeForEachRound = {
 //         0: { human: 200, AI: 777, Replay: 20 },
 //         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
 //       };
-// }else if( assignedCondition === 4){
+// }else if( assignedCondition === 1){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 200, Replay: 777 },
-//         1: { human: 20, AI: 200, Replay: 777 },
+//         0: { human: 200, AI: 20, Replay: 777 },
+//         1: { human: 200, AI: 20, Replay: 777 },
 //         2: { human: 200, AI: 20, Replay: 777 },
 //         3: { human: 200, AI: 20, Replay: 777 },
 //       };
-// }else if( assignedCondition === 5){
+
+// }else if (assignedCondition === 2){
 //     trapTimeForEachRound = {
-//         0: { human: 20, AI: 777, Replay: 200 },
-//         1: { human: 20, AI: 777, Replay: 200 },
+//         0: { human: 200, AI: 777, Replay: 20 },
+//         1: { human: 200, AI: 777, Replay: 20 },
 //         2: { human: 200, AI: 777, Replay: 20 },
 //         3: { human: 200, AI: 777, Replay: 20 },
 //       };
+// }else if( assignedCondition === 3){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 20, Replay: 777 },
+//         1: { human: 200, AI: 20, Replay: 777 },
+//         2: { human: 200, AI: 20, Replay: 777 },
+//         3: { human: 200, AI: 20, Replay: 777 },
+//       };
+
+// }else if (assignedCondition === 4){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 777, Replay: 20 },
+//         1: { human: 200, AI: 777, Replay: 20 },
+//         2: { human: 200, AI: 777, Replay: 20 },
+//         3: { human: 200, AI: 777, Replay: 20 },
+//       };
+// }else if( assignedCondition === 5){
+//     trapTimeForEachRound = {
+//         0: { human: 200, AI: 20, Replay: 777 },
+//         1: { human: 200, AI: 20, Replay: 777 },
+//         2: { human: 200, AI: 20, Replay: 777 },
+//         3: { human: 200, AI: 20, Replay: 777 },
+//       };
+
 // }
-
-
-if (assignedCondition === 0){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
-        1: { human: 200, AI: 777, Replay: 20 },
-        2: { human: 200, AI: 777, Replay: 20 },
-        3: { human: 200, AI: 777, Replay: 20 },
-      };
-}else if( assignedCondition === 1){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20, Replay: 777 },
-        1: { human: 200, AI: 20, Replay: 777 },
-        2: { human: 200, AI: 20, Replay: 777 },
-        3: { human: 200, AI: 20, Replay: 777 },
-      };
-
-}else if (assignedCondition === 2){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
-        1: { human: 200, AI: 777, Replay: 20 },
-        2: { human: 200, AI: 777, Replay: 20 },
-        3: { human: 200, AI: 777, Replay: 20 },
-      };
-}else if( assignedCondition === 3){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20, Replay: 777 },
-        1: { human: 200, AI: 20, Replay: 777 },
-        2: { human: 200, AI: 20, Replay: 777 },
-        3: { human: 200, AI: 20, Replay: 777 },
-      };
-
-}else if (assignedCondition === 4){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 777, Replay: 20 },
-        1: { human: 200, AI: 777, Replay: 20 },
-        2: { human: 200, AI: 777, Replay: 20 },
-        3: { human: 200, AI: 777, Replay: 20 },
-      };
-}else if( assignedCondition === 5){
-    trapTimeForEachRound = {
-        0: { human: 200, AI: 20, Replay: 777 },
-        1: { human: 200, AI: 20, Replay: 777 },
-        2: { human: 200, AI: 20, Replay: 777 },
-        3: { human: 200, AI: 20, Replay: 777 },
-      };
-
-}
 
 function findAndSelectRandomPath(PathData, start, end) {
     // Filter betwenGridData to find paths that match the given start and end
@@ -554,7 +542,6 @@ GRIDS.forEach(grid => {
     });
 });
 
-// Deduplicate forbidden moves
 forbidden_moves = Array.from(new Set(forbidden_moves));
 
 let door_movements = [];
@@ -586,16 +573,16 @@ for (let grid of GRIDS) {
 
 function createTextStyle(fontSize, color) {
     let colorString = color;
-    // Check if color is a number, meaning it's likely given in hexadecimal format
+    
     if (typeof color === 'number') {
-        // Convert the hexadecimal number to a string
+        
         colorString = '#' + color.toString(16);
     }
-    // If color is already a string, it doesn't need conversion
+   
 
     return {
         font: fontSize + "px Arcade",
-        fill: colorString // Sets the text color
+        fill: colorString 
     };
 }
 
@@ -695,7 +682,7 @@ const coverDoor = (doorCoord, scene) => {
   };
   
 
-// When you want to find a particular door
+
 function findDoorSprite(coord, doorSprites) {
     for (let i = 0; i < doorSprites.length; i++) {
 
@@ -703,11 +690,11 @@ function findDoorSprite(coord, doorSprites) {
             return doorSprites[i].graphics; // Return the corresponding doorGraphics object
         }
     }
-    return null; // Return null if no match is found
+    return null; 
 }
 
 function areArraysEquivalent(a, b) {
-    //console.log('A:', a, 'B:', b); // This will help you see what's being passed to the function
+    //console.log('A:', a, 'B:', b);
 
     if (!Array.isArray(a) || !Array.isArray(b)) {
         return false;
@@ -766,7 +753,6 @@ function calculateDoors() {
         const doors = [
             { coord: [startX, Math.floor((endY + startY) / 2)], orientation: "V" },
             { coord: [endX + 1, Math.floor((endY + startY) / 2)], orientation: "V" },
-            // Commented out horizontal doors for now
             // { coord: [Math.floor((endX + startX) / 2), endY + 1], orientation: "H" },
             // { coord: [Math.floor((endX + startX) / 2), startY], orientation: "H" }
         ];
@@ -943,8 +929,6 @@ function addStarTokens(scene, playerID) {
 
                 let selectedPath = withinGridPath.path[0];
                 let sampledPositions = selectedPath.slice(1, 4); 
-
-                //print(sampledPositions);
 
                 sampledPositions.forEach((position, index) => {
                     //let [x, y] = position; // Destructure the position into x and y
@@ -1549,11 +1533,9 @@ function isCloseToDoor(player, nexToDoorPos) {
 }
 
 function findEndCoordinates(chosenGrid, aiDoors) {
-    // Calculate the average y-coordinate of the chosenGrid
+
     const avgY = (chosenGrid.start[1] + chosenGrid.end[1]) / 2;
     
-    // Search through doorAIadjusted to find a door with the same x-coordinate
-    // as either the start or end x-coordinate of the chosenGrid and a y-coordinate close to avgY.
     const matchingDoor = aiDoors.find(door => {
       return (door[0] === chosenGrid.start[0] || door[0] === chosenGrid.end[0]) &&
              Math.abs(door[1] - avgY) < 1e-6;  // The '1e-6' is a small tolerance value
@@ -2222,7 +2204,6 @@ function handleMovement(player, dx, dy, playerID, scene) {
     //     doorColorOther = 0xd55e00;
     // }
 
-    // First, check for forbidden moves. If forbidden, we immediately return.
     if (isMoveForbidden(currentGridX, currentGridY, nextGridX, nextGridY)) {
         console.log("Move is forbidden.");
         return;
@@ -3127,7 +3108,6 @@ function setupGameElements(scene) {
 }
 
 function initializeDemo(scene) {
-    // Your initial setup: showing only player 1's sprite and the first instruction.
     // Create grid graphics
     let graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
      // Draw vertical lines
@@ -3212,42 +3192,36 @@ let playerNameHuman = "";
 
 function getRandomNameAndRemove() {
     if (replayNames.length > 0) {
-        // Generate a random index based on the length of the replayNames array
         const index = Math.floor(Math.random() * replayNames.length);
-        // Extract the name at the generated index
         const name = replayNames.splice(index, 1)[0];
         return name;
     } else {
         console.log("No names left in the array.");
-        return null; // Or handle the empty array case as you see fit
+        return null; 
     }
 }
 
 function createPlayerNameInput(scene) {
 
     const canvas = scene.sys.game.canvas;
-    const rect = canvas.getBoundingClientRect(); // Get the bounding rectangle of the canvas
+    const rect = canvas.getBoundingClientRect();
 
-    // Calculate position based on the canvas position and the desired offset
     const offsetX = rect.width / 1.94;
     const offsetY = rect.height / 2;
 
     const inputElement = document.createElement('input');
     inputElement.type = 'text';
-    inputElement.style.position = 'fixed'; // Use 'fixed' to position relative to the viewport
+    inputElement.style.position = 'fixed'; 
     inputElement.style.top = (rect.top + offsetY) + 'px';
     inputElement.style.left = (rect.left + offsetX) + 'px';
     inputElement.style.transform = 'translate(-50%, -50%)';
-    inputElement.style.maxWidth = '200px'; // Set a max width
-    inputElement.maxLength = 10; // Limit characters to 10
-    inputElement.id = 'playerNameInput'; // Assign an ID for easy access
+    inputElement.style.maxWidth = '200px'; 
+    inputElement.maxLength = 10; 
+    inputElement.id = 'playerNameInput'; 
 
-    document.body.appendChild(inputElement); // Add input element to the document
-
-    // Focus the input element immediately to prompt user input
+    document.body.appendChild(inputElement); 
     inputElement.focus();
 
-    // Optionally, add an event listener for the "Enter" key to save the name and remove the input
     inputElement.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             const playerName = inputElement.value.trim();
@@ -3552,8 +3526,7 @@ function completeSetup(scene) {
     players.AI.tokensCollected = 0;
     players.Human.tokensCollected = 0;
 
-    scene.tokenGroup.clear(true, true); // This will remove all the tokens from the group and also destroy them
-      
+    scene.tokenGroup.clear(true, true); 
     // // Add new tokens for each player
     addStarTokens(scene, players['Human'].id);
     addStarTokens(scene, players['AI'].id);
