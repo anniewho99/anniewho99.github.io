@@ -1743,33 +1743,33 @@ function create() {
 
 // B1B1B2B2, A1A1A2A2, B2B2B2B2, A2A2A2A2, C1C1C2C2, D1D1D2D2  
 
-    // if(assignedCondition === 0){
-    //     assignedConditionExplained = assignedCondition + "B1B1B2B2";
-    // }else if (assignedCondition === 1){
-    //     assignedConditionExplained =  assignedCondition + "A1A1A2A2";
-    // }else if (assignedCondition === 2){
-    //     assignedConditionExplained =  assignedCondition + "B2B2B2B2";
-    // }else if(assignedCondition === 3){
-    //     assignedConditionExplained =  assignedCondition + "A2A2A2A2";
-    // }else if(assignedCondition === 4){
-    //     assignedConditionExplained =  assignedCondition + "C1C1C2C2";
-    // }else if(assignedCondition === 5){
-    //     assignedConditionExplained =  assignedCondition + "D1D1D2D2";
-    // }
-
     if(assignedCondition === 0){
-        assignedConditionExplained = "B2B2B2B2";
+        assignedConditionExplained = assignedCondition + "B1B1B2B2";
     }else if (assignedCondition === 1){
-        assignedConditionExplained = "A2A2A2A2";
-    }else if(assignedCondition === 2){
-        assignedConditionExplained = "B2B2B2B2";
-    }else if (assignedCondition === 3){
-        assignedConditionExplained = "A2A2A2A2";
+        assignedConditionExplained =  assignedCondition + "A1A1A2A2";
+    }else if (assignedCondition === 2){
+        assignedConditionExplained =  assignedCondition + "B2B2B2B2";
+    }else if(assignedCondition === 3){
+        assignedConditionExplained =  assignedCondition + "A2A2A2A2";
     }else if(assignedCondition === 4){
-        assignedConditionExplained = "B2B2B2B2";
-    }else if (assignedCondition === 5){
-        assignedConditionExplained = "A2A2A2A2";
+        assignedConditionExplained =  assignedCondition + "C1C1C2C2";
+    }else if(assignedCondition === 5){
+        assignedConditionExplained =  assignedCondition + "D1D1D2D2";
     }
+
+    // if(assignedCondition === 0){
+    //     assignedConditionExplained = "B2B2B2B2";
+    // }else if (assignedCondition === 1){
+    //     assignedConditionExplained = "A2A2A2A2";
+    // }else if(assignedCondition === 2){
+    //     assignedConditionExplained = "B2B2B2B2";
+    // }else if (assignedCondition === 3){
+    //     assignedConditionExplained = "A2A2A2A2";
+    // }else if(assignedCondition === 4){
+    //     assignedConditionExplained = "B2B2B2B2";
+    // }else if (assignedCondition === 5){
+    //     assignedConditionExplained = "A2A2A2A2";
+    // }
 
 
     let valuenow = assignedConditionExplained;
