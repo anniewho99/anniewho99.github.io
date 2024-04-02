@@ -131,7 +131,7 @@ let otherPlayerColors = [
     '#ECDD13',
 ];
 
-let studyId = 'ExpThreeRunFour';
+let studyId = 'ExpThreeRunFive';
 
 const paramsHRI = new URLSearchParams(window.location.search);
 const writeToTryoutData = paramsHRI.get('notProlific');
